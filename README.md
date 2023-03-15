@@ -20,11 +20,15 @@ npm run serve
 npm run build
 ```
 
-### 4.查看文档
+### 4.查看项目文档
+
+本地浏览（需安装docsify）
 
 ```
 docsify serve docs
 ```
+线上浏览
 
-
-
+```
+https://gp-root.github.io/Songs/#/
+```
