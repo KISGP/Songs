@@ -1,0 +1,11 @@
+:root {
+  --header-height: 6vh;
+  --height-content: 94vh;
+  --height-player: 0vh;
+
+  /* --text-color:#fff; */
+  /* --global-bg: url(../img/dark-1.png); */
+  --theme-color: #409eff;
+  --table-bg-color: transparent;
+  --table-border-color: #ebeef5;
+}

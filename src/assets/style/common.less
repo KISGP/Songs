@@ -1,0 +1,47 @@
+// 元素居中(绝对定位)
+.position-centerXY {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+.position-centerY {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.position-centerX {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+// 元素居中(flex)
+.flex-centerX() {
+	.flex-layout();
+}
+.flex-centerY() {
+	.flex-layout(column);
+}
+
+.flex-layout(@direction:row,@location:center) {
+	display: flex;
+	flex-direction: @direction;
+	justify-content: @location;
+	align-items: center;
+}
+
+.size(@height:100%,@width:100%) {
+	height: @height;
+	width: @width;
+}
+.max-size(@height:100%,@width:100%){
+	.size(@height,@width);
+	max-height: @height;
+	max-width: @width;
+}
+.min-size(@height:100%,@width:100%){
+	.size(@height,@width);
+	min-height: @height;
+	min-width: @width;
+}
