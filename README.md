@@ -1,19 +1,30 @@
 # songs
 
-## Project setup
+## 运行
+
+### 1.安装依赖
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 2.编译
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### 3.打包
+
 ```
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 4.查看文档
+
+```
+docsify serve docs
+```
+
+
+
