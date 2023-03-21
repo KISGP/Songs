@@ -60,6 +60,15 @@
 			</el-col>
 			<el-col :span="6">
 				<div class="right">
+					<div :class="{ liked: true, 'liked-true': store.song.song.isLiked }">
+						<el-icon
+							size="25"
+							:title="store.song.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
+							@click="emits('like', !store.song.song.isLiked)"
+						>
+							<svg-icon name="like" />
+						</el-icon>
+					</div>
 					<div class="list">
 						<el-icon size="25" title="列表" @click="changeDrawerVisual">
 							<svg-icon name="list_footer" />
@@ -94,7 +103,7 @@ const props = defineProps({
 	lyric: String,
 });
 
-const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "update"]);
+const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "like"]);
 
 const listBox: Ref<boolean> = ref(false);
 const changeDrawerVisual = () => {
@@ -140,12 +149,18 @@ const activeList = ref("播放列表");
 		height: @height;
 	}
 	.right {
-		.flex-layout(row, flex-start);
+		.flex-layout(row, space-evenly);
 		.list {
 			&:hover {
 				color: var(--theme-color);
 				cursor: pointer;
 			}
+		}
+		.liked {
+			cursor: pointer;
+		}
+		.liked-true {
+			color: red;
 		}
 	}
 }

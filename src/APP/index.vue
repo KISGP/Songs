@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { watch, onMounted } from "vue";
 import { useSongStore } from "store/index";
-import { updatePlayerStyle, fixUserInfo } from "./index";
+import { updatePlayerStyle, fixUserInfo, getLikedSongs } from "./index";
 import headerBar from "./content/header/index.vue";
 import menuBar from "./content/menu/index.vue";
 import footerBar from "./content/footer/index.vue";
@@ -35,6 +35,7 @@ const SongStore = useSongStore();
 onMounted(async () => {
 	// 用户信息挂载到pinia / 补全用户信息
 	await fixUserInfo();
+	getLikedSongs();
 });
 
 // 监听播放器样式

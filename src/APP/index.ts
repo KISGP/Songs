@@ -1,9 +1,8 @@
 import { defineComponent, watch } from "vue";
 import { setCssVar } from "utils/utils-common";
-import { getAll } from "utils/storage";
-import { useUserStore } from "store/index";
-import { getUserInfo } from "service/api/api";
-
+import { getAll, getItem } from "utils/storage";
+import { useUserStore, useSongStore } from "store/index";
+import { getUserInfo, getLikedSongsID } from "service/api/api";
 
 // 修改播放器样式
 export function updatePlayerStyle(status: "hidden" | "max" | "min") {
@@ -36,4 +35,16 @@ export async function fixUserInfo() {
 	} else {
 		UserStore.update_login(false);
 	}
+}
+
+// 获取喜欢的音乐列表
+export async function getLikedSongs() {
+	getItem("id") &&
+		useSongStore().update_likedSongsID(async (likedSongsID) => {
+			await (
+				await getLikedSongsID(getItem("id")!)
+			).forEach((id: number) => {
+				likedSongsID.push(id);
+			});
+		});
 }

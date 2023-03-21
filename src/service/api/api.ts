@@ -376,6 +376,7 @@ export async function getDetailedList(id: number | string): Promise<listDetailed
 		myParams: {
 			id,
 			cookie: true,
+			timeStamp: true,
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
@@ -400,6 +401,7 @@ export async function getListAllSong(
 			id,
 			limit,
 			offset,
+			timeStamp: true,
 			cookie: true,
 		},
 		interceptors: {
@@ -433,7 +435,7 @@ export async function getDetailedAlbum(id: number | string): Promise<albumDetail
 		myParams: {
 			id,
 			cookie: true,
-			timeStamp: true
+			timeStamp: true,
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
@@ -566,12 +568,70 @@ export async function subscribeAlbum(id: number | string, isSubscribe: boolean):
 			id,
 			t: isSubscribe ? 1 : 0,
 			cookie: true,
-			timeStamp: true
+			timeStamp: true,
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
 				return res.code === 200 ? true : false;
 			},
+		},
+	});
+}
+
+/**
+ * @description 喜欢音乐
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%96%9c%e6%ac%a2%e9%9f%b3%e4%b9%90
+ * */
+export async function likeSong(id: number | string, isLiked: boolean = true): Promise<boolean> {
+	return await NETEASE.get({
+		url: "/like",
+		myParams: {
+			id,
+			like: isLiked,
+			cookie: true,
+			timeStamp: true,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return res.code === 200 ? true : false;
+			},
+		},
+	});
+}
+
+/**
+ * @description 喜欢音乐列表
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%96%9c%e6%ac%a2%e9%9f%b3%e4%b9%90%e5%88%97%e8%a1%a8
+ * */
+export async function getLikedSongsID(uid: number | string): Promise<Array<number>> {
+	return await NETEASE.get({
+		url: "/likelist?uid=32953014",
+		myParams: {
+			uid,
+			cookie: true,
+			timeStamp: true,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return res.ids;
+			},
+		},
+	});
+}
+
+/**
+ * @description 对歌单添加或删除歌曲
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%af%b9%e6%ad%8c%e5%8d%95%e6%b7%bb%e5%8a%a0%e6%88%96%e5%88%a0%e9%99%a4%e6%ad%8c%e6%9b%b2
+ * */
+export async function updateList(operate: "add" | "del", listId: number, songsId: Array<number>) {
+	return await NETEASE.get({
+		url: "/playlist/tracks?op=add&pid=24381616&tracks=347231",
+		myParams: {
+			op: operate,
+			pid: listId,
+			tracks: songsId.join(","),
+			cookie: true,
+			timeStamp: true,
 		},
 	});
 }

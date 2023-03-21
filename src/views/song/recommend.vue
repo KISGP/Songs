@@ -17,17 +17,17 @@
 	</el-scrollbar>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
+import { onMounted, ref } from "vue";
 import { songDetailedType } from "@/interface/interface";
 import { getRecommendNewSong, getRecommendDailySongs } from "service/api/api";
 import songsTable from "components/content/songs-table/index.vue";
 
-const activePage: Ref<string> = ref("new");
+const activePage = ref<string>("new");
 
-const newSongs: Ref<Array<songDetailedType>> = ref([]);
-const newSongsCount: Ref<number> = ref(0);
-const dailySongs: Ref<Array<songDetailedType>> = ref([]);
-const dailySongsCount: Ref<number> = ref(0);
+const newSongs = ref<Array<songDetailedType>>([]);
+const newSongsCount = ref<number>(0);
+const dailySongs = ref<Array<songDetailedType>>([]);
+const dailySongsCount = ref<number>(0);
 onMounted(async () => {
 	newSongs.value = await getRecommendNewSong();
 	newSongsCount.value = newSongs.value.length;

@@ -53,7 +53,7 @@ import { PropType } from "vue";
 import { useRouter } from "vue-router";
 import { useSongStore } from "store/index";
 import { songDetailedType } from "@/interface/interface";
-import { showSuccessMessage } from "utils/utils-el";
+import { showSuccessMessage } from "utils/utils-content";
 import artists from "../artists/artists.vue";
 const store = useSongStore();
 const router = useRouter();

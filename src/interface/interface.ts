@@ -2,7 +2,7 @@
  * @description 基础类型
  */
 interface baseType {
-	id: string | number;
+	id: number;
 	name: string;
 }
 
@@ -63,6 +63,7 @@ interface songBriefType extends baseType {
 	cover: string;
 	artistsStr: string;
 	url?: string;
+	isLiked?: boolean;
 }
 
 /**
@@ -89,6 +90,7 @@ export interface UserState {
  */
 export interface SongsState {
 	song: songDetailedType;
+	likedSongsID?: Array<number>;
 	isPlaying: boolean;
 	playList: Array<songDetailedType>;
 	historyList: Array<songDetailedType>;

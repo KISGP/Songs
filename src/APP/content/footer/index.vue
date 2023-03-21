@@ -20,6 +20,7 @@
 			@prev="prev"
 			@play="play"
 			@pause="pause"
+			@like="like"
 		>
 			<template v-slot:progress>
 				<el-slider
@@ -38,9 +39,10 @@
 <script setup lang="ts">
 import { ref, Ref, watch, reactive } from "vue";
 import { useSongStore } from "store/index";
-import { getLyric } from "service/api/api";
+import { getLyric, likeSong } from "service/api/api";
 import type { lyricType } from "@/interface/interface";
 import { s2min, debounce } from "utils/utils-common";
+import { showSuccessMessage, showErrorMessage } from "utils/utils-content";
 import playerMin from "./player-min.vue";
 import playerMax from "./player-max.vue";
 
@@ -130,6 +132,21 @@ const updateCurrentLyric = () => {
 			return;
 		}
 	}
+};
+
+// 添加到我喜欢的音乐
+const like = async (isLiked: boolean) => {
+	const res: boolean = await likeSong(SongStore.song.song.id, isLiked);
+	if (res && !isLiked) {
+		showSuccessMessage("成功移出我喜欢的音乐");
+		SongStore.song.song.isLiked = isLiked;
+	}else if (res && isLiked) {
+		showSuccessMessage("成功添加到我喜欢的音乐");
+		SongStore.song.song.isLiked = isLiked;
+	}else{
+		showErrorMessage("移出/添加 错误")
+	}
+	SongStore.reload_likedSongsID();
 };
 </script>
 <style scoped lang="less">
