@@ -15,7 +15,9 @@
 			<el-menu-item index="/album/my">我的专辑</el-menu-item>
 		</el-sub-menu>
 		<el-sub-menu index="4">
-			<template #title> 用户 </template>
+			<template #title>
+				<el-icon><User /></el-icon>
+			</template>
 			<el-menu-item index="/user/login">
 				<div>
 					<el-icon :size="60">
@@ -25,11 +27,24 @@
 				</div>
 			</el-menu-item>
 		</el-sub-menu>
+		<el-sub-menu index="5">
+			<template #title>
+				<el-icon>
+					<svg-icon name="github" />
+				</el-icon>
+			</template>
+			<el-menu-item index="" @click="openPage('https://github.com/GP-root/Songs')">
+				项目地址
+			</el-menu-item>
+		</el-sub-menu>
 	</el-menu>
 </template>
 <script setup lang="ts">
 import { useUserStore } from "store/index";
 const UserStore = useUserStore();
+const openPage = (url: string) => {
+	window.open(url, "_blank");
+};
 </script>
 <style scoped lang="less">
 .el-menu {

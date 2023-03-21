@@ -3,6 +3,7 @@ import { GPRequestConfig, GPRequestInterceptors } from "./type";
 import type { AxiosInstance } from "axios";
 import { getTimeStamp } from "utils/utils-content";
 import { getItem } from "utils/storage";
+import { useUserStore } from "store/index";
 const controller = new AbortController();
 
 export default class GPRequest {
@@ -51,9 +52,11 @@ export default class GPRequest {
 			{
 				if (config.myParams) {
 					if (typeof config.myParams.cookie === "boolean") {
-						config.myParams.cookie = getItem("cookie");
-						if (!config.myParams.cookie) {
+						try {
+							config.myParams.cookie = useUserStore().netease_cookie || getItem("cookie");
+						} catch (error) {
 							config.signal = controller.signal;
+							console.log(error, "cookie获取错误");
 							controller.abort();
 						}
 					}

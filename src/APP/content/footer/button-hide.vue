@@ -2,8 +2,8 @@
 	<div class="switch-box" @click="hideOrShow">
 		<div class="switch">
 			<el-icon size="2vw" id="icon">
-				<svg-icon v-if="status" name="show"></svg-icon>
-				<svg-icon v-else name="hide"></svg-icon>
+				<svg-icon v-if="SongStore.playerStatus == 'hidden'" name="show"></svg-icon>
+				<svg-icon v-if="SongStore.playerStatus == 'min'" name="hide"></svg-icon>
 			</el-icon>
 		</div>
 	</div>
@@ -13,10 +13,12 @@ import { ref, Ref } from "vue";
 import { useSongStore } from "store/module/songs";
 const SongStore = useSongStore();
 
-const status: Ref<boolean> = ref(true);
 const hideOrShow = () => {
-	status.value = !status.value;
-	SongStore.update_playerStatus(status.value ? "hidden" : "min");
+	if (SongStore.playerStatus == "min") {
+		SongStore.update_playerStatus("hidden");
+	} else {
+		SongStore.update_playerStatus("min");
+	}
 };
 </script>
 <style scoped lang="less">

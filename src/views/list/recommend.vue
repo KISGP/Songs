@@ -23,11 +23,11 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { getRecommendDailyList, getRecommendList } from "service/api/api";
-import { listType } from "@/interface/interface";
+import { listBriefType } from "@/interface/interface";
 import listCardGroup from "@/components/content/list-card/list-card-group.vue";
 
-const list: Ref<Array<listType>> = ref([]);
-const dailyList: Ref<Array<listType>> = ref([]);
+const list: Ref<Array<listBriefType>> = ref([]);
+const dailyList: Ref<Array<listBriefType>> = ref([]);
 onMounted(async () => {
 	list.value = await getRecommendList();
 	dailyList.value = await getRecommendDailyList();

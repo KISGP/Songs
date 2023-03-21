@@ -6,7 +6,7 @@
 			<!-- 播放量 -->
 			<div class="data">
 				<div>
-					<!-- <el-icon><VideoPlay /></el-icon> -->
+					<el-icon><VideoPlay /></el-icon>
 					<span>{{ handlePeopleCount(list.playCount.toString()) }}</span>
 				</div>
 				<span style="padding-right: 5px">{{ list.songCount + "首" }}</span>
@@ -17,15 +17,15 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, Ref, PropType } from "vue";
+import { ref, PropType } from "vue";
 import { handlePeopleCount } from "@/utils/utils-common";
-import { listType } from "@/interface/interface";
+import { listBriefType } from "@/interface/interface";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 const props = defineProps({
 	list: {
-		type: Object as PropType<listType>,
+		type: Object as PropType<listBriefType>,
 		required: true,
 	},
 	width: {
@@ -33,7 +33,7 @@ const props = defineProps({
 		default: "160px",
 	},
 });
-const bg: Ref<string> = ref(`url(${props.list.cover})`);
+const bg = ref<string>(`url(${props.list.cover})`);
 const to = () => {
 	router.push(`${props.list.id}`);
 };
@@ -77,11 +77,7 @@ const to = () => {
 		border-radius: 5px;
 		color: rgb(255, 255, 255);
 		opacity: 0.8;
-		background-image: linear-gradient(
-			180deg,
-			rgba(0, 0, 0, 0) 0%,
-			#000000 100%
-		);
+		background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);
 		font-size: smaller;
 		& > div,
 		& > :nth-child(2) {

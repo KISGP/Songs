@@ -1,14 +1,19 @@
 <template>
 	<div class="artists" v-for="(item, index) in props.artists">
 		<span @click="to(item.id)" class="artist"> {{ item.name }}</span>
-		<span>{{ index < props.artists.length - 1 ? " / " : "" }}</span>
+		<span>{{ index < props.artists!.length - 1 ? " / " : "" }}</span>
 	</div>
 </template>
 <script setup lang="ts">
+import { PropType } from "vue";
 import { useRouter } from "vue-router";
+import { artistType } from "@/interface/interface";
 const router = useRouter();
 const props = defineProps({
-	artists: Array as any,
+	artists: {
+		type: Array as PropType<Array<artistType>>,
+		require: true,
+	},
 });
 
 const to = (id: any): void => {

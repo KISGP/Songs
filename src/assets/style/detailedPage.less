@@ -1,0 +1,62 @@
+.back {
+	margin: 3% 5%;
+	.dataBack {
+		display: flex;
+		align-items: center;
+		.cover {
+			width: 200px;
+			height: 200px;
+			margin-right: 40px;
+			border-radius: 7px;
+		}
+		.data {
+			& > div {
+				margin: 15px 0;
+			}
+			.title {
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				flex-direction: row;
+				& > span:nth-child(1) {
+					margin: 10px 0;
+					font-weight: bolder;
+					font-size: 22px;
+				}
+				.tag {
+					margin: 0 5px;
+				}
+			}
+			.user {
+				.avatar {
+					width: 30px;
+					height: 30px;
+					margin: auto 10px auto 5px;
+					border-radius: 50%;
+					vertical-align: middle;
+				}
+			}
+			.description {
+				max-width: 50vw;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				color: var(--regular-text);
+				&:hover {
+					cursor: pointer;
+					border-radius: 4px;
+					background-color: #a6a9ad56;
+				}
+			}
+			.operate {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+			}
+		}
+	}
+	.list {
+		max-width: 70vw;
+		margin-top: 50px;
+	}
+}

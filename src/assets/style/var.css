@@ -3,8 +3,10 @@
   --height-content: 94vh;
   --height-player: 0vh;
 
-  /* --text-color:#fff; */
-  /* --global-bg: url(../img/dark-1.png); */
+  --primary-text: #303133;
+  --regular-text: #606266;
+  --secondary-text: #909399;
+
   --theme-color: #409eff;
   --table-bg-color: transparent;
   --table-border-color: #ebeef5;

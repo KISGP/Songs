@@ -20,16 +20,46 @@ export interface artistsType {
 }
 
 /**
- * @description 专辑
+ * @description 专辑信息
+ */
+export interface albumType extends baseType {
+	cover: string;
+}
+/**
+ * @description 专辑简略信息
  */
 export interface albumBriefType extends baseType {
 	cover: string;
+	songCount: number;
+	artists: artistsType;
+}
+/**
+ * @description 专辑信息
+ */
+export interface albumDetailedType {
+	songs: Array<songDetailedType>;
+	artists: artistsType;
+	album: {
+		id: number | string;
+		name: string;
+		cover: string;
+		publishTime: string;
+		description: string;
+		type: string;
+		subscribed: boolean;
+		subTime: string;
+		songCount: number;
+		shareCount: number | string;
+		commentCount: number | string;
+		subscribedCount: number | string;
+	};
 }
 
 /**
  * @description 单曲简略信息(仅包含歌曲id……)
  */
 interface songBriefType extends baseType {
+	alia?: Array<string>;
 	cover: string;
 	artistsStr: string;
 	url?: string;
@@ -41,7 +71,7 @@ interface songBriefType extends baseType {
 export interface songDetailedType {
 	song: songBriefType;
 	artists: artistsType;
-	album: albumBriefType;
+	album: albumType;
 }
 
 /**
@@ -66,13 +96,39 @@ export interface SongsState {
 }
 
 /**
- * @description 歌单
+ * @description 歌单简略信息
  * */
-export interface listType extends baseType {
+export interface listBriefType extends baseType {
 	cover: string;
 	songCount: number;
 	playCount: number | string;
 	subscribed?: boolean;
+}
+/**
+ * @description 歌单详细信息
+ */
+export interface listDetailedType {
+	list: {
+		id: number | string;
+		name: string;
+		cover: string;
+		updateTime: string;
+		description: string;
+		tags: Array<string>;
+		subscribed: boolean;
+	};
+	count: {
+		songCount: number;
+		playCount: number | string;
+		shareCount: number | string;
+		commentCount: number | string;
+		subscribedCount: number | string;
+	};
+	user: {
+		id: number | string;
+		name: string;
+		cover: string;
+	};
 }
 
 /**
@@ -89,3 +145,32 @@ type suggestionItem = {
 	name: string;
 	artistStr: string;
 };
+
+/**
+ * @description 歌词类型
+ * */
+export type lyricType = Array<{
+	time: number;
+	content: string;
+}>;
+
+export interface commentType {
+	id: string | number;
+	content: string;
+	time: string;
+	timeStamp: number;
+	liked: boolean;
+	likeCount: number;
+	replayCount: number;
+	user: {
+		id: string | number;
+		name: string;
+		cover: string;
+		ip?: {
+			ip: string | null | undefined;
+			location: string | null | undefined;
+		};
+	};
+}
+
+export type resources = "歌曲" | "mv" | "歌单" | "专辑" | "电台节目" | "视频" | "动态" | "电台";

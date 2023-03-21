@@ -3,6 +3,7 @@ import { store } from "store/index";
 import Toast, { PluginOptions } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import svgIcon from "components/common/svg-icon/index.vue";
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
 // 注册路由
 export function registerRouter(app: any): void {
@@ -27,4 +28,11 @@ export function registerSvgIcon(app: any): void {
 	const req = require.context("assets/svg", false, /\.svg$/);
 	req.keys().map(req);
 	app.component("svg-icon", svgIcon);
+}
+
+// 注册Element的所有图标
+export function registerElementIcon(app: any) {
+	for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+		app.component(key, component);
+	}
 }

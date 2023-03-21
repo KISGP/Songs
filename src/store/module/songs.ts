@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { listType, SongsState, songDetailedType } from "@/interface/interface";
+import { SongsState, songDetailedType } from "@/interface/interface";
 import { getSongUrl } from "@/service/api/api";
 
 export const useSongStore = defineStore("SongStore", {

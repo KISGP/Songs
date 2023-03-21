@@ -55,8 +55,8 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 			break;
 		case 803: // 登录成功
 			showNotification("success", "登录成功,稍后跳转");
-			const { id, name } = await getUserInfo();
 			store.update_cookie(cookie);
+			const { id, name } = await getUserInfo();
 			store.update_login(true);
 			store.update_id(id);
 			store.update_name(name);

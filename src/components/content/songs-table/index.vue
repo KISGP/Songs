@@ -3,12 +3,16 @@
 		:data="props.songs"
 		:style="{ width: props.tableWidth }"
 		:row-style="{ height: '50px' }"
+		:lazy="false"
 		@row-click="playSong"
+		row-class-name="table-row"
+		header-row-class-name="table-header"
 	>
 		<el-table-column type="index" :label="props.songsCount + '首'" width="80" />
 		<el-table-column label="歌曲标题">
 			<template #default="scope">
 				<span>{{ scope.row.song.name }}</span>
+				<span v-for="item in scope.row.song.alia"> ({{ item }}) </span>
 			</template>
 		</el-table-column>
 		<el-table-column label="歌手">
@@ -18,7 +22,9 @@
 		</el-table-column>
 		<el-table-column label="专辑">
 			<template #default="scope">
-				<span>{{ scope.row.album.name }}</span>
+				<span class="album" @click.stop="router.push(`/album/${scope.row.album.id}`)">{{
+					scope.row.album.name
+				}}</span>
 			</template>
 		</el-table-column>
 		<el-table-column>
@@ -44,11 +50,13 @@
 </template>
 <script setup lang="ts">
 import { PropType } from "vue";
+import { useRouter } from "vue-router";
 import { useSongStore } from "store/index";
 import { songDetailedType } from "@/interface/interface";
 import { showSuccessMessage } from "utils/utils-el";
 import artists from "../artists/artists.vue";
 const store = useSongStore();
+const router = useRouter();
 
 const props = defineProps({
 	songs: {
@@ -56,8 +64,8 @@ const props = defineProps({
 		required: true,
 	},
 	songsCount: {
-		type: Number,
-		required: true,
+		type: Number as PropType<number>,
+		default: 0,
 	},
 	tableWidth: {
 		type: String,
@@ -105,5 +113,12 @@ const add2List = (songData: songDetailedType, feedback?: boolean) => {
 }
 .el-table__body tr:hover > td .operate {
 	display: block;
+}
+
+.album {
+	&:hover {
+		cursor: pointer;
+		color: var(--theme-color);
+	}
 }
 </style>

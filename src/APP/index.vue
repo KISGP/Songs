@@ -19,52 +19,36 @@
 			</el-container>
 			<footer-bar class="layout-footer" />
 		</el-container>
-		<hidden-btn v-show="hiddenBtnStatus" />
+		<hidden-btn v-show="SongStore.playerStatus === 'hidden' || SongStore.playerStatus === 'min'" />
 	</div>
 </template>
 <script setup lang="ts">
-import { watch, ref, Ref } from "vue";
-import { useSongStore, useUserStore } from "store/index";
-import { setCssVar } from "utils/utils-common";
-import { getItem } from "utils/storage";
-
+import { watch, onMounted } from "vue";
+import { useSongStore } from "store/index";
+import { updatePlayerStyle, fixUserInfo } from "./index";
 import headerBar from "./content/header/index.vue";
 import menuBar from "./content/menu/index.vue";
 import footerBar from "./content/footer/index.vue";
 import hiddenBtn from "./content/footer/button-hide.vue";
-
 const SongStore = useSongStore();
-const UserStore = useUserStore();
 
-const hiddenBtnStatus: Ref<boolean> = ref(true);
-// 监听播放器样式（隐藏/最小化/全屏）
+onMounted(async () => {
+	// 用户信息挂载到pinia / 补全用户信息
+	await fixUserInfo();
+});
+
+// 监听播放器样式
 watch(
 	() => SongStore.playerStatus,
 	(newValue, oldValue) => {
-		if (newValue === "hidden") {
-			hiddenBtnStatus.value = true;
-			setCssVar("--height-content", "94vh");
-			setCssVar("--height-player", "0vh");
-		} else if (newValue === "min") {
-			hiddenBtnStatus.value = true;
-			setCssVar("--height-content", "86vh");
-			setCssVar("--height-player", "8vh");
-		} else if (newValue === "max") {
-			hiddenBtnStatus.value = false;
-			setCssVar("--height-player", "100vh");
-		}
+		updatePlayerStyle(newValue);
 	}
 );
-
-UserStore.update_cookie(getItem("cookie") || "");
-UserStore.update_id(getItem("id") || "");
-UserStore.update_name(getItem("name") || "");
-getItem("cookie") && UserStore.update_login(true);
 </script>
 <style scoped lang="less">
 @import "../assets/style/common.less";
+@height: var (--header-height);
 .global {
-	.size(100vh,100vw);
 	overflow: hidden;
 	background: var(--global-bg);
 	background-repeat: no-repeat;
@@ -72,10 +56,9 @@ getItem("cookie") && UserStore.update_login(true);
 	background-position: center;
 }
 .layout {
-	.size(100vh,100vw);
 	.layout-header {
 		padding: 0;
-		.max-size(var(--header-height));
+		max-height: calc(var(--header-height) - 1px);
 		border-bottom: 1px solid var(--el-border-color);
 	}
 	.layout-menu {
@@ -84,11 +67,11 @@ getItem("cookie") && UserStore.update_login(true);
 	.layout-content {
 		padding: 0;
 		margin: 0;
-		.min-size(var(--height-content));
+		height: var(--height-content);
 	}
 	.layout-footer {
 		position: absolute;
-		bottom: -1px;
+		bottom: 0px;
 		width: 100%;
 	}
 }

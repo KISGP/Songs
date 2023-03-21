@@ -5,12 +5,12 @@
 </template>
 <script setup lang="ts">
 import { PropType } from "vue";
-import { listType } from "@/interface/interface";
+import { listBriefType } from "@/interface/interface";
 import listCard from "./list-card.vue";
 
 const props = defineProps({
 	list: {
-		type: Array as PropType<Array<listType>>,
+		type: Array as PropType<Array<listBriefType>>,
 		require: true,
 	},
 });

@@ -1,4 +1,5 @@
 <template>
+	<el-scrollbar>
 	<div class="back">
 		<div class="head">
 			<el-row>
@@ -31,7 +32,7 @@
 			</el-space>
 		</div>
 	</div>
-
+</el-scrollbar>
 	<el-dialog v-model="createBoxVisible" title="新建歌单" align-center width="30%">
 		<el-form :model="form" ref="ruleFormRef" :rules="rules">
 			<el-form-item label="歌单名称" prop="name">
@@ -63,7 +64,7 @@
 import { ref, Ref, onMounted, reactive } from "vue";
 import { useUserStore } from "store/module/user";
 import { getMyList, deleteList, createList } from "service/api/api";
-import { listType } from "@/interface/interface";
+import { listBriefType } from "@/interface/interface";
 import listCard from "@/components/content/list-card/list-card.vue";
 import { showNotification } from "utils/utils-content";
 import type { FormInstance, FormRules } from "element-plus";
@@ -73,7 +74,7 @@ onMounted(async () => {
 	refresh();
 });
 
-const list: Ref<Array<listType>> = ref([]);
+const list: Ref<Array<listBriefType>> = ref([]);
 // 刷新歌单数据
 const refresh = async (): Promise<boolean> => {
 	list.value = await getMyList(store.netease_id, store.netease_name);

@@ -4,7 +4,7 @@ import { ElMessage, MessageParams } from "element-plus";
 import "element-plus/es/components/message/style/css";
 
 // 歌手名称数组 => 字符串
-export function getArtistsName(array: any, maxLength: number | null): string {
+export function getArtistsName(array: any, maxLength: number | null = null): string {
 	let r: string = "";
 	if (Array.isArray(array)) {
 		array.forEach((e, index) => {

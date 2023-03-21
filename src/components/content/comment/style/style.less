@@ -1,0 +1,44 @@
+.comment {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin: 10px auto;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--el-border-color);
+	color: var(--regular-text);
+	.user {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: small;
+		.avatar {
+			width: 30px;
+			height: 30px;
+			margin-right: 15px;
+			border-radius: 50%;
+			vertical-align: middle;
+		}
+		.like-base {
+			margin-right: 30px;
+			user-select: none;
+			cursor: pointer;
+		}
+		.like {
+			color: #409eff;
+		}
+	}
+	.content {
+		margin: 15px 40px;
+	}
+	.footer {
+		user-select: none;
+		margin: 2px 30px;
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+		font-size: smaller;
+		color: var(--secondary-text);
+		&>span:nth-child(2){
+			cursor: pointer;
+		}
+	}
+}

@@ -1,15 +1,17 @@
 <template>
-	<div class="back">
-		<list-card-group :list="topList" />
-	</div>
+	<el-scrollbar>
+		<div class="back">
+			<list-card-group :list="topList" />
+		</div>
+	</el-scrollbar>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { getTopList } from "service/api/api";
-import { listType } from "@/interface/interface";
+import { listBriefType } from "@/interface/interface";
 import listCardGroup from "@/components/content/list-card/list-card-group.vue";
 
-const topList: Ref<Array<listType>> = ref([]);
+const topList: Ref<Array<listBriefType>> = ref([]);
 onMounted(async () => {
 	topList.value = await getTopList();
 });

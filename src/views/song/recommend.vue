@@ -18,15 +18,15 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
-import { songDataType } from "@/interface/interface";
+import { songDetailedType } from "@/interface/interface";
 import { getRecommendNewSong, getRecommendDailySongs } from "service/api/api";
 import songsTable from "components/content/songs-table/index.vue";
 
 const activePage: Ref<string> = ref("new");
 
-const newSongs: Ref<Array<songDataType>> = ref([]);
+const newSongs: Ref<Array<songDetailedType>> = ref([]);
 const newSongsCount: Ref<number> = ref(0);
-const dailySongs: Ref<Array<songDataType>> = ref([]);
+const dailySongs: Ref<Array<songDetailedType>> = ref([]);
 const dailySongsCount: Ref<number> = ref(0);
 onMounted(async () => {
 	newSongs.value = await getRecommendNewSong();

@@ -10,6 +10,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Artists: typeof import('./src/components/content/artists/artists.vue')['default']
+    Card3D: typeof import('./src/components/common/card-3D/card-3D.vue')['default']
+    Comment: typeof import('./src/components/content/comment/index.vue')['default']
+    CommentFloor: typeof import('./src/components/content/comment/comment-floor.vue')['default']
+    CommentItem: typeof import('./src/components/content/comment/comment-item.vue')['default']
+    Description: typeof import('./src/components/content/description/description.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -30,6 +35,7 @@ declare module '@vue/runtime-core' {
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElScrollba: typeof import('element-plus/es')['ElScrollba']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSpace: typeof import('element-plus/es')['ElSpace']
@@ -38,6 +44,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTag: typeof import('element-plus/es')['ElTag']
     ListCard: typeof import('./src/components/content/list-card/list-card.vue')['default']
     ListCardGroup: typeof import('./src/components/content/list-card/list-card-group.vue')['default']
     Login: typeof import('./src/components/content/login/login.vue')['default']
@@ -49,5 +56,8 @@ declare module '@vue/runtime-core' {
     SongsTable: typeof import('./src/components/content/songs-table/index.vue')['default']
     Suggestions: typeof import('./src/components/content/search-input/suggestions.vue')['default']
     SvgIcon: typeof import('./src/components/common/svg-icon/index.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']
   }
 }

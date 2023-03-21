@@ -11,9 +11,10 @@
 			autoplay
 		/>
 		<playerMin
-			v-if="playerStyle"
+			v-if="SongStore.playerStatus == 'min'"
 			:currentTime="audio.currentTime"
 			:maxTime="audio.maxTime"
+			:lyric="currentLyric"
 			@maximize="maximizePlayer"
 			@next="next"
 			@prev="prev"
@@ -27,16 +28,19 @@
 					:max="audio.maxTime"
 					@input="progressUpdate"
 					:format-tooltip="(val:number) => s2min(val)"
+					:disabled="!SongStore.song.song.id"
 				/>
 			</template>
 		</playerMin>
-		<playerMax v-else @minimize="minimizePlayer" />
+		<playerMax v-if="SongStore.playerStatus == 'max'" @minimize="minimizePlayer" />
 	</div>
 </template>
 <script setup lang="ts">
 import { ref, Ref, watch, reactive } from "vue";
 import { useSongStore } from "store/index";
-import { s2min } from "utils/utils-common";
+import { getLyric } from "service/api/api";
+import type { lyricType } from "@/interface/interface";
+import { s2min, debounce } from "utils/utils-common";
 import playerMin from "./player-min.vue";
 import playerMax from "./player-max.vue";
 
@@ -44,20 +48,18 @@ const SongStore = useSongStore();
 
 watch(
 	() => SongStore.song,
-	() => {
+	async () => {
 		SongStore.update_isPlaying(true);
-		SongStore.update_playerStatus("min");
+		SongStore.playerStatus != "min" && SongStore.update_playerStatus("min");
+		lyricArray.value = await getLyric(SongStore.song.song.id);
 	}
 );
 
 // 播放器（全屏 / 最小化）
-const playerStyle: Ref<boolean> = ref(true);
 const maximizePlayer = (): void => {
-	playerStyle.value = false;
 	SongStore.update_playerStatus("max");
 };
 const minimizePlayer = (): void => {
-	playerStyle.value = true;
 	SongStore.update_playerStatus("min");
 };
 
@@ -69,9 +71,12 @@ const audio: {
 	currentTime: 0,
 	maxTime: 0,
 });
-const audioUpdate = () => {
+const audioUpdate = debounce(() => {
 	audio.currentTime = audioRef.value!.currentTime;
-};
+	if (lyricArray.value.length > 0) {
+		updateCurrentLyric();
+	}
+}, 200);
 // 歌曲时长
 const getMaxTime = () => {
 	audio.maxTime = audioRef.value!.duration;
@@ -81,6 +86,7 @@ const getMaxTime = () => {
 const playEnd = () => {
 	SongStore.update_isPlaying(false);
 	audio.currentTime = 0;
+	next();
 };
 
 // 下一首
@@ -112,12 +118,25 @@ const progressUpdate = (val: number) => {
 	audioRef.value!.currentTime = val;
 	audio.currentTime = val;
 };
+
+// 歌曲
+const lyricArray: Ref<lyricType> = ref([]);
+const currentLyric: Ref<string> = ref("");
+const updateCurrentLyric = () => {
+	for (let index = 0; index < lyricArray.value.length; index++) {
+		if (audio.currentTime < lyricArray.value[index].time) {
+			if (currentLyric.value != lyricArray.value[index - 1].content)
+				currentLyric.value = lyricArray.value[index - 1].content;
+			return;
+		}
+	}
+};
 </script>
 <style scoped lang="less">
 .player {
 	border-top: 1px solid var(--el-border-color);
 	height: var(--height-player);
-	transition: height 0.6s ease-in-out;
+	transition: height 0.6s ease;
 	background-color: #fdfdfd;
 	overflow: hidden;
 	z-index: 2;

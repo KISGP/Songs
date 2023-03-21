@@ -52,7 +52,7 @@
 							</div>
 							<slot name="progress"> </slot>
 							<div class="lyric">
-								<span>[ 歌词 ]</span>
+								<span>[{{ props.lyric }}] </span>
 							</div>
 						</div>
 					</div>
@@ -91,6 +91,7 @@ const store = useSongStore();
 const props = defineProps({
 	currentTime: Number,
 	maxTime: Number,
+	lyric: String,
 });
 
 const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "update"]);
@@ -160,6 +161,7 @@ const activeList = ref("播放列表");
 			.flex-centerX();
 			.foo {
 				&:hover {
+					cursor: pointer;
 					border-radius: 5px;
 					background-color: rgba(204, 209, 219, 0.33);
 				}

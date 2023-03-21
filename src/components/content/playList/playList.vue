@@ -31,12 +31,12 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { useSongStore } from "store/index";
-import { songDataType } from "@/interface/interface";
+import { songDetailedType } from "@/interface/interface";
 const store = useSongStore();
 
 const props = defineProps({
 	songs: {
-		type: Array as PropType<Array<songDataType> | null>,
+		type: Array as PropType<Array<songDetailedType> | null>,
 		required: true,
 	},
 	songsCount: {
@@ -53,7 +53,7 @@ const playSong = async (row: any): Promise<void> => {
 	store.update_song(row);
 };
 
-const deleteOneSong = (songData: songDataType) => {
+const deleteOneSong = (songData: songDetailedType) => {
 	store.update_playList((playList) => {
 		playList = playList.splice(playList.indexOf(songData), 1);
 	});
