@@ -38,11 +38,11 @@ https://gp-root.github.io/Songs/#/
 
 
 
-![](./docs\img\3.png)
+![](https://github.com/GP-root/Songs/blob/main/docs/img/3.png?raw=true)
 
-![](./docs\img\4.png)
+![](https://github.com/GP-root/Songs/blob/main/docs/img/4.png?raw=true)
 
-![](./docs\img\5.png)
+![](https://github.com/GP-root/Songs/blob/main/docs/img/5.png?raw=true)
 
 
 
