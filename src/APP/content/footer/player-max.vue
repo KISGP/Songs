@@ -1,5 +1,7 @@
 <template>
-	<div class="max" @click="minimize"></div>
+	<div @click="minimize">
+		<el-icon size="30"><svg-icon name="fullScreen_exit"></svg-icon></el-icon>
+	</div>
 </template>
 <script setup lang="ts">
 import { watch } from "vue";
@@ -7,14 +9,7 @@ import { useSongStore } from "store/index";
 const store = useSongStore();
 const emits = defineEmits(["minimize"]);
 const minimize = () => {
-  emits("minimize");
+	emits("minimize");
 };
 </script>
-<style scoped lang="less">
-.max {
-	width: 50%;
-	height: 50%;
-	background-color: aquamarine;
-	position: absolute;
-}
-</style>
+<style scoped lang="less"></style>

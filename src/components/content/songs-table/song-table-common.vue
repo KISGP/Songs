@@ -30,11 +30,11 @@
 		<el-table-column>
 			<template #header>
 				<slot name="header">
-					<el-button size="small" @click.stop="playAll">播放全部</el-button>
+					<el-button size="small" @click.stop="playAll(songs)">播放全部</el-button>
 				</slot>
 			</template>
 			<template #default="scope">
-				<slot name="scope">
+				<div class="operate-back">
 					<el-icon
 						title="添加到播放列表"
 						size="25"
@@ -43,7 +43,8 @@
 					>
 						<svg-icon name="add2List" />
 					</el-icon>
-				</slot>
+					<slot name="operate"> </slot>
+				</div>
 			</template>
 		</el-table-column>
 	</el-table>
@@ -51,11 +52,9 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { useRouter } from "vue-router";
-import { useSongStore } from "store/index";
 import { songDetailedType } from "@/interface/interface";
-import { showSuccessMessage } from "utils/utils-content";
+import { add2List, playAll, playSong } from "./song-table";
 import artists from "../artists/artists.vue";
-const store = useSongStore();
 const router = useRouter();
 
 const props = defineProps({
@@ -72,53 +71,5 @@ const props = defineProps({
 		default: "100%",
 	},
 });
-
-// 播放歌曲
-const playSong = async (row: songDetailedType): Promise<void> => {
-	store.update_song(row);
-	add2List(row, false);
-};
-
-// 播放所有歌曲（添加到播放列表）
-const playAll = () => {
-	store.update_playList((playList) => {
-		props.songs.forEach((song) => {
-			playList.push(song);
-		});
-	});
-	store.update_song(props.songs[0]);
-	showSuccessMessage(`已添加到播放列表`);
-};
-// 添加到播放列表
-const add2List = (songData: songDetailedType, feedback?: boolean) => {
-	store.update_playList((playList) => {
-		if (playList.indexOf(songData) < 0) {
-			playList.push(songData);
-			feedback && showSuccessMessage(`[ ${songData.song.name} ]已添加到播放列表`);
-		}
-	});
-};
 </script>
-<style scoped lang="less">
-.album,
-.operate {
-	cursor: pointer;
-	&:hover {
-		color: var(--theme-color);
-	}
-}
-
-.operate {
-	display: none;
-}
-.el-table__body tr:hover > td .operate {
-	display: block;
-}
-
-.album {
-	&:hover {
-		cursor: pointer;
-		color: var(--theme-color);
-	}
-}
-</style>
+<style scoped lang="less" src="./song-table.less"></style>

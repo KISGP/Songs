@@ -1,0 +1,72 @@
+<template>
+	<div class="back">
+		<el-scrollbar height="300px">
+			<h5>添加到歌单</h5>
+			<div
+				class="list"
+				v-for="(item, index) in SongStore.myCreatedList"
+				title="添加到该歌单"
+				@click="add(index)"
+			>
+				<el-image class="img" style="width: 60px; height: 60px" :src="item.cover" fit="cover" />
+				<span>{{ item.name }}</span>
+			</div>
+		</el-scrollbar>
+	</div>
+</template>
+<script setup lang="ts">
+import { useUserStore, useSongStore } from "store/index";
+import { updateList } from "service/api/api";
+import { showSuccessMessage } from "utils/utils-content";
+
+const UserStore = useUserStore();
+const SongStore = useSongStore();
+const emits = defineEmits(["add"]);
+
+const add = async (index: number) => {
+	if (
+		SongStore.song.song.id &&
+		(await updateList("add", SongStore.myCreatedList[index].id, [SongStore.song.song.id]))
+	) {
+		showSuccessMessage(`${SongStore.song.song.name}已添加到${SongStore.myCreatedList[index].name}`);
+		emits("add");
+	}
+	if (index === 0) {
+		SongStore.reload_likedSongsID();
+	}
+};
+</script>
+<style scoped lang="less">
+@import "../../../assets/style/common.less";
+.back {
+	height: 300px;
+	width: 250px;
+	background-color: var(--light-fill);
+	border-radius: 6px;
+	box-shadow: var(--el-box-shadow-lighter);
+	position: fixed;
+	bottom: calc(var(--height-player) + 10px);
+	right: 20px;
+	transition: height 0.5s ease;
+	overflow: hidden;
+	.list {
+		width: 250px;
+		height: 60px;
+		margin: 10px 0;
+		display: flex;
+		align-items: center;
+		color: var(--regular-text);
+		cursor: pointer;
+		.img {
+			border-radius: 7px;
+		}
+		& > span {
+			margin: 0 5px;
+		}
+		&:hover {
+			color: var(--theme-color);
+			background-color: var(--dark-fill);
+		}
+	}
+}
+</style>

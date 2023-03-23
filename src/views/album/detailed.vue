@@ -62,7 +62,7 @@ import { albumDetailedType, songDetailedType } from "@/interface/interface";
 import { getDetailedAlbum, subscribeAlbum } from "service/api/api";
 import JSConfetti from "js-confetti";
 import artists from "@/components/content/artists/artists.vue";
-import songsTable from "components/content/songs-table/index.vue";
+import songsTable from "@/components/content/songs-table/song-table-common.vue";
 import description from "@/components/content/description/description.vue";
 import comment from "@/components/content/comment/index.vue";
 

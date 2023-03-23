@@ -42,6 +42,8 @@
 			<!-- 歌单歌曲 -->
 			<div class="list">
 				<songsTable
+					:id="parseInt(id)"
+					type="歌单"
 					:songs="songs"
 					:songs-count="listData?.count.songCount"
 					@vnode-before-update="beforeUpdate"
@@ -66,9 +68,9 @@
 import { onMounted, ref } from "vue";
 import type { ElScrollbar } from "element-plus";
 import { useRouter } from "vue-router";
-import { listDetailedType, songDetailedType } from "@/interface/interface";
-import { getDetailedList, getListAllSong } from "service/api/api";
-import songsTable from "components/content/songs-table/index.vue";
+import { listDetailedType, songDetailedType, resources } from "@/interface/interface";
+import { getDetailedList, getListPartSong } from "service/api/api";
+import songsTable from "components/content/songs-table/song-table-list.vue";
 import description from "@/components/content/description/description.vue";
 import comment from "@/components/content/comment/index.vue";
 
@@ -80,7 +82,7 @@ const songs = ref<Array<songDetailedType>>([]);
 let nowSongsCount = 0;
 onMounted(async () => {
 	listData.value = await getDetailedList(id);
-	songs.value = await getListAllSong(id, 20);
+	songs.value = await getListPartSong(id, 20);
 	nowSongsCount += 20;
 });
 
@@ -89,11 +91,11 @@ const limit: number = 30;
 const load = async () => {
 	if (listData.value && nowSongsCount < listData.value.count.songCount) {
 		if (nowSongsCount + limit <= listData.value.count.songCount) {
-			songs.value = songs.value.concat(await getListAllSong(id, limit, nowSongsCount));
+			songs.value = songs.value.concat(await getListPartSong(id, limit, nowSongsCount));
 			nowSongsCount += limit;
 		} else {
 			songs.value = songs.value.concat(
-				await getListAllSong(id, listData.value.count.songCount - nowSongsCount, nowSongsCount)
+				await getListPartSong(id, listData.value.count.songCount - nowSongsCount, nowSongsCount)
 			);
 			nowSongsCount += listData.value.count.songCount - nowSongsCount;
 		}

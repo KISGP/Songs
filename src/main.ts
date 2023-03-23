@@ -12,7 +12,6 @@ const app = createApp(App);
 // 导入样式文件
 import "style/base.less";
 import "style/var.css";
-import "style/overwrite.css";
 import "animate.css";
 
 // 注册

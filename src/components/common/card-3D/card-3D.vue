@@ -78,7 +78,7 @@ const mouseleave = (event: MouseEvent) => {
 	-moz-transition: transform 0.5s;
 	-o-transition: transform 0.5s;
 	&:hover {
-		transform: scale(1.1) v-bind(transform);
+		transform: scale(1.15) v-bind(transform);
 		box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
 	}
 }

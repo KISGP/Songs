@@ -1,17 +1,18 @@
-import { defineComponent, watch } from "vue";
-import { setCssVar } from "utils/utils-common";
+import { setCssVar, setCssVarS, wait } from "utils/utils-common";
 import { getAll, getItem } from "utils/storage";
 import { useUserStore, useSongStore } from "store/index";
-import { getUserInfo, getLikedSongsID } from "service/api/api";
-
+import { getUserInfo, getLikedSongsID, getMyList } from "service/api/api";
+import { listBriefType } from "@/interface/interface";
+import { DARK, DARK2, LIGHT, LIGHT2 } from "@/constant/theme";
 // 修改播放器样式
-export function updatePlayerStyle(status: "hidden" | "max" | "min") {
+export async function updatePlayerStyle(status: "hidden" | "max" | "min") {
 	if (status === "hidden") {
 		setCssVar("--height-content", "94vh");
 		setCssVar("--height-player", "0vh");
 	} else if (status === "min") {
-		setCssVar("--height-content", "86vh");
 		setCssVar("--height-player", "8vh");
+		await wait(600);
+		setCssVar("--height-content", "86vh");
 	} else if (status === "max") {
 		setCssVar("--height-player", "100vh");
 	}
@@ -47,4 +48,33 @@ export async function getLikedSongs() {
 				likedSongsID.push(id);
 			});
 		});
+}
+
+export async function getMyCreateList() {
+	const UserStore = useUserStore();
+	const SongStore = useSongStore();
+	await (
+		await getMyList(UserStore.netease_id, UserStore.netease_name, "created")
+	).forEach((item: listBriefType) => {
+		SongStore.push_myCreatedList(item);
+		SongStore.push_myCreatedListID(item.id);
+	});
+}
+
+// 初始化主题
+export function initTheme() {
+	switch (getItem("theme") || "DARK2") {
+		case "DARK":
+			setCssVarS(DARK);
+			break;
+		case "DARK2":
+			setCssVarS(DARK2);
+			break;
+		case "LIGHT":
+			setCssVarS(LIGHT);
+			break;
+		case "LIGHT2":
+			setCssVarS(LIGHT2);
+			break;
+	}
 }

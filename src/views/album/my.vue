@@ -85,8 +85,9 @@ const load = async () => {
 	height: 230px;
 	box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.2);
 	border-radius: 7px;
+	background-color: var(--album-card-bg-color);
 	&:hover {
-		background-color: #f0f2f5;
+		background-color: var(--base-fill);
 	}
 	.img {
 		cursor: pointer;

@@ -16,6 +16,12 @@
 		</el-sub-menu>
 		<el-sub-menu index="4">
 			<template #title>
+				<el-icon><Setting /></el-icon>
+			</template>
+			<el-menu-item index="/set/theme">主题设置</el-menu-item>
+		</el-sub-menu>
+		<el-sub-menu index="5">
+			<template #title>
 				<el-icon><User /></el-icon>
 			</template>
 			<el-menu-item index="/user/login">
@@ -27,7 +33,7 @@
 				</div>
 			</el-menu-item>
 		</el-sub-menu>
-		<el-sub-menu index="5">
+		<el-sub-menu index="6">
 			<template #title>
 				<el-icon>
 					<svg-icon name="github" />

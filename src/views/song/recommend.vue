@@ -20,7 +20,7 @@
 import { onMounted, ref } from "vue";
 import { songDetailedType } from "@/interface/interface";
 import { getRecommendNewSong, getRecommendDailySongs } from "service/api/api";
-import songsTable from "components/content/songs-table/index.vue";
+import songsTable from "@/components/content/songs-table/song-table-common.vue";
 
 const activePage = ref<string>("new");
 

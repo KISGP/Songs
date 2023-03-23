@@ -97,16 +97,50 @@ export function toplist(res: any): Array<listBriefType> {
 	});
 }
 
-export function user_playlist(res: any): Array<listBriefType> {
-	return res.playlist.map((e: any) => {
-		return {
-			id: e.id,
-			name: e.name,
-			cover: e.coverImgUrl + "?param=160y160",
-			songCount: e.trackCount,
-			playCount: e.playCount,
-		};
-	});
+export function user_playlist(
+	res: any,
+	type: "all" | "created" | "subscribed" = "all",
+	id?: number
+): Array<listBriefType> {
+	if (type === "all") {
+		return res.playlist.map((e: any) => {
+			return {
+				id: e.id,
+				name: e.name,
+				cover: e.coverImgUrl + "?param=160y160",
+				songCount: e.trackCount,
+				playCount: e.playCount,
+			};
+		});
+	} else if (type === "created") {
+		let r: Array<listBriefType> = [];
+		res.playlist.forEach((e: any) => {
+			if (e.userId === id) {
+				r.push({
+					id: e.id,
+					name: e.name,
+					cover: e.coverImgUrl + "?param=160y160",
+					songCount: e.trackCount,
+					playCount: e.playCount,
+				});
+			}
+		});
+		return r;
+	} else {
+		let r: Array<listBriefType> = [];
+		res.playlist.forEach((e: any) => {
+			if (e.userId != id) {
+				r.push({
+					id: e.id,
+					name: e.name,
+					cover: e.coverImgUrl + "?param=160y160",
+					songCount: e.trackCount,
+					playCount: e.playCount,
+				});
+			}
+		});
+		return r;
+	}
 }
 
 export function lyric_new(res: any): lyricType {
@@ -317,5 +351,30 @@ export function comment_new(res: any): Array<commentType> {
 export function comment_floor(res: any): Array<commentType> {
 	return res.data.comments.map((e: any) => {
 		return returnComment(e);
+	});
+}
+
+export function song_detail(res: any): Array<songDetailedType> {
+	return res.songs.map((e: any) => {
+		const artistsStr = getArtistsName(e.ar, null);
+		return {
+			song: {
+				id: e.id,
+				name: e.name,
+				cover: e.al.picUrl,
+				artistsStr: artistsStr,
+				alia: e.alia,
+				url: "",
+			},
+			artists: {
+				artistsStr: artistsStr,
+				artists: getArtistsArray(e.ar),
+			},
+			album: {
+				id: e.al.id,
+				name: e.al.name,
+				cover: e.al.picUrl,
+			},
+		};
 	});
 }

@@ -74,10 +74,20 @@
 							<svg-icon name="list_footer" />
 						</el-icon>
 					</div>
+					<div class="list">
+						<el-icon size="25" title="添加到歌单" @click="add2list">
+							<svg-icon name="list_add" />
+						</el-icon>
+					</div>
 				</div>
 			</el-col>
 		</el-row>
 	</div>
+
+	<transition name="songAdd2List" v-show="songAdd2ListVisible">
+		<songAdd2List @add="add2list"/>
+	</transition>
+
 	<el-drawer v-model="listBox" :with-header="false" size="40%">
 		<el-tabs v-model="activeList" class="demo-tabs">
 			<el-tab-pane label="播放列表" name="播放列表">
@@ -94,6 +104,7 @@ import { ref, Ref } from "vue";
 import { useSongStore } from "store/index";
 import { s2min } from "utils/utils-common";
 import playList from "components/content/playList/playList.vue";
+import songAdd2List from "@/components/content/song-add2List/song-add2List.vue";
 
 const store = useSongStore();
 
@@ -111,6 +122,11 @@ const changeDrawerVisual = () => {
 };
 
 const activeList = ref("播放列表");
+
+const songAdd2ListVisible = ref<boolean>(false);
+const add2list = () => {
+	songAdd2ListVisible.value = !songAdd2ListVisible.value;
+};
 </script>
 <style scoped lang="less">
 @import "style/common.less";
@@ -158,6 +174,7 @@ const activeList = ref("播放列表");
 		}
 		.liked {
 			cursor: pointer;
+			color: var(--secondary-text);
 		}
 		.liked-true {
 			color: red;
@@ -239,6 +256,22 @@ const activeList = ref("播放列表");
 			text-align: center;
 			font-size: 14px;
 		}
+	}
+}
+
+.songAdd2List-enter-active {
+	animation: foo 400ms ease;
+}
+.songAdd2List-leave-active {
+	animation: foo 500ms ease reverse;
+}
+@keyframes foo {
+	from {
+		height: 0;
+		opacity: 0;
+	}
+	to {
+		transform: 300px;
 	}
 }
 </style>

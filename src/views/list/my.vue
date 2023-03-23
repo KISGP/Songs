@@ -105,7 +105,7 @@ const deleteOneList = async (index: number): Promise<void> => {
 };
 // 删除所有歌单
 const deleteAllList = async (): Promise<void> => {
-	showNotification("success", "已删除全部歌单(未实现)");
+	showNotification("success", "已删除全部歌单(未实现,不敢测试)");
 };
 
 // 创建歌单

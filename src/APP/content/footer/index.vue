@@ -136,25 +136,27 @@ const updateCurrentLyric = () => {
 
 // 添加到我喜欢的音乐
 const like = async (isLiked: boolean) => {
-	const res: boolean = await likeSong(SongStore.song.song.id, isLiked);
-	if (res && !isLiked) {
-		showSuccessMessage("成功移出我喜欢的音乐");
-		SongStore.song.song.isLiked = isLiked;
-	}else if (res && isLiked) {
-		showSuccessMessage("成功添加到我喜欢的音乐");
-		SongStore.song.song.isLiked = isLiked;
-	}else{
-		showErrorMessage("移出/添加 错误")
+	if (SongStore.song.song.id) {
+		const res: boolean = await likeSong(SongStore.song.song.id, isLiked);
+		if (res && !isLiked) {
+			showSuccessMessage("成功移出我喜欢的音乐");
+			SongStore.song.song.isLiked = isLiked;
+		} else if (res && isLiked) {
+			showSuccessMessage("成功添加到我喜欢的音乐");
+			SongStore.song.song.isLiked = isLiked;
+		} else {
+			showErrorMessage("移出/添加 错误");
+		}
+		SongStore.reload_likedSongsID();
 	}
-	SongStore.reload_likedSongsID();
 };
 </script>
 <style scoped lang="less">
 .player {
-	border-top: 1px solid var(--el-border-color);
 	height: var(--height-player);
 	transition: height 0.6s ease;
-	background-color: #fdfdfd;
+	border-top: 1px solid var(--footer-player-border-color);
+	background-color: var(--footer-player-bg-color);
 	overflow: hidden;
 	z-index: 2;
 }

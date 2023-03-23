@@ -2,12 +2,25 @@
   --header-height: 6vh;
   --height-content: 94vh;
   --height-player: 0vh;
+}
 
+/* :root {
   --primary-text: #303133;
   --regular-text: #606266;
   --secondary-text: #909399;
-
   --theme-color: #409eff;
+  --global-bg: url(@/assets/img/light.jpg);
+  --global-filter: none;
+  --darker-fill: #E6E8EB;
+  --dark-fill: #EBEDF0;
+  --base-fill: #F0F2F5;
+  --light-fill: #F5F7FA;
+  --lighter-fill: #FAFAFA;
   --table-bg-color: transparent;
-  --table-border-color: #ebeef5;
-}
+  --table-bg-color-hover: rgba(236, 245, 255, 0.6);
+  --table-border-color: transparent;
+  --menu-bg-color-hover: #ecf5ff;
+  --footer-player-bg-color: #ffffff;
+  --footer-player-border-color: #dcdfe6;
+  --album-card-bg-color:rgba(31,31,31,0.7);
+} */

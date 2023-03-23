@@ -7,12 +7,19 @@
 			<search />
 		</div>
 		<div>
-			<span></span>
+			<div>
+				<el-icon size="25" @click="router.go(1)"><ArrowRightBold /></el-icon>
+			</div>
+			<div>
+				<el-icon size="25" @click="router.go(-1)"><ArrowLeftBold /></el-icon>
+			</div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import search from "components/content/search-input/index.vue"
+import { useRouter } from "vue-router";
+import search from "components/content/search-input/index.vue";
+const router = useRouter();
 </script>
 <style scoped lang="less">
 @import "style/common.less";
@@ -20,14 +27,31 @@ import search from "components/content/search-input/index.vue"
 .header {
 	height: 100%;
 	.flex-layout(space-around);
-	&>:nth-child(1){
+	& > :nth-child(1) {
 		flex-grow: 1;
 	}
-	&>:nth-child(2){
+	& > :nth-child(2) {
 		flex-grow: 8;
 	}
-	&>:nth-child(3){
+	& > :nth-child(3) {
 		flex-grow: 2;
+		display: flex;
+		flex-direction: row-reverse;
+
+		& > div {
+			display: inline-block;
+			&:hover {
+				cursor: pointer;
+				border-radius: 3px;
+				background-color: rgba(204, 209, 219, 0.33);
+			}
+		}
+		& > div:nth-child(1) {
+			margin-right: 25px;
+		}
+		& > div:nth-child(2) {
+			margin: 0 25px;
+		}
 	}
 	.logo {
 		.flex-centerX();

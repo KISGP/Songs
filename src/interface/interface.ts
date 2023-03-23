@@ -95,6 +95,8 @@ export interface SongsState {
 	playList: Array<songDetailedType>;
 	historyList: Array<songDetailedType>;
 	playerStatus: "hidden" | "max" | "min";
+	myCreatedList:Array<listBriefType>;
+	myCreatedListID:Array<number>;
 }
 
 /**
@@ -143,7 +145,7 @@ export interface suggestionsType {
 	list?: Array<baseType>;
 }
 type suggestionItem = {
-	id: string;
+	id: number;
 	name: string;
 	artistStr: string;
 };

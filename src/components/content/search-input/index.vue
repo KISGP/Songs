@@ -11,23 +11,41 @@
 		/>
 		<transition name="suggestions" appear>
 			<suggestions
-				v-show="suggestionsVisible && suggestionsResult"
+				v-show="
+					suggestionsVisible &&
+					(suggestionsResult.albums ||
+						suggestionsResult.artists ||
+						suggestionsResult.list ||
+						suggestionsResult.songs)
+				"
 				:suggestions="suggestionsResult"
 			/>
 		</transition>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 import { suggestionsType } from "@/interface/interface";
 import { getSearchSuggestions } from "service/api/api";
 import { debounce } from "utils/utils-common";
 import suggestions from "./suggestions.vue";
 
-const placeholder: Ref<string> = ref("Search");
-const suggestionsVisible: Ref<boolean> = ref(false);
-const value: Ref<string> = ref("");
-const valueCache: Ref<string> = ref("");
+const router = useRouter();
+
+const placeholder = ref<string>("Search");
+const suggestionsVisible = ref<boolean>(false);
+const value = ref<string>("");
+const valueCache = ref<string>("");
+
+watch(
+	() => router.currentRoute.value.fullPath,
+	() => {
+		value.value = "";
+		valueCache.value = "";
+		suggestionsResult.value = {};
+	}
+);
 
 const focus = () => {
 	placeholder.value = "";
@@ -41,7 +59,7 @@ const blur = () => {
 	value.value = "";
 };
 
-const suggestionsResult: Ref<suggestionsType> = ref({});
+const suggestionsResult = ref<suggestionsType>({});
 const suggestionsResultIsEmpty = (): boolean => {
 	return Object.keys(suggestionsResult.value).length > 0 ? false : true;
 };
@@ -67,7 +85,8 @@ const search = async () => {};
 		height: 4vh;
 		width: 15%;
 		border-radius: 50px;
-		border: 1px solid var(--el-border-color);
+		color: var(--regular-text);
+		border: 1px solid var(--darker-fill);
 		text-align: center;
 		padding: 0 5px;
 		cursor: pointer;

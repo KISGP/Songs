@@ -27,8 +27,22 @@ npm run build
 ```
 docsify serve docs
 ```
+
 线上浏览
 
 ```
 https://gp-root.github.io/Songs/#/
 ```
+
+## 页面预览
+
+
+
+![](./docs\img\3.png)
+
+![](./docs\img\4.png)
+
+![](./docs\img\5.png)
+
+
+

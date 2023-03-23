@@ -110,18 +110,18 @@ export function getCssVar(key: string): string {
 }
 
 // 设置CSS变量(单个)
-export function setCssVar(key: string, value: string, isImportant?: string | boolean | null): void {
-	document.documentElement.style.setProperty(key, value, isImportant ? "important" : "");
+export function setCssVar(key: string, value: string): void {
+	document.documentElement.style.setProperty(key, value);
 }
 
 /**
  * 设置CSS变量(多个)
  * @param css_S CSS变量数组，[[key, value, isImportant],]
  */
-export function setCssVarS(css_S: Array<[string, string, string | boolean]>): void {
-	css_S.forEach((css) => {
-		setCssVar(css[0], css[1], css[2]);
-	});
+export function setCssVarS(css_S: { [key: string]: string }): void {
+	for (const key in css_S) {
+		setCssVar(key, css_S[key]);
+	}
 }
 
 // 失去焦点时改变网页标题
