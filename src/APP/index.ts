@@ -12,11 +12,11 @@ export async function fixUserInfo() {
 	if (cookie) {
 		UserStore.update_cookie(cookie);
 		if (id && name) {
-			UserStore.update_id(id);
+			UserStore.update_id(parseInt(id));
 			UserStore.update_name(name);
 		} else {
 			const user = await getUserInfo();
-			UserStore.update_id(user.id);
+			UserStore.update_id(parseInt(user.id));
 			UserStore.update_name(user.name);
 		}
 		UserStore.update_login(true);

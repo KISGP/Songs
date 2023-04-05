@@ -40,6 +40,7 @@ export type artistInfoType = {
 		song: number;
 		album: number;
 		mv: number;
+		fans: number;
 	};
 };
 export type artistIntroductionType = {
@@ -111,7 +112,7 @@ export interface songDetailedType {
  */
 export interface UserState {
 	netease_name: string;
-	netease_id: string | number;
+	netease_id: number;
 	netease_cookie: string;
 	netease_login: boolean;
 }

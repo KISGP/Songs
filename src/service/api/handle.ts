@@ -188,7 +188,7 @@ export function album_sublist(res: any): {
 			return {
 				id: e.id,
 				name: e.name,
-				cover: e.picUrl,
+				cover: e.picUrl + "?param=200y200",
 				songCount: e.size,
 				artists: {
 					artistsStr: getArtistsName(e.artists, null),
@@ -375,13 +375,14 @@ export function song_detail(res: any): Array<TYPE.songDetailedType> {
 export function artist_detail(res: any): TYPE.artistInfoType {
 	return {
 		name: res.data.artist.name,
-		alias: res.data.artist.alias, 
+		alias: res.data.artist.alias,
 		cover: res.data.artist.cover + "?param=200y200",
 		signature: res.data.user?.signature || "",
 		count: {
 			song: res.data.artist.musicSize,
 			album: res.data.artist.albumSize,
 			mv: res.data.artist.mvSize,
+			fans: 0,
 		},
 	};
 }
@@ -395,7 +396,7 @@ export function simi_artist(res: any): Array<TYPE.artistBriefType> {
 		return {
 			id: e.id,
 			name: e.name,
-			cover: e.picUrl,
+			cover: e.picUrl + "?param=80y80",
 		};
 	});
 }
@@ -416,6 +417,7 @@ export function artist_sublist(res: any): Array<TYPE.artistBriefType> {
 			id: e.id,
 			name: e.name,
 			cover: e.picUrl,
+			alias: e.alias,
 		};
 	});
 }
@@ -481,4 +483,35 @@ export function toplist_artist(res: any): TYPE.artistBriefType[] {
 			alias: e.alias,
 		};
 	});
+}
+
+export function top_artists(res: any): {
+	more: boolean;
+	artists: TYPE.artistBriefType[];
+} {
+	return {
+		more: res.more,
+		artists: res.artists.map((e: any) => {
+			return {
+				id: e.id,
+				name: e.name,
+				cover: e.picUrl + "?param=150y150",
+				alias: e.alias,
+			};
+		}),
+	};
+}
+
+export function artist_list(res: any): { more: boolean; artists: TYPE.artistBriefType[] } {
+	return {
+		more:res.more,
+		artists:res.artists.map((e: any) => {
+			return {
+				id: e.id,
+				name: e.name,
+				cover: e.picUrl+ "?param=150y150",
+				alias: e.alias,
+			};
+		})
+	}
 }

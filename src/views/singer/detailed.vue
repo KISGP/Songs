@@ -23,7 +23,7 @@
 							<template #label>
 								<span class="tabs-tittle">
 									热门歌曲
-									<i>50</i>
+									<i>{{ hotSongs?.length }}</i>
 								</span>
 							</template>
 							<song-table-common v-if="hotSongs" :songs="hotSongs" />

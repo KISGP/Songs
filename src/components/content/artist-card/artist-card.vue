@@ -3,6 +3,7 @@
 		<el-image class="img" :src="data.cover" fit="cover" lazy />
 		<span>{{ data.name }}</span>
     <i v-for="item in data.alias">{{ item }}</i>
+		<slot></slot>
 	</div>
 </template>
 <script setup lang="ts">
@@ -34,7 +35,6 @@ const props = defineProps({
 	background-color: var(--light-fill);
 	border-radius: 4px;
 	cursor: pointer;
-	margin: 1% 0;
 	&:hover {
 		background-color: var(--darker-fill);
 	}

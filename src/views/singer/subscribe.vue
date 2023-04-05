@@ -3,16 +3,11 @@
 		<div class="back">
 			<h2>关注歌手</h2>
 			<el-space wrap :size="50" alignment="flex-start">
-				<div
-					class="artist"
-					v-for="item in subscribeArtists"
-					@click="router.push(`/singer/${item.id}`)"
-				>
-					<el-image class="img" :src="item.cover" fit="cover" loading="lazy" />
-					<span>{{ item.name }}</span>
-					<el-icon class="del" size="20" @click.stop="changeDialogVisible(item)"
-						><MoreFilled
-					/></el-icon>
+				<div class="artist" v-for="item in subscribeArtists">
+					<artist-card style="border-right: 1px solid rgba(60, 60, 60, 0.6);" :data="item"></artist-card>
+					<el-icon class="del" size="20" @click.stop="changeDialogVisible(item)">
+						<MoreFilled />
+					</el-icon>
 				</div>
 			</el-space>
 		</div>
@@ -31,12 +26,11 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
 import { getSubscribedArtists, subscribeArtist } from "service/api/api";
 import { showErrorMessage, showSuccessMessage } from "utils/utils-content";
 import { artistBriefType } from "@/interface/interface";
+import artistCard from "@/components/content/artist-card/artist-card.vue";
 
-const router = useRouter();
 const subscribeArtists = ref<artistBriefType[]>();
 onMounted(async () => {
 	subscribeArtists.value = await getSubscribedArtists();
@@ -63,21 +57,13 @@ const delArtist = async () => {
 	margin: 2% 5%;
 }
 .artist {
-	width: 300px;
 	background-color: var(--light-fill);
 	border-radius: 5px;
 	display: flex;
 	align-items: center;
 	cursor: pointer;
-	.img {
-		width: 100px;
-		height: 100px;
-		border-radius: 5px;
-		position: relative;
-	}
-	& > span {
-		flex-grow: 1;
-		text-align: center;
+	.del-back {
+		border-top: 1px solid var(--el-border-color);
 	}
 	.del {
 		transform: rotate(90deg);
@@ -85,9 +71,6 @@ const delArtist = async () => {
 		&:hover {
 			color: var(--theme-color);
 		}
-	}
-	&:hover {
-		background-color: var(--dark-fill);
 	}
 }
 

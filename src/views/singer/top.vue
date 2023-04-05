@@ -40,7 +40,6 @@ import { ref, onMounted, reactive } from "vue";
 import { getTopArtists } from "service/api/api";
 import { artistBriefType } from "@/interface/interface";
 import artistCard from "@/components/content/artist-card/artist-card.vue";
-import { TabPaneName } from "element-plus";
 
 const artists = reactive<{
 	cache: artistBriefType[];

@@ -18,6 +18,7 @@
 		<el-sub-menu index="4">
 			<template #title> 歌手 </template>
 			<el-menu-item index="/singer/subscribe">关注列表</el-menu-item>
+			<el-menu-item index="/singer/all">全部歌手</el-menu-item>
 			<el-menu-item index="/singer/hot">热门歌手</el-menu-item>
 			<el-menu-item index="/singer/top">榜单</el-menu-item>
 		</el-sub-menu>

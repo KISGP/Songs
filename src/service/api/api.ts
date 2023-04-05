@@ -2,6 +2,7 @@ import { NETEASE } from "../index";
 import * as TYPE from "@/interface/interface";
 import * as HANDLE from "./handle";
 import { RESOURCE } from "@/constant/constant";
+import { resolveRef } from "@vueuse/core";
 /**
  * @description 获取歌曲的播放url
  */
@@ -674,8 +675,10 @@ export async function getDetailedArtist(id: number): Promise<TYPE.artistDetailed
 				cookie: true,
 			},
 			interceptors: {
-				responseInterceptor(res: any) {
-					return HANDLE.artist_detail(res);
+				async responseInterceptor(res: any) {
+					const r = HANDLE.artist_detail(res);
+					r.count.fans = await getArtistFansCount(id);
+					return r;
 				},
 			},
 		}),
@@ -819,6 +822,71 @@ export async function getTopArtists(
 		interceptors: {
 			responseInterceptor(res) {
 				return HANDLE.toplist_artist(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 歌手粉丝数量
+ * */
+export async function getArtistFansCount(id: number): Promise<number> {
+	return await NETEASE.get({
+		url: "/artist/follow/count",
+		myParams: {
+			id,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return res.data.fansCnt;
+			},
+		},
+	});
+}
+
+/**
+ * @description 热门歌手
+ * */
+export async function getHotArtist(
+	offset: number = 0,
+	limit: number = 30
+): Promise<{ more: boolean; artists: TYPE.artistBriefType[] }> {
+	return await NETEASE.get({
+		url: "/top/artists",
+		myParams: {
+			limit,
+			offset,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return HANDLE.top_artists(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 歌手分类列表
+ * */
+export async function getFilteredArtist(
+	type: number,
+	area: number,
+	initial: string,
+	offset: number = 0,
+	limit: number = 30
+): Promise<{ more: boolean; artists: TYPE.artistBriefType[] }> {
+	return await NETEASE.get({
+		url: "/artist/list",
+		myParams: {
+			type,
+			area,
+			initial,
+			offset,
+			limit,
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.artist_list(res);
 			},
 		},
 	});

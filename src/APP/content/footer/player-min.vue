@@ -90,7 +90,8 @@
 					</div>
 					<div class="option" :class="{ hover: volume.visible }" ref="volumeDiv">
 						<el-icon size="25" title="音量">
-							<svg-icon name="volume" @click="changeVolumeVisible" />
+							<svg-icon v-if="volume.val > 0" name="volume" @click="changeVolumeVisible" />
+							<svg-icon v-else name="volume_no" @click="changeVolumeVisible" />
 						</el-icon>
 					</div>
 					<div class="option">
@@ -111,7 +112,7 @@
 					vertical
 					height="150px"
 					:show-tooltip="false"
-					:disabled="!SongStore.song.song.id"		
+					:disabled="!SongStore.song.song.id"
 					@input="volumeChange"
 				/>
 			</div>

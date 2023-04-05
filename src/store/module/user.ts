@@ -5,7 +5,7 @@ export const useUserStore = defineStore("UserStore", {
 	state: (): UserState => {
 		return {
 			netease_name: "",
-			netease_id: "",
+			netease_id: 0,
 			netease_cookie: "",
 			netease_login: false,
 		};
@@ -18,7 +18,7 @@ export const useUserStore = defineStore("UserStore", {
 		update_name(value: string): void {
 			this.netease_name = value;
 		},
-		update_id(value: string | number): void {
+		update_id(value: number): void {
 			this.netease_id = value;
 		},
 		update_login(value: boolean): void {
