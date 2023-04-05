@@ -71,7 +71,7 @@ const playSong = async (id: number) => {
 	top: 4vh;
 	z-index: 10;
 	padding: 10px;
-	background-color: #ffff;
+	background-color: var(--suggestion-bg-color);
 	border-radius: 6px;
 	box-shadow: var(--el-box-shadow-lighter);
 	.suggestion-item {
@@ -90,7 +90,7 @@ const playSong = async (id: number) => {
 		}
 		&:hover {
 			cursor: pointer;
-			background-color: #e7e6e6;
+			background-color: var(--darker-fill);
 			border-radius: 6px;
 		}
 	}

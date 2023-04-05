@@ -8,7 +8,7 @@
 		row-class-name="table-row"
 		header-row-class-name="table-header"
 	>
-		<el-table-column type="index" :label="props.songsCount + '首'" width="80" />
+		<el-table-column type="index" :label="length + '首'" width="80" />
 		<el-table-column label="歌曲标题">
 			<template #default="scope">
 				<span>{{ scope.row.song.name }}</span>
@@ -50,7 +50,7 @@
 	</el-table>
 </template>
 <script setup lang="ts">
-import { PropType } from "vue";
+import { PropType, computed } from "vue";
 import { useRouter } from "vue-router";
 import { songDetailedType } from "@/interface/interface";
 import { add2List, playAll, playSong } from "./song-table";
@@ -70,6 +70,14 @@ const props = defineProps({
 		type: String,
 		default: "100%",
 	},
+});
+
+const length = computed(() => {
+	if (props.songs) {
+		return props.songs.length;
+	} else {
+		return 0;
+	}
 });
 </script>
 <style scoped lang="less" src="./song-table.less"></style>

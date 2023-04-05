@@ -24,3 +24,6 @@
   --footer-player-border-color: #dcdfe6;
   --album-card-bg-color:rgba(31,31,31,0.7);
 } */
+:root{
+  --suggestion-bg-color:#FFFFFF;
+}

@@ -23,9 +23,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { watch, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useSongStore } from "store/index";
-import { updatePlayerStyle, fixUserInfo, getLikedSongs, getMyCreateList, initTheme } from "./index";
+import { fixUserInfo, getLikedSongs, getMyCreateList, initTheme } from "./index";
 import headerBar from "./content/header/index.vue";
 import menuBar from "./content/menu/index.vue";
 import footerBar from "./content/footer/index.vue";
@@ -37,15 +37,14 @@ onMounted(async () => {
 	getLikedSongs();
 	getMyCreateList();
 	initTheme();
+	document.addEventListener("visibilitychange", function () {
+		if (document.visibilityState === "visible") {
+			document.title = "Song";
+		} else {
+			document.title = SongStore.song.song.name || "Song";
+		}
+	});
 });
-
-// 监听播放器样式
-watch(
-	() => SongStore.playerStatus,
-	(newValue, oldValue) => {
-		updatePlayerStyle(newValue);
-	}
-);
 </script>
 <style scoped lang="less">
 @import "../assets/style/common.less";
@@ -65,6 +64,7 @@ watch(
 	}
 	.layout-menu {
 		width: auto;
+		height: 94vh;
 	}
 	.layout-content {
 		padding: 0;

@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // 等待（ms）
 export function wait(ms: number): Promise<null> {
 	return new Promise((resolve) => {
@@ -124,13 +126,9 @@ export function setCssVarS(css_S: { [key: string]: string }): void {
 	}
 }
 
-// 失去焦点时改变网页标题
-export function updateWebTitle(): void {
-	document.addEventListener("visibilitychange", function () {
-		if (document.visibilityState === "visible") {
-			document.title = "Title";
-		} else {
-			document.title = "ԅ(¯﹃¯ԅ)你去哪了";
-		}
-	});
+export function fileDownload(
+	url: string = "http://m801.music.126.net/20230330133459/d7221390394427b6a5cbc8f8730b0ceb/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/26003178573/8a4f/ffcf/af63/76ef5dd931f023800a5a820b5bfae80c.mp3",
+	download: boolean = true
+) {
+	
 }

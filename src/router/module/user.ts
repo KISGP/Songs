@@ -6,7 +6,7 @@ module.exports = [
 		children: [
       {
 				// 用户主页
-        path: "home",
+        path: ":id",
 				component: homeUser,
       },
 			{

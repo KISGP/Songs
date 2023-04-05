@@ -49,6 +49,7 @@ const to = () => {
 }
 .image-box {
 	position: relative;
+	z-index: 10;
 	.image {
 		cursor: pointer;
 		position: relative;
@@ -63,7 +64,7 @@ const to = () => {
 			top: 10%;
 			.size();
 			background: inherit;
-			transform: scale(0.95);
+			transform: scale(1.1);
 			background-size: 100% 100%;
 			filter: blur(10px) brightness(1) opacity(0.8);
 			z-index: -1;

@@ -18,8 +18,8 @@ export const LIGHT: themeType = {
 	"--table-border-color": "#ebeef5",
 	"--menu-bg-color-hover": "#ecf5ff",
 	"--footer-player-bg-color": "#ffffff",
-	"--footer-player-border-color": "#dcdfe6",
-	"--album-card-bg-color":"rgba(255,255,255,0.7)"
+	"--album-card-bg-color":"rgba(255,255,255,0.7)",
+	"--suggestion-bg-color":"#FFFFFF"
 };
 
 export const LIGHT2: themeType = {
@@ -39,8 +39,8 @@ export const LIGHT2: themeType = {
 	"--table-border-color": "transparent",
 	"--menu-bg-color-hover": "#ecf5ff",
 	"--footer-player-bg-color": "#ffffff",
-	"--footer-player-border-color": "#dcdfe6",
-	"--album-card-bg-color":"rgba(255,255,255,0.7)"
+	"--album-card-bg-color":"rgba(255,255,255,0.7)",
+	"--suggestion-bg-color":"#FFFFFF"
 };
 
 export const DARK: themeType = {
@@ -60,8 +60,8 @@ export const DARK: themeType = {
 	"--table-border-color": "transparent",
 	"--menu-bg-color-hover": "#39393A",
 	"--footer-player-bg-color": "#242424",
-	"--footer-player-border-color": "transparent",
-	"--album-card-bg-color":"rgba(31,31,31,0.7)"
+	"--album-card-bg-color":"rgba(31,31,31,0.7)",
+	"--suggestion-bg-color":"#303133"
 };
 export const DARK2: themeType = {
 	"--primary-text": "#e0e0e0",
@@ -80,6 +80,6 @@ export const DARK2: themeType = {
 	"--table-border-color": "transparent",
 	"--menu-bg-color-hover": "#39393A",
 	"--footer-player-bg-color": "#242424",
-	"--footer-player-border-color": "transparent",
-	"--album-card-bg-color":"rgba(31,31,31,0.7)"
+	"--album-card-bg-color":"rgba(31,31,31,0.7)",
+	"--suggestion-bg-color":"#303133"
 };

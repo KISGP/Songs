@@ -48,23 +48,29 @@ export default class GPRequest {
 			if (config.interceptors?.requestInterceptor) {
 				config = config.interceptors.requestInterceptor(config);
 			}
-			// 添加 cookie 和 时间戳
-			{
-				if (config.myParams) {
-					if (typeof config.myParams.cookie === "boolean") {
-						try {
-							config.myParams.cookie = useUserStore().netease_cookie || getItem("cookie");
-						} catch (error) {
-							config.signal = controller.signal;
-							console.log(error, "cookie获取错误");
-							controller.abort();
-						}
+			// params修改验证
+			if (config.myParams) {
+				// 添加cookie
+				if (typeof config.myParams.cookie === "boolean") {
+					if (
+						!(config.myParams.cookie = useUserStore().netease_cookie || getItem("cookie") || "")
+					) {
+						config.signal = controller.signal;
+						console.log(config.url, "cookie获取错误");
+						controller.abort();
 					}
-					if (typeof config.myParams.timeStamp == "boolean") {
-						config.myParams.timeStamp = getTimeStamp();
-					}
-					config.params = config.myParams;
 				}
+				// 添加时间戳
+				if (typeof config.myParams.timeStamp == "boolean") {
+					config.myParams.timeStamp = getTimeStamp();
+				}
+				// 检查uid
+				if (config.myParams.uid === "" && config.myParams.uid != undefined) {
+					config.signal = controller.signal;
+					console.log(config.url, "未登录,用户id为空");
+					controller.abort();
+				}
+				config.params = config.myParams;
 			}
 			// 发送请求
 			this.instance

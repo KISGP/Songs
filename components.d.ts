@@ -9,7 +9,12 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    ArtistCard: typeof import('./src/components/content/artist-card/artist-card.vue')['default']
+    ArtistIntroductionBrief: typeof import('./src/components/content/artist-introduction/artist-introduction-brief.vue')['default']
+    ArtistIntroductionDetailed: typeof import('./src/components/content/artist-introduction/artist-introduction-detailed.vue')['default']
     Artists: typeof import('./src/components/content/artists/artists.vue')['default']
+    ArtistsSimilar: typeof import('./src/components/content/artists-similar/artists-similar.vue')['default']
+    Card: typeof import('./src/components/common/card/card.vue')['default']
     Card3D: typeof import('./src/components/common/card-3D/card-3D.vue')['default']
     Comment: typeof import('./src/components/content/comment/index.vue')['default']
     CommentFloor: typeof import('./src/components/content/comment/comment-floor.vue')['default']
@@ -44,6 +49,8 @@ declare module '@vue/runtime-core' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
+    ElTimeline: typeof import('element-plus/es')['ElTimeline']
+    ElTimelineItem: typeof import('element-plus/es')['ElTimelineItem']
     ListCard: typeof import('./src/components/content/list-card/list-card.vue')['default']
     ListCardGroup: typeof import('./src/components/content/list-card/list-card-group.vue')['default']
     Login: typeof import('./src/components/content/login/login.vue')['default']

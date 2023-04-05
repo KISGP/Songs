@@ -1,6 +1,6 @@
 <template>
 	<div class="artists" v-for="(item, index) in props.artists">
-		<span @click="to(item.id)" class="artist"> {{ item.name }}</span>
+		<span @click.stop="to(item.id)" class="artist"> {{ item.name }}</span>
 		<span>{{ index < props.artists!.length - 1 ? " / " : "" }}</span>
 	</div>
 </template>

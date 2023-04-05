@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useToast } from "vue-toastification";
 import { artistType } from "../interface/interface";
 import { ElMessage, MessageParams } from "element-plus";
@@ -100,4 +101,21 @@ export function showErrorMessage(message: string) {
 		message,
 		type: "error",
 	});
+}
+
+export function downloadFile(url: string, fileName: string) {
+	axios
+		.get(url, {
+			responseType: "blob",
+		})
+		.then((res) => {
+			const link = window.URL.createObjectURL(new Blob([res.data]));
+			const type = url?.split(".").pop();
+			let a = document.createElement("a");
+			a.style.display = "none";
+			a.href = link;
+			a.download = fileName + "." + type;
+			document.body.appendChild(a);
+			a.click();
+		});
 }

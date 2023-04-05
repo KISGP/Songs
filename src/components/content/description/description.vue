@@ -56,6 +56,6 @@ const props = defineProps({
 	width: 80%;
 	margin: 10px auto;
 	white-space: pre-wrap;
-	color: var(--el-text-color-primary);
+	color: var(--secondary-text);
 }
 </style>

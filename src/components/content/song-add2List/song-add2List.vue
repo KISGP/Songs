@@ -1,7 +1,7 @@
 <template>
-	<div class="back">
+	<div class="back" ref="Div">
 		<el-scrollbar height="300px">
-			<h5>添加到歌单</h5>
+			<h5 style="margin-left: 10px">添加到歌单</h5>
 			<div
 				class="list"
 				v-for="(item, index) in SongStore.myCreatedList"
@@ -15,14 +15,16 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { useUserStore, useSongStore } from "store/index";
+import { PropType } from "vue";
+import { useSongStore } from "store/index";
 import { updateList } from "service/api/api";
 import { showSuccessMessage } from "utils/utils-content";
 
-const UserStore = useUserStore();
 const SongStore = useSongStore();
 const emits = defineEmits(["add"]);
-
+const props = defineProps({
+	left: String as PropType<string>,
+});
 const add = async (index: number) => {
 	if (
 		SongStore.song.song.id &&
@@ -40,19 +42,18 @@ const add = async (index: number) => {
 @import "../../../assets/style/common.less";
 .back {
 	height: 300px;
-	width: 250px;
 	background-color: var(--light-fill);
 	border-radius: 6px;
 	box-shadow: var(--el-box-shadow-lighter);
 	position: fixed;
 	bottom: calc(var(--height-player) + 10px);
-	right: 20px;
+	left: v-bind(left);
 	transition: height 0.5s ease;
 	overflow: hidden;
 	.list {
 		width: 250px;
 		height: 60px;
-		margin: 10px 0;
+		margin: 10px 10px;
 		display: flex;
 		align-items: center;
 		color: var(--regular-text);

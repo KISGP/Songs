@@ -9,7 +9,11 @@
 								<svg-icon name="fullScreen" />
 							</el-icon>
 						</div>
-						<el-image style="width: 100%; height: 100%" :src="store.song.song.cover" fit="cover" />
+						<el-image
+							style="width: 100%; height: 100%"
+							:src="SongStore.song.song.cover"
+							fit="cover"
+						/>
 					</div>
 				</div>
 			</el-col>
@@ -26,7 +30,7 @@
 								<!-- 暂停/继续 -->
 								<el-icon class="foo" size="40">
 									<svg-icon
-										v-if="store.isPlaying"
+										v-if="SongStore.isPlaying"
 										name="play"
 										class="operateColor"
 										@click="emits('pause')"
@@ -43,7 +47,7 @@
 						<div class="barBox">
 							<div class="messageBox" ref="messageBoxRef">
 								<!-- 歌名 -->
-								<span> {{ store.song.song.name || "歌名" }} </span>
+								<span> {{ SongStore.song.song.name || "歌名" }} </span>
 								<!-- 时间 -->
 								<span style="margin-left: 10px">
 									{{ s2min(props.currentTime as number) }} /
@@ -60,23 +64,38 @@
 			</el-col>
 			<el-col :span="6">
 				<div class="right">
-					<div :class="{ liked: true, 'liked-true': store.song.song.isLiked }">
+					<div :class="{ liked: true, 'liked-true': SongStore.song.song.isLiked }">
 						<el-icon
 							size="25"
-							:title="store.song.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
-							@click="emits('like', !store.song.song.isLiked)"
+							:title="SongStore.song.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
+							@click="emits('like', !SongStore.song.song.isLiked)"
 						>
 							<svg-icon name="like" />
 						</el-icon>
 					</div>
-					<div class="list">
+					<div class="option">
 						<el-icon size="25" title="列表" @click="changeDrawerVisual">
 							<svg-icon name="list_footer" />
 						</el-icon>
 					</div>
-					<div class="list">
-						<el-icon size="25" title="添加到歌单" @click="add2list">
+					<div
+						class="option"
+						:class="{ hover: add2list.visible }"
+						v-if="UserStore.netease_login"
+						ref="add2listDiv"
+					>
+						<el-icon size="25" title="添加到歌单" @click="changeAdd2listVisible">
 							<svg-icon name="list_add" />
+						</el-icon>
+					</div>
+					<div class="option" :class="{ hover: volume.visible }" ref="volumeDiv">
+						<el-icon size="25" title="音量">
+							<svg-icon name="volume" @click="changeVolumeVisible" />
+						</el-icon>
+					</div>
+					<div class="option">
+						<el-icon size="25" title="下载" @click="download">
+							<Download />
 						</el-icon>
 					</div>
 				</div>
@@ -84,48 +103,112 @@
 		</el-row>
 	</div>
 
-	<transition name="songAdd2List" v-show="songAdd2ListVisible">
-		<songAdd2List @add="add2list"/>
+	<transition name="songAdd2List" v-show="volume.visible">
+		<div class="volume-back">
+			<div>
+				<el-slider
+					v-model="volume.val"
+					vertical
+					height="150px"
+					:show-tooltip="false"
+					:disabled="!SongStore.song.song.id"		
+					@input="volumeChange"
+				/>
+			</div>
+			<div>
+				<span>{{ volume.val }}</span>
+			</div>
+		</div>
 	</transition>
 
-	<el-drawer v-model="listBox" :with-header="false" size="40%">
+	<transition name="songAdd2List" v-show="add2list.visible">
+		<songAdd2List @add="changeAdd2listVisible" :left="add2list.DivLeft" />
+	</transition>
+
+	<el-drawer v-model="list.visible" :with-header="false">
 		<el-tabs v-model="activeList" class="demo-tabs">
 			<el-tab-pane label="播放列表" name="播放列表">
-				<playList :songs="store.playList" :songs-count="store.playList.length" />
+				<playList :songs="SongStore.playList" :songs-count="SongStore.playList.length" />
 			</el-tab-pane>
 			<el-tab-pane label="历史播放" name="历史播放">
-				<playList :songs="store.historyList" :songs-count="store.historyList.length" />
+				<playList :songs="SongStore.historyList" :songs-count="SongStore.historyList.length" />
 			</el-tab-pane>
 		</el-tabs>
 	</el-drawer>
 </template>
 <script setup lang="ts">
-import { ref, Ref } from "vue";
-import { useSongStore } from "store/index";
+import { ref, reactive } from "vue";
+import { useSongStore, useUserStore } from "store/index";
+import { downloadFile } from "utils/utils-content";
 import { s2min } from "utils/utils-common";
 import playList from "components/content/playList/playList.vue";
 import songAdd2List from "@/components/content/song-add2List/song-add2List.vue";
 
-const store = useSongStore();
-
+const SongStore = useSongStore();
+const UserStore = useUserStore();
 const props = defineProps({
 	currentTime: Number,
 	maxTime: Number,
 	lyric: String,
 });
 
-const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "like"]);
-
-const listBox: Ref<boolean> = ref(false);
-const changeDrawerVisual = () => {
-	listBox.value = !listBox.value;
-};
+const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "like", "volume"]);
 
 const activeList = ref("播放列表");
 
-const songAdd2ListVisible = ref<boolean>(false);
-const add2list = () => {
-	songAdd2ListVisible.value = !songAdd2ListVisible.value;
+// 播放列表
+const list = reactive<{
+	visible: boolean;
+}>({
+	visible: false,
+});
+const changeDrawerVisual = () => {
+	list.visible = !list.visible;
+	volume.visible = add2list.visible = false;
+};
+
+// 添加到歌单
+const add2list = reactive<{
+	Div: HTMLDivElement | null;
+	DivLeft: string;
+	visible: boolean;
+}>({
+	Div: null,
+	DivLeft: "",
+	visible: false,
+});
+const add2listDiv = ref<HTMLDivElement>();
+const changeAdd2listVisible = () => {
+	add2list.visible = !add2list.visible;
+	const { x, width } = add2listDiv.value!.getBoundingClientRect();
+	add2list.DivLeft = x - (270 - width) / 2 + "px";
+	volume.visible = list.visible = false;
+};
+
+// 声音
+const volume = reactive<{
+	val: number;
+	DivLeft: string;
+	visible: boolean;
+}>({
+	val: 100,
+	DivLeft: "",
+	visible: false,
+});
+const volumeDiv = ref<HTMLDivElement>();
+const changeVolumeVisible = () => {
+	volume.visible = !volume.visible;
+	const { x, width } = volumeDiv.value!.getBoundingClientRect();
+	volume.DivLeft = x - (58 - width) / 2 + "px";
+	add2list.visible = list.visible = false;
+};
+const volumeChange = (val: number) => {
+	emits("volume", val / 100);
+};
+
+// 下载
+const download = () => {
+	SongStore.song.song.url && downloadFile(SongStore.song.song.url, SongStore.song.song.name);
 };
 </script>
 <style scoped lang="less">
@@ -166,11 +249,14 @@ const add2list = () => {
 	}
 	.right {
 		.flex-layout(row, space-evenly);
-		.list {
+		.option {
 			&:hover {
 				color: var(--theme-color);
 				cursor: pointer;
 			}
+		}
+		.hover {
+			color: var(--theme-color);
 		}
 		.liked {
 			cursor: pointer;
@@ -256,6 +342,20 @@ const add2list = () => {
 			text-align: center;
 			font-size: 14px;
 		}
+	}
+}
+
+.volume-back {
+	position: fixed;
+	bottom: calc(var(--height-player) + 10px);
+	left: v-bind("volume.DivLeft");
+	height: 220px;
+	padding: 10px 10px 20px 10px;
+	border-radius: 7px;
+	background-color: var(--base-fill);
+	text-align: center;
+	& > div:nth-child(1) {
+		height: 200px;
 	}
 }
 

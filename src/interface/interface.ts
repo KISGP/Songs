@@ -19,6 +19,37 @@ export interface artistsType {
 	artists: Array<artistType>;
 }
 
+export interface artistBriefType extends baseType {
+	cover: string;
+	alias?: string[];
+}
+
+/**
+ * @description 歌手详细信息
+ */
+export interface artistDetailedType {
+	info: artistInfoType;
+	introduction: artistIntroductionType;
+}
+export type artistInfoType = {
+	name: string;
+	alias: Array<string>;
+	cover: string;
+	signature?: string;
+	count: {
+		song: number;
+		album: number;
+		mv: number;
+	};
+};
+export type artistIntroductionType = {
+	briefIntroduction: string;
+	item: Array<{
+		title: string;
+		content: string;
+	}>;
+};
+
 /**
  * @description 专辑信息
  */
@@ -95,8 +126,8 @@ export interface SongsState {
 	playList: Array<songDetailedType>;
 	historyList: Array<songDetailedType>;
 	playerStatus: "hidden" | "max" | "min";
-	myCreatedList:Array<listBriefType>;
-	myCreatedListID:Array<number>;
+	myCreatedList: Array<listBriefType>;
+	myCreatedListID: Array<number>;
 }
 
 /**
@@ -178,3 +209,18 @@ export interface commentType {
 }
 
 export type resources = "歌曲" | "mv" | "歌单" | "专辑" | "电台节目" | "视频" | "动态" | "电台";
+
+export interface SubscribedNewSongsType {
+	resourceId: number;
+	resourceName: string;
+	resourceIdCover: string;
+	publishTime: number;
+	publishDate: string;
+	type: string;
+	artist: {
+		id: number;
+		name: string;
+		cover: string;
+	};
+	songs: songDetailedType[];
+}

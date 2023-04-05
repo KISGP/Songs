@@ -21,6 +21,7 @@
 			@play="play"
 			@pause="pause"
 			@like="like"
+			@volume="changeVolume"
 		>
 			<template v-slot:progress>
 				<el-slider
@@ -51,7 +52,6 @@ const SongStore = useSongStore();
 watch(
 	() => SongStore.song,
 	async () => {
-		SongStore.update_isPlaying(true);
 		SongStore.playerStatus != "min" && SongStore.update_playerStatus("min");
 		lyricArray.value = await getLyric(SongStore.song.song.id);
 	}
@@ -150,13 +150,17 @@ const like = async (isLiked: boolean) => {
 		SongStore.reload_likedSongsID();
 	}
 };
+
+const changeVolume = (val: number) => {
+	audioRef.value!.volume = val;
+};
 </script>
 <style scoped lang="less">
 .player {
 	height: var(--height-player);
 	transition: height 0.6s ease;
 	border-top: 1px solid var(--footer-player-border-color);
-	background-color: var(--footer-player-bg-color);
+	background-color: var(--lighter-fill);
 	overflow: hidden;
 	z-index: 2;
 }

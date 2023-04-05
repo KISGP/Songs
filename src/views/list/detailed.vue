@@ -41,9 +41,17 @@
 			</div>
 			<!-- 歌单歌曲 -->
 			<div class="list">
-				<songsTable
+				<songsTableList
+					v-if="store.myCreatedListID.indexOf(parseInt(id)) > -1"
 					:id="parseInt(id)"
 					type="歌单"
+					:songs="songs"
+					:songs-count="listData?.count.songCount"
+					@vnode-before-update="beforeUpdate"
+					@vnode-updated="update"
+				/>
+				<songTableCommon
+					v-else
 					:songs="songs"
 					:songs-count="listData?.count.songCount"
 					@vnode-before-update="beforeUpdate"
@@ -68,13 +76,16 @@
 import { onMounted, ref } from "vue";
 import type { ElScrollbar } from "element-plus";
 import { useRouter } from "vue-router";
-import { listDetailedType, songDetailedType, resources } from "@/interface/interface";
+import { useSongStore } from "store/index";
+import { listDetailedType, songDetailedType } from "@/interface/interface";
 import { getDetailedList, getListPartSong } from "service/api/api";
-import songsTable from "components/content/songs-table/song-table-list.vue";
+import songsTableList from "components/content/songs-table/song-table-list.vue";
+import songTableCommon from "@/components/content/songs-table/song-table-common.vue";
 import description from "@/components/content/description/description.vue";
 import comment from "@/components/content/comment/index.vue";
 
 const router = useRouter();
+const store = useSongStore();
 
 const id: string = router.currentRoute.value.params.id as string;
 const listData = ref<listDetailedType | undefined>();

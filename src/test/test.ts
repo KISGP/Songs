@@ -1,5 +1,5 @@
-if ("") {
-	console.log(12);
-}else{
-	console.log(34);
+let a = 0;
+
+if (a = 1) {
+	console.log(a);
 }

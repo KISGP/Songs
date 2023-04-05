@@ -1,6 +1,9 @@
 <template>
 	<div class="back">
-		<el-image style="width: 200px; height: 200px" :src="base64" fit="contain"></el-image>
+		<p>使用网易云APP扫码登录</p>
+		<div class="image">
+			<el-image style="width: 200px; height: 200px" :src="base64" fit="contain"></el-image>
+		</div>
 	</div>
 </template>
 <script setup lang="ts">
@@ -74,10 +77,16 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 @import "style/common.less";
 .back {
 	.position-centerXY();
-	.size(200px,200px);
-	border-radius: 10px;
-	box-shadow: var(--el-box-shadow-light);
-	border-radius: var(--el-border-radius-base);
-	overflow: hidden;
+	.size(250px,200px);
+	& > .image {
+		.size(200px,200px);
+		border-radius: 10px;
+		box-shadow: var(--el-box-shadow-light);
+		border-radius: var(--el-border-radius-base);
+		overflow: hidden;
+	}
+	& > p {
+		text-align: center;
+	}
 }
 </style>

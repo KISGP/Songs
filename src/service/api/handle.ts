@@ -3,19 +3,9 @@
  * */
 import { transformTimeStamp, handlePeopleCount } from "utils/utils-common";
 import { getArtistsName, getArtistsArray } from "utils/utils-content";
-import type {
-	songDetailedType,
-	listBriefType,
-	suggestionsType,
-	lyricType,
-	albumBriefType,
-	albumDetailedType,
-	listDetailedType,
-	artistsType,
-	commentType,
-} from "@/interface/interface";
+import * as TYPE from "@/interface/interface";
 
-export function personalized_newsong(res: any): Array<songDetailedType> {
+export function personalized_newsong(res: any): Array<TYPE.songDetailedType> {
 	return res.result.map((e: any) => {
 		let artistsStr = getArtistsName(e.song.artists, null);
 		return {
@@ -38,7 +28,7 @@ export function personalized_newsong(res: any): Array<songDetailedType> {
 	});
 }
 
-export function recommend_songs(res: any): Array<songDetailedType> {
+export function recommend_songs(res: any): Array<TYPE.songDetailedType> {
 	return res.data.dailySongs.map((e: any) => {
 		let artistsStr = getArtistsName(e.ar, null);
 		return {
@@ -61,7 +51,7 @@ export function recommend_songs(res: any): Array<songDetailedType> {
 	});
 }
 
-export function personalized(res: any): Array<listBriefType> {
+export function personalized(res: any): Array<TYPE.listBriefType> {
 	return res.result.map((e: any) => {
 		return {
 			id: e.id,
@@ -73,7 +63,7 @@ export function personalized(res: any): Array<listBriefType> {
 	});
 }
 
-export function recommend_resource(res: any): Array<listBriefType> {
+export function recommend_resource(res: any): Array<TYPE.listBriefType> {
 	return res.recommend.map((e: any) => {
 		return {
 			id: e.id,
@@ -85,7 +75,7 @@ export function recommend_resource(res: any): Array<listBriefType> {
 	});
 }
 
-export function toplist(res: any): Array<listBriefType> {
+export function toplist(res: any): Array<TYPE.listBriefType> {
 	return res.list.map((e: any) => {
 		return {
 			id: e.id,
@@ -101,7 +91,7 @@ export function user_playlist(
 	res: any,
 	type: "all" | "created" | "subscribed" = "all",
 	id?: number
-): Array<listBriefType> {
+): Array<TYPE.listBriefType> {
 	if (type === "all") {
 		return res.playlist.map((e: any) => {
 			return {
@@ -113,7 +103,7 @@ export function user_playlist(
 			};
 		});
 	} else if (type === "created") {
-		let r: Array<listBriefType> = [];
+		let r: Array<TYPE.listBriefType> = [];
 		res.playlist.forEach((e: any) => {
 			if (e.userId === id) {
 				r.push({
@@ -127,7 +117,7 @@ export function user_playlist(
 		});
 		return r;
 	} else {
-		let r: Array<listBriefType> = [];
+		let r: Array<TYPE.listBriefType> = [];
 		res.playlist.forEach((e: any) => {
 			if (e.userId != id) {
 				r.push({
@@ -143,7 +133,7 @@ export function user_playlist(
 	}
 }
 
-export function lyric_new(res: any): lyricType {
+export function lyric_new(res: any): TYPE.lyricType {
 	let lyricArray = res.lrc.lyric.slice(res.lrc.lyric.indexOf("[00:")).split("\n");
 	lyricArray.pop();
 	return lyricArray.map((e: string) => {
@@ -156,8 +146,8 @@ export function lyric_new(res: any): lyricType {
 	});
 }
 
-export function search_suggest(res: any): suggestionsType {
-	let r: suggestionsType = {};
+export function search_suggest(res: any): TYPE.suggestionsType {
+	let r: TYPE.suggestionsType = {};
 	r.albums = res.result.albums?.map((e: any) => {
 		return {
 			id: e.id,
@@ -188,7 +178,10 @@ export function search_suggest(res: any): suggestionsType {
 	return r;
 }
 
-export function album_sublist(res: any): { albumCount: number; albums: Array<albumBriefType> } {
+export function album_sublist(res: any): {
+	albumCount: number;
+	albums: Array<TYPE.albumBriefType>;
+} {
 	return {
 		albumCount: res.count,
 		albums: res.data.map((e: any) => {
@@ -211,7 +204,7 @@ export function album_sublist(res: any): { albumCount: number; albums: Array<alb
 	};
 }
 
-export function playlist_detail(res: any): listDetailedType {
+export function playlist_detail(res: any): TYPE.listDetailedType {
 	return {
 		list: {
 			id: res.playlist.id,
@@ -237,7 +230,7 @@ export function playlist_detail(res: any): listDetailedType {
 	};
 }
 
-export function playlist_track_all(res: any): Array<songDetailedType> {
+export function playlist_track_all(res: any): Array<TYPE.songDetailedType> {
 	return res.songs.map((e: any) => {
 		const artistsStr = getArtistsName(e.ar);
 		return {
@@ -261,7 +254,7 @@ export function playlist_track_all(res: any): Array<songDetailedType> {
 	});
 }
 
-export function album(res: any): albumDetailedType {
+export function album(res: any): TYPE.albumDetailedType {
 	return {
 		songs: res.songs.map((e: any) => {
 			let artistsStr = getArtistsName(e.ar, null);
@@ -321,7 +314,7 @@ export function album_detail_dynamic(res: any): {
 	};
 }
 
-function returnComment(e: any): commentType {
+export function returnComment(e: any): TYPE.commentType {
 	return {
 		id: e.commentId,
 		content: e.content,
@@ -342,19 +335,19 @@ function returnComment(e: any): commentType {
 	};
 }
 
-export function comment_new(res: any): Array<commentType> {
+export function comment_new(res: any): Array<TYPE.commentType> {
 	return res.data.comments.map((e: any) => {
 		return returnComment(e);
 	});
 }
 
-export function comment_floor(res: any): Array<commentType> {
+export function comment_floor(res: any): Array<TYPE.commentType> {
 	return res.data.comments.map((e: any) => {
 		return returnComment(e);
 	});
 }
 
-export function song_detail(res: any): Array<songDetailedType> {
+export function song_detail(res: any): Array<TYPE.songDetailedType> {
 	return res.songs.map((e: any) => {
 		const artistsStr = getArtistsName(e.ar, null);
 		return {
@@ -375,6 +368,117 @@ export function song_detail(res: any): Array<songDetailedType> {
 				name: e.al.name,
 				cover: e.al.picUrl,
 			},
+		};
+	});
+}
+
+export function artist_detail(res: any): TYPE.artistInfoType {
+	return {
+		name: res.data.artist.name,
+		alias: res.data.artist.alias, 
+		cover: res.data.artist.cover + "?param=200y200",
+		signature: res.data.user?.signature || "",
+		count: {
+			song: res.data.artist.musicSize,
+			album: res.data.artist.albumSize,
+			mv: res.data.artist.mvSize,
+		},
+	};
+}
+
+export function artist_top_song(res: any): Array<TYPE.songDetailedType> {
+	return song_detail(res);
+}
+
+export function simi_artist(res: any): Array<TYPE.artistBriefType> {
+	return res.artists.map((e: any) => {
+		return {
+			id: e.id,
+			name: e.name,
+			cover: e.picUrl,
+		};
+	});
+}
+
+export function user_follows(res: any): Array<TYPE.artistBriefType> {
+	return res.follow.map((e: any) => {
+		return {
+			id: e.userId,
+			name: e.nickname,
+			cover: e.avatarUrl,
+		};
+	});
+}
+
+export function artist_sublist(res: any): Array<TYPE.artistBriefType> {
+	return res.data.map((e: any) => {
+		return {
+			id: e.id,
+			name: e.name,
+			cover: e.picUrl,
+		};
+	});
+}
+
+export function artist_new_song(res: any): Array<TYPE.SubscribedNewSongsType> {
+	return res.data.newWorks.map((e: any) => {
+		let type: string;
+		switch (e.blockType) {
+			case "song":
+				type = "单曲";
+				break;
+			case "album":
+				type = "专辑";
+				break;
+			default:
+				type = e.blockType;
+				break;
+		}
+		return {
+			resourceId: e.blockTitle.resourceId,
+			resourceName: e.blockTitle.resourceName,
+			resourceIdCover: e.blockTitle.resourcePicUrl,
+			publishTime: e.blockTitle.publishTime,
+			publishDate: e.blockTitle.publishDate,
+			type,
+			artist: {
+				id: e.blockTitle.artistId,
+				name: e.blockTitle.artistName,
+				cover: e.blockTitle.imgUrl,
+			},
+			songs: e.songLists.map((e: any) => {
+				const artistsStr = getArtistsName(e.ar, null);
+				return {
+					song: {
+						id: e.id,
+						name: e.name,
+						cover: e.al.picUrl,
+						artistsStr: artistsStr,
+						alia: e.alia,
+						url: "",
+					},
+					artists: {
+						artistsStr: artistsStr,
+						artists: getArtistsArray(e.ar),
+					},
+					album: {
+						id: e.al.id,
+						name: e.al.name,
+						cover: e.al.picUrl,
+					},
+				};
+			}),
+		};
+	});
+}
+
+export function toplist_artist(res: any): TYPE.artistBriefType[] {
+	return res.list.artists.map((e: any) => {
+		return {
+			id: e.id,
+			name: e.name,
+			cover: e.picUrl + "?param=150y150",
+			alias: e.alias,
 		};
 	});
 }

@@ -25,10 +25,6 @@ textarea {
 	color: var(--secondary-text);
 }
 
-.el-dialog {
-	border-radius: 16px !important;
-}
-
 .el-table {
 	--el-table-tr-bg-color: var(--table-bg-color) !important;
 	--el-table-header-bg-color: var(--table-bg-color) !important;
@@ -46,16 +42,18 @@ textarea {
 }
 .el-menu-item {
 	color: var(--primary-text);
+	&:hover {
+		background-color: var(--menu-bg-color-hover);
+	}
 }
-.el-menu-item:hover {
-	background-color: var(--menu-bg-color-hover);
-}
+
 .el-sub-menu__title {
 	color: var(--primary-text) !important;
+	&:hover {
+		background-color: var(--menu-bg-color-hover) !important;
+	}
 }
-.el-sub-menu__title:hover {
-	background-color: var(--menu-bg-color-hover) !important;
-}
+
 .el-popper.is-light {
 	background-color: var(--light-fill);
 	border: 1px solid var(--light-fill);
@@ -69,14 +67,11 @@ textarea {
 }
 .el-dialog {
 	background: var(--lighter-fill) !important;
+	border-radius: 16px !important;
 }
+
 .el-dialog__title {
 	color: var(--regular-text) !important;
-}
-.el-button {
-	background-color: var(--darker-fill);
-	border: none;
-	--el-button-text-color:var(--regular-text) !important;
 }
 
 .el-drawer {
@@ -86,6 +81,29 @@ textarea {
 	--el-slider-main-bg-color: var(--theme-color) !important;
 	--el-slider-runway-bg-color: var(--darker-fill) !important;
 }
-.el-input__wrapper{
+.el-input__wrapper {
 	background-color: transparent !important;
+}
+
+.el-divider__text {
+	color: var(--regular-text);
+	background-color: var(--suggestion-bg-color);
+}
+
+.el-button {
+	--el-button-text-color: var(--regular-text) !important;
+	background-color: var(--base-fill);
+	border: none;
+	&:focus,
+	&:hover {
+		background-color: var(--darker-fill);
+	}
+}
+
+.el-button.is-text {
+	color: var(--theme-color);
+	&:not(.is-disabled):focus,
+	&:not(.is-disabled):hover {
+		background-color: var(--darker-fill);
+	}
 }

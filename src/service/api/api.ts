@@ -1,37 +1,9 @@
 import { NETEASE } from "../index";
-import type {
-	songDetailedType,
-	listBriefType,
-	listDetailedType,
-	lyricType,
-	albumBriefType,
-	albumDetailedType,
-	commentType,
-	resources,
-	suggestionsType,
-} from "@/interface/interface";
-import {
-	personalized_newsong,
-	personalized,
-	recommend_songs,
-	recommend_resource,
-	toplist,
-	user_playlist,
-	lyric_new,
-	search_suggest,
-	album_sublist,
-	playlist_detail,
-	playlist_track_all,
-	album,
-	album_detail_dynamic,
-	comment_new,
-	comment_floor,
-	song_detail,
-} from "./response-handle";
+import * as TYPE from "@/interface/interface";
+import * as HANDLE from "./handle";
 import { RESOURCE } from "@/constant/constant";
 /**
  * @description 获取歌曲的播放url
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e5%b7%b2%e6%94%b6%e8%97%8f%e4%b8%93%e8%be%91%e5%88%97%e8%a1%a8
  */
 export async function getSongUrl(id: string | number): Promise<string> {
 	return await NETEASE.get({
@@ -51,7 +23,7 @@ export async function getSongUrl(id: string | number): Promise<string> {
  * @description 获取歌曲详情
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e6%9b%b2%e8%af%a6%e6%83%85
  */
-export async function getSongsDetail(ids: Array<number>): Promise<Array<songDetailedType>> {
+export async function getSongsDetail(ids: Array<number>): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: "/song/detail",
 		myParams: {
@@ -59,7 +31,7 @@ export async function getSongsDetail(ids: Array<number>): Promise<Array<songDeta
 		},
 		interceptors: {
 			responseInterceptor(res) {
-				return song_detail(res);
+				return HANDLE.song_detail(res);
 			},
 		},
 	});
@@ -69,7 +41,7 @@ export async function getSongsDetail(ids: Array<number>): Promise<Array<songDeta
  * @description 获取歌词
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e9%80%90%e5%ad%97%e6%ad%8c%e8%af%8d
  */
-export async function getLyric(id: string | number): Promise<lyricType> {
+export async function getLyric(id: string | number): Promise<TYPE.lyricType> {
 	return await NETEASE.get({
 		url: `/lyric/new`,
 		myParams: {
@@ -78,7 +50,7 @@ export async function getLyric(id: string | number): Promise<lyricType> {
 		},
 		interceptors: {
 			responseInterceptor: (res) => {
-				return lyric_new(res);
+				return HANDLE.lyric_new(res);
 			},
 		},
 	});
@@ -88,7 +60,9 @@ export async function getLyric(id: string | number): Promise<lyricType> {
  * @description 获取推荐新音乐
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%8e%a8%e8%8d%90%e6%96%b0%e9%9f%b3%e4%b9%90
  */
-export async function getRecommendNewSong(limit: number = 30): Promise<Array<songDetailedType>> {
+export async function getRecommendNewSong(
+	limit: number = 30
+): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: "/personalized/newsong",
 		myParams: {
@@ -96,7 +70,7 @@ export async function getRecommendNewSong(limit: number = 30): Promise<Array<son
 		},
 		interceptors: {
 			responseInterceptor: (res) => {
-				return personalized_newsong(res);
+				return HANDLE.personalized_newsong(res);
 			},
 		},
 	});
@@ -106,7 +80,7 @@ export async function getRecommendNewSong(limit: number = 30): Promise<Array<son
  * @description 获取每日推荐音乐
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%af%8f%e6%97%a5%e6%8e%a8%e8%8d%90%e6%ad%8c%e6%9b%b2
  */
-export async function getRecommendDailySongs(): Promise<Array<songDetailedType>> {
+export async function getRecommendDailySongs(): Promise<Array<TYPE.songDetailedType> | null> {
 	return await NETEASE.get({
 		url: "/recommend/songs",
 		myParams: {
@@ -114,7 +88,7 @@ export async function getRecommendDailySongs(): Promise<Array<songDetailedType>>
 		},
 		interceptors: {
 			responseInterceptor: (res) => {
-				return recommend_songs(res);
+				return HANDLE.recommend_songs(res);
 			},
 		},
 	});
@@ -125,12 +99,12 @@ export async function getRecommendDailySongs(): Promise<Array<songDetailedType>>
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%ad%8c%e5%8d%95
  */
 export async function getMyList(
-	userId: string | number,
+	userId: number,
 	userName: string,
 	returnListType: "all" | "created" | "subscribed" = "all"
-): Promise<Array<listBriefType>> {
+): Promise<Array<TYPE.listBriefType>> {
 	return await await NETEASE.get({
-		url: `/user/playlist`,
+		url: "/user/playlist",
 		myParams: {
 			uid: userId,
 			timeStamp: true,
@@ -140,7 +114,7 @@ export async function getMyList(
 				if (typeof userId === "string") {
 					userId = parseInt(userId);
 				}
-				let r: Array<listBriefType> = user_playlist(res, returnListType, userId);
+				let r: Array<TYPE.listBriefType> = HANDLE.user_playlist(res, returnListType, userId);
 				r[0].name = r[0].name.replace(userName, "我");
 				return r;
 			},
@@ -221,7 +195,7 @@ export async function createList(
  * @description 获取每日推荐歌单
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%af%8f%e6%97%a5%e6%8e%a8%e8%8d%90%e6%ad%8c%e5%8d%95
  */
-export async function getRecommendDailyList(): Promise<Array<listBriefType>> {
+export async function getRecommendDailyList(): Promise<Array<TYPE.listBriefType>> {
 	return await NETEASE.get({
 		url: "/recommend/resource",
 		myParams: {
@@ -229,7 +203,7 @@ export async function getRecommendDailyList(): Promise<Array<listBriefType>> {
 		},
 		interceptors: {
 			responseInterceptor: (res: any) => {
-				return recommend_resource(res);
+				return HANDLE.recommend_resource(res);
 			},
 		},
 	});
@@ -238,12 +212,12 @@ export async function getRecommendDailyList(): Promise<Array<listBriefType>> {
  * @description 推荐歌单
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%8e%a8%e8%8d%90%e6%ad%8c%e5%8d%95
  */
-export async function getRecommendList(): Promise<Array<listBriefType>> {
+export async function getRecommendList(): Promise<Array<TYPE.listBriefType>> {
 	return await NETEASE.get({
 		url: "/personalized",
 		interceptors: {
 			responseInterceptor: (res: any) => {
-				return personalized(res);
+				return HANDLE.personalized(res);
 			},
 		},
 	});
@@ -253,12 +227,12 @@ export async function getRecommendList(): Promise<Array<listBriefType>> {
  * @description 所有榜单
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%89%80%e6%9c%89%e6%a6%9c%e5%8d%95
  */
-export async function getTopList(): Promise<Array<listBriefType>> {
+export async function getTopList(): Promise<Array<TYPE.listBriefType>> {
 	return await NETEASE.get({
 		url: "/toplist",
 		interceptors: {
 			responseInterceptor: (res) => {
-				return toplist(res);
+				return HANDLE.toplist(res);
 			},
 		},
 	});
@@ -352,7 +326,7 @@ export async function getUserInfo(): Promise<{
  * @description 搜索建议
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%90%9c%e7%b4%a2%e5%bb%ba%e8%ae%ae
  */
-export async function getSearchSuggestions(keywords: string): Promise<suggestionsType> {
+export async function getSearchSuggestions(keywords: string): Promise<TYPE.suggestionsType> {
 	return await NETEASE.get({
 		url: "/search/suggest",
 		myParams: {
@@ -360,7 +334,7 @@ export async function getSearchSuggestions(keywords: string): Promise<suggestion
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return search_suggest(res);
+				return HANDLE.search_suggest(res);
 			},
 		},
 	});
@@ -373,7 +347,7 @@ export async function getSearchSuggestions(keywords: string): Promise<suggestion
 export async function getSubscribedAlbum(
 	limit: number = 10,
 	offset: number = 0
-): Promise<{ albumCount: number; albums: Array<albumBriefType> }> {
+): Promise<{ albumCount: number; albums: Array<TYPE.albumBriefType> }> {
 	return await NETEASE.get({
 		url: "/album/sublist",
 		myParams: {
@@ -383,7 +357,7 @@ export async function getSubscribedAlbum(
 		},
 		interceptors: {
 			responseInterceptor(res) {
-				return album_sublist(res);
+				return HANDLE.album_sublist(res);
 			},
 		},
 	});
@@ -393,7 +367,7 @@ export async function getSubscribedAlbum(
  * @description 获取歌单详情
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e8%af%a6%e6%83%85
  * */
-export async function getDetailedList(id: number | string): Promise<listDetailedType> {
+export async function getDetailedList(id: number | string): Promise<TYPE.listDetailedType> {
 	return await NETEASE.get({
 		url: `/playlist/detail`,
 		myParams: {
@@ -403,7 +377,7 @@ export async function getDetailedList(id: number | string): Promise<listDetailed
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return playlist_detail(res);
+				return HANDLE.playlist_detail(res);
 			},
 		},
 	});
@@ -417,7 +391,7 @@ export async function getListPartSong(
 	id: number | string,
 	limit: number = 10,
 	offset: number = 0
-): Promise<Array<songDetailedType>> {
+): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: `/playlist/track/all`,
 		myParams: {
@@ -429,7 +403,7 @@ export async function getListPartSong(
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return playlist_track_all(res);
+				return HANDLE.playlist_track_all(res);
 			},
 		},
 	});
@@ -438,7 +412,7 @@ export async function getListPartSong(
  * @description 获取歌单所有歌曲
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e6%89%80%e6%9c%89%e6%ad%8c%e6%9b%b2
  * */
-export async function getListAllSong(id: number): Promise<Array<songDetailedType>> {
+export async function getListAllSong(id: number): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: `/playlist/track/all`,
 		myParams: {
@@ -448,7 +422,7 @@ export async function getListAllSong(id: number): Promise<Array<songDetailedType
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return playlist_track_all(res);
+				return HANDLE.playlist_track_all(res);
 			},
 		},
 	});
@@ -459,7 +433,7 @@ export async function getListAllSong(id: number): Promise<Array<songDetailedType
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e4%b8%93%e8%be%91%e5%86%85%e5%ae%b9
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e4%b8%93%e8%be%91%e5%8a%a8%e6%80%81%e4%bf%a1%e6%81%af
  * */
-export async function getDetailedAlbum(id: number | string): Promise<albumDetailedType> {
+export async function getDetailedAlbum(id: number | string): Promise<TYPE.albumDetailedType> {
 	const r1 = await NETEASE.get({
 		url: "/album",
 		myParams: {
@@ -468,7 +442,7 @@ export async function getDetailedAlbum(id: number | string): Promise<albumDetail
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return album(res);
+				return HANDLE.album(res);
 			},
 		},
 	});
@@ -481,7 +455,7 @@ export async function getDetailedAlbum(id: number | string): Promise<albumDetail
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return album_detail_dynamic(res);
+				return HANDLE.album_detail_dynamic(res);
 			},
 		},
 	});
@@ -492,7 +466,7 @@ export async function getDetailedAlbum(id: number | string): Promise<albumDetail
 	r1.album.subscribedCount = subscribedCount;
 	r1.album.subscribed = subscribed;
 	r1.album.songCount = r1.songs.length;
-	return r1 as albumDetailedType;
+	return r1 as TYPE.albumDetailedType;
 }
 
 /**
@@ -517,11 +491,11 @@ export async function getListComment(id: string | number, limit: number = 30, of
 export async function getComment(
 	id: string | number,
 	sortType: "推荐" | "热度" | "时间",
-	type: resources,
+	type: TYPE.resources,
 	pageNo: number = 1,
 	pageSize: number = 30,
 	cursor?: number
-): Promise<Array<commentType>> {
+): Promise<Array<TYPE.commentType>> {
 	return await NETEASE.get({
 		url: "/comment/new",
 		myParams: {
@@ -536,7 +510,7 @@ export async function getComment(
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return comment_new(res);
+				return HANDLE.comment_new(res);
 			},
 		},
 	});
@@ -550,7 +524,7 @@ export async function likeComment(
 	resourcesId: number | string,
 	commentId: number | string,
 	isLiked: 1 | 0, //1点赞 0取消点赞
-	type: resources
+	type: TYPE.resources
 ): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/comment/like",
@@ -577,10 +551,10 @@ export async function likeComment(
 export async function getFloorComments(
 	parentCommentId: number | string,
 	resourcesId: number | string,
-	type: resources,
+	type: TYPE.resources,
 	limit: number = 20,
 	time: number | string = ""
-): Promise<Array<commentType>> {
+): Promise<Array<TYPE.commentType>> {
 	return await NETEASE.get({
 		url: "/comment/floor",
 		myParams: {
@@ -593,7 +567,7 @@ export async function getFloorComments(
 		},
 		interceptors: {
 			responseInterceptor(res: any) {
-				return comment_floor(res);
+				return HANDLE.comment_floor(res);
 			},
 		},
 	});
@@ -645,9 +619,9 @@ export async function likeSong(id: number | string, isLiked: boolean = true): Pr
  * @description 喜欢音乐列表
  * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%96%9c%e6%ac%a2%e9%9f%b3%e4%b9%90%e5%88%97%e8%a1%a8
  * */
-export async function getLikedSongsID(uid: number | string): Promise<Array<number>> {
+export async function getLikedSongsID(uid: number): Promise<Array<number>> {
 	return await NETEASE.get({
-		url: "/likelist?uid=32953014",
+		url: "/likelist",
 		myParams: {
 			uid,
 			cookie: true,
@@ -682,6 +656,169 @@ export async function updateList(
 		interceptors: {
 			responseInterceptor(res: any) {
 				return res.body.code === 200 ? true : false;
+			},
+		},
+	});
+}
+
+/**
+ * @description 获取歌手详情
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e6%89%8b%e8%af%a6%e6%83%85
+ * */
+export async function getDetailedArtist(id: number): Promise<TYPE.artistDetailedType> {
+	return {
+		info: await NETEASE.get({
+			url: "/artist/detail",
+			myParams: {
+				id,
+				cookie: true,
+			},
+			interceptors: {
+				responseInterceptor(res: any) {
+					return HANDLE.artist_detail(res);
+				},
+			},
+		}),
+		introduction: await getArtistIntroduction(id),
+	};
+}
+
+/**
+ * @description 获取歌手描述
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e6%89%8b%e6%8f%8f%e8%bf%b0
+ * */
+export async function getArtistIntroduction(id: number): Promise<TYPE.artistIntroductionType> {
+	return await NETEASE.get({
+		url: "/artist/desc",
+		myParams: {
+			id,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return {
+					briefIntroduction: res.briefDesc,
+					item: res.introduction.map((e: any) => {
+						return {
+							title: e.ti,
+							content: e.txt,
+						};
+					}),
+				};
+			},
+		},
+	});
+}
+
+/**
+ * @description 歌手热门 50 首歌曲
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e6%ad%8c%e6%89%8b%e7%83%ad%e9%97%a8-50-%e9%a6%96%e6%ad%8c%e6%9b%b2
+ * */
+export async function getArtistHotSongs(id: number): Promise<TYPE.songDetailedType[]> {
+	return await NETEASE.get({
+		url: "/artist/top/song",
+		myParams: {
+			id,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return HANDLE.artist_top_song(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 获取相似歌手
+ * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e7%9b%b8%e4%bc%bc%e6%ad%8c%e6%89%8b
+ * */
+export async function getSimilarArtists(id: number): Promise<TYPE.artistBriefType[]> {
+	return await NETEASE.get({
+		url: "/simi/artist",
+		myParams: {
+			id,
+			cookie: true,
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.simi_artist(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 收藏的歌手列表
+ * */
+export async function getSubscribedArtists(): Promise<TYPE.artistBriefType[]> {
+	return await NETEASE.get({
+		url: "/artist/sublist",
+		myParams: {
+			cookie: true,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return HANDLE.artist_sublist(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 收藏/取消收藏歌手
+ * */
+export async function subscribeArtist(id: number, operate: boolean): Promise<boolean> {
+	return await NETEASE.get({
+		url: "/artist/sub",
+		myParams: {
+			id,
+			t: operate ? 1 : 0,
+			timeStamp: true,
+			cookie: true,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return res.code === 200 ? true : false;
+			},
+		},
+	});
+}
+
+/**
+ * @description 收藏的歌手列表
+ * */
+export async function getSubscribedArtistsNewSongs(
+	limit: number = 20,
+	before: number = 0
+): Promise<TYPE.SubscribedNewSongsType[]> {
+	return await NETEASE.get({
+		url: "/artist/new/song",
+		myParams: {
+			limit,
+			before: before ? before : "",
+			cookie: true,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return HANDLE.artist_new_song(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 歌手榜
+ * */
+export async function getTopArtists(
+	type: "华语" | "欧美" | "韩国" | "日本" = "华语"
+): Promise<TYPE.artistBriefType[]> {
+	return await NETEASE.get({
+		url: "/toplist/artist",
+		myParams: {
+			type: ["", "华语", "欧美", "韩国", "日本"].indexOf(type),
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.toplist_artist(res);
 			},
 		},
 	});
