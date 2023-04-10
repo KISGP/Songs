@@ -2,6 +2,12 @@
 
 ## 基本介绍
 
+体验地址：[k423.space](k423.space)，由于服务器是香港的所以有时候可能需要VPN:weary:。
+
+
+
+该项目是一个音乐播放网站，后端数据使用的是部署在我的服务器上的[网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)。
+
 使用到的技术：
 
 - vue3
@@ -16,21 +22,11 @@
 
 - TypeScript
 
-- webpack
-
 - animate.css
 
-  
-
-  **✅**
-
-<details>
-    <summary>展开查看</summary>
-    **123**
-</details>
 
 
-  # 运行
+## 项目运行
 
 ### 1.安装依赖
 
@@ -57,6 +53,32 @@ npm run build
 ```
 docsify serve docs
 ```
+
+## 已实现的功能
+
+:heavy_check_mark: 二维码登录
+
+:heavy_check_mark: 新音乐推荐
+
+:heavy_check_mark: 个性化音乐推荐
+
+:heavy_check_mark: 歌单推荐
+
+:heavy_check_mark: 个性化歌单推荐
+
+:heavy_check_mark: 我的歌单
+
+:heavy_check_mark: 歌单排行榜
+
+:heavy_check_mark: 收藏专辑
+
+:heavy_check_mark: 
+
+:heavy_check_mark: 
+
+:heavy_check_mark: 
+
+:heavy_check_mark: 
 
 ## 页面预览
 
