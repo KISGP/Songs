@@ -94,8 +94,6 @@ docsify serve docs
 
 ## 页面预览
 
-我的专辑页面
-
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/3.png?raw=true)
 
 
@@ -105,8 +103,6 @@ docsify serve docs
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/4.png?raw=true)
 
 
-
-歌曲推荐页面
 
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/5.png?raw=true)
 
