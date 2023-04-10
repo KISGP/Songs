@@ -1,6 +1,36 @@
 # songs
 
-## 运行
+## 基本介绍
+
+使用到的技术：
+
+- vue3
+
+- vue-router
+
+- pinia
+
+- axios
+
+- element-plus
+
+- TypeScript
+
+- webpack
+
+- animate.css
+
+  
+
+  **✅**
+
+<details>
+    <summary>展开查看</summary>
+    **123**
+</details>
+
+
+  # 运行
 
 ### 1.安装依赖
 
@@ -26,12 +56,6 @@ npm run build
 
 ```
 docsify serve docs
-```
-
-线上浏览
-
-```
-https://gp-root.github.io/Songs/#/
 ```
 
 ## 页面预览
