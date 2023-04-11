@@ -10,7 +10,7 @@ module.exports = [
 				component: myAlbum,
 			},
 			{
-				// 歌单详情
+				// 详情
 				path: ":id",
 				component: detailedAlbum,
 			},

@@ -23,7 +23,6 @@ const router = useRouter();
 </script>
 <style scoped lang="less">
 @import "style/common.less";
-
 .header {
 	height: 100%;
 	.flex-layout(space-around);
@@ -39,7 +38,8 @@ const router = useRouter();
 		flex-direction: row-reverse;
 
 		& > div {
-			display: inline-block;
+			.flex-centerY();
+			color: var(--secondary-text);
 			&:hover {
 				cursor: pointer;
 				border-radius: 3px;
@@ -54,6 +54,7 @@ const router = useRouter();
 		}
 	}
 	.logo {
+		color: var(--primary-text);
 		.flex-centerX();
 		font-size: 22px;
 		line-height: 6vh;

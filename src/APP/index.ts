@@ -1,9 +1,9 @@
 import { setCssVarS } from "utils/utils-common";
 import { getAll, getItem } from "utils/storage";
-import { useUserStore, useSongStore } from "store/index";
+import { useUserStore, useSongStore, useDataStore } from "store/index";
 import { getUserInfo, getLikedSongsID, getMyList } from "service/api/api";
 import { listBriefType } from "@/interface/interface";
-import { DARK, DARK2, LIGHT, LIGHT2 } from "@/constant/theme";
+import { themeType } from "@/interface/interface";
 
 // 检查用户信息是否完整并挂载到pinia
 export async function fixUserInfo() {
@@ -55,18 +55,6 @@ export async function getMyCreateList() {
 
 // 初始化主题
 export function initTheme() {
-	switch (getItem("theme") || "DARK2") {
-		case "DARK":
-			setCssVarS(DARK);
-			break;
-		case "DARK2":
-			setCssVarS(DARK2);
-			break;
-		case "LIGHT":
-			setCssVarS(LIGHT);
-			break;
-		case "LIGHT2":
-			setCssVarS(LIGHT2);
-			break;
-	}
+	const data = useDataStore();
+	data.updateTheme((getItem("theme") as themeType) || data.theme);
 }

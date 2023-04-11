@@ -1,9 +1,8 @@
 import GPRequest from "./request";
-import { NETEASE_BASEURL } from "../constant/constant";
 
 // axios 网易云实例
 const NETEASE = new GPRequest({
-	baseURL: NETEASE_BASEURL,
+	baseURL: "https://k423.space/Netease",
   interceptors:{
     responseInterceptor(res) {
       return res.data;

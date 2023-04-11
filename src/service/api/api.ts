@@ -1,8 +1,8 @@
 import { NETEASE } from "../index";
 import * as TYPE from "@/interface/interface";
 import * as HANDLE from "./handle";
-import { RESOURCE } from "@/constant/constant";
-import { resolveRef } from "@vueuse/core";
+
+const RESOURCE = ["歌曲", "mv", "歌单", "专辑", "电台节目", "视频", "动态", "电台"];
 /**
  * @description 获取歌曲的播放url
  */

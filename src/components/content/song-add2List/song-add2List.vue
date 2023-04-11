@@ -1,5 +1,5 @@
 <template>
-	<div class="back" ref="Div">
+	<div class="back" ref="Div" v-if="SongStore.myCreatedList.length > 0">
 		<el-scrollbar height="300px">
 			<h5 style="margin-left: 10px">添加到歌单</h5>
 			<div

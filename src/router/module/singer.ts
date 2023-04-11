@@ -13,10 +13,12 @@ module.exports = [
 				path: ":id",
 				component: detailedSinger,
 			},
+			// 关注歌手
 			{
 				path: "subscribe",
 				component: subscribeSinger,
 			},
+			// 热门歌手
 			{
 				path: "hot",
 				component: hotSinger,
@@ -24,10 +26,12 @@ module.exports = [
 					keepAlive: false,
 				},
 			},
+			// 歌手排行榜
 			{
 				path: "top",
 				component: topSinger,
 			},
+			// 全部歌手
 			{
 				path: "all",
 				component: allSinger,

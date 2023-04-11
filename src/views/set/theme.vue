@@ -1,51 +1,26 @@
 <template>
 	<div class="back">
 		<el-space wrap size="large" alignment="flex-start">
-			<div class="pre" style="background-color: #fff" @click="setTheme('LIGHT')">
+			<div class="pre" style="background-color: #fff" @click="store.updateTheme('light')">
 				<span style="color: rgb(48, 49, 51)">浅色</span>
 			</div>
-			<div class="pre" style="background-color: #1b1b1b" @click="setTheme('DARK')">
+			<div class="pre" style="background-color: #1b1b1b" @click="store.updateTheme('dark')">
 				<span style="color: rgb(186, 186, 186)">深色</span>
 			</div>
-			<div class="pre dark2" @click="setTheme('DARK2')">
+			<div class="pre dark2" @click="store.updateTheme('dark2')">
 				<span style="color: rgb(186, 186, 186)">深色图片</span>
 			</div>
-			<div class="pre light2" @click="setTheme('LIGHT2')">
+			<div class="pre light2" @click="store.updateTheme('light2')">
 				<span style="color: rgb(48, 49, 51)">浅色图片</span>
 			</div>
 		</el-space>
-		<div class="save" @click="save">
-			<el-button>保存主题</el-button>
-		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { setItem } from "utils/storage";
-import { setCssVarS } from "utils/utils-common";
-import { DARK, LIGHT, DARK2, LIGHT2, themes } from "@/constant/theme";
+import { useDataStore } from "store/index";
+import { themeType } from "@/interface/interface";
+const store = useDataStore();
 
-let nowTheme: themes;
-const setTheme = (theme: themes) => {
-	switch (theme) {
-		case "LIGHT":
-			setCssVarS(LIGHT);
-			break;
-		case "DARK":
-			setCssVarS(DARK);
-			break;
-		case "DARK2":
-			setCssVarS(DARK2);
-			break;
-		case "LIGHT2":
-			setCssVarS(LIGHT2);
-			break;
-	}
-	nowTheme = theme;
-};
-
-const save = () => {
-	setItem("theme", nowTheme);
-};
 </script>
 <style scoped lang="less">
 .back {

@@ -225,3 +225,5 @@ export interface SubscribedNewSongsType {
 	};
 	songs: songDetailedType[];
 }
+
+export type themeType = "light" | "light2" | "dark" | "dark2";

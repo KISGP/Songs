@@ -26,6 +26,7 @@
 			<template #title>
 				<el-icon><Setting /></el-icon>
 			</template>
+			<el-menu-item index="/set/theme">基本设置</el-menu-item>
 			<el-menu-item index="/set/theme">主题设置</el-menu-item>
 			<el-menu-item index="/set/data">数据来源</el-menu-item>
 		</el-sub-menu>

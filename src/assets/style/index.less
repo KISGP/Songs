@@ -1,21 +1,28 @@
-html,
-body {
-	margin: 0;
-	padding: 0;
+@import "./theme/dark.less";
+@import "./theme/light.less";
+
+:root {
+	--header-height: 6vh;
+	--height-content: 94vh;
+	--height-player: 0vh;
 }
+
 html {
 	caret-color: transparent;
 	font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
 		"微软雅黑", Arial, sans-serif;
-	color: var(--primary-text);
-}
-
-input,
-textarea {
-	outline: none;
-	caret-color: auto;
-	border: none;
-	background-color: transparent;
+	& > body {
+		color: var(--primary-text);
+		margin: 0;
+		padding: 0;
+	}
+	input,
+	textarea {
+		outline: none;
+		caret-color: auto;
+		border: none;
+		background-color: transparent;
+	}
 }
 
 .table-row {
@@ -46,14 +53,12 @@ textarea {
 		background-color: var(--menu-bg-color-hover);
 	}
 }
-
 .el-sub-menu__title {
 	color: var(--primary-text) !important;
 	&:hover {
 		background-color: var(--menu-bg-color-hover) !important;
 	}
 }
-
 .el-popper.is-light {
 	background-color: var(--light-fill);
 	border: 1px solid var(--light-fill);

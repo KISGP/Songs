@@ -2,6 +2,7 @@
 	<div class="min">
 		<el-row :gutter="20">
 			<el-col :span="4">
+				<!-- 歌曲图片 -->
 				<div class="left">
 					<div class="song-img">
 						<div class="cover" @click="emits('maximize')">
@@ -55,6 +56,7 @@
 								</span>
 							</div>
 							<slot name="progress"> </slot>
+							<!-- 歌词 -->
 							<div class="lyric">
 								<span>[{{ props.lyric }}] </span>
 							</div>
@@ -104,6 +106,7 @@
 		</el-row>
 	</div>
 
+	<!-- 音量调节 -->
 	<transition name="songAdd2List" v-show="volume.visible">
 		<div class="volume-back">
 			<div>
@@ -122,10 +125,12 @@
 		</div>
 	</transition>
 
+	<!-- 添加到歌单BOX -->
 	<transition name="songAdd2List" v-show="add2list.visible">
 		<songAdd2List @add="changeAdd2listVisible" :left="add2list.DivLeft" />
 	</transition>
 
+	<!-- 列表 -->
 	<el-drawer v-model="list.visible" :with-header="false">
 		<el-tabs v-model="activeList" class="demo-tabs">
 			<el-tab-pane label="播放列表" name="播放列表">

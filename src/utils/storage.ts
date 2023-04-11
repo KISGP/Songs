@@ -1,3 +1,6 @@
+import { themeType } from "@/interface/interface";
+
+// 存储数据的key
 type localStorageType = "cookie" | "id" | "name" |"theme";
 
 // 判断浏览器是否支持 LocalStorage 存储

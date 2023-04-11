@@ -2,6 +2,7 @@ const myList = () => import("@/views/list/my.vue");
 const recommendList = () => import("@/views/list/recommend.vue");
 const topList = () => import("@/views/list/top.vue");
 const detailedList = () => import("@/views/list/detailed.vue");
+
 module.exports = [
 	{
 		path: "/list",
