@@ -106,7 +106,9 @@ const hotSongs = ref<Array<songDetailedType>>();
 onBeforeMount(async () => {
 	artistData.value = await getDetailedArtist(id);
 	hotSongs.value = await getArtistHotSongs(id);
-	similarArtists.value = await getSimilarArtists(id);
+	getSimilarArtists(id).then((res) => {
+		similarArtists.value = res;
+	});
 });
 
 const activePage = ref<string>("hot");

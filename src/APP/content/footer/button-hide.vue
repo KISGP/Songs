@@ -36,7 +36,7 @@ const hideOrShow = () => {
 		transform: translateY(-50%);
 		color: #444444;
 		&:hover {
-			color: var(--them-color);
+			color: var(--theme-color);
 		}
 	}
 }

@@ -30,7 +30,9 @@ const list: Ref<Array<listBriefType>> = ref([]);
 const dailyList: Ref<Array<listBriefType>> = ref([]);
 onMounted(async () => {
 	list.value = await getRecommendList();
-	dailyList.value = await getRecommendDailyList();
+	 getRecommendDailyList().then((res)=>{
+		dailyList.value = res;
+	});
 });
 const activePage: Ref<string> = ref("list");
 </script>

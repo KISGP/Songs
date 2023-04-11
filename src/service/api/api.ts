@@ -79,7 +79,6 @@ export async function getRecommendNewSong(
 
 /**
  * @description 获取每日推荐音乐
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%af%8f%e6%97%a5%e6%8e%a8%e8%8d%90%e6%ad%8c%e6%9b%b2
  */
 export async function getRecommendDailySongs(): Promise<Array<TYPE.songDetailedType> | null> {
 	return await NETEASE.get({
@@ -97,7 +96,6 @@ export async function getRecommendDailySongs(): Promise<Array<TYPE.songDetailedT
 
 /**
  * @description 获取用户歌单(包含收藏和创建)
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e7%94%a8%e6%88%b7%e6%ad%8c%e5%8d%95
  */
 export async function getMyList(
 	userId: number,

@@ -28,7 +28,9 @@ const newSongs = ref<Array<songDetailedType>>([]);
 const dailySongs = ref<Array<songDetailedType> | null>([]);
 onMounted(async () => {
 	newSongs.value = await getRecommendNewSong();
-	dailySongs.value = await getRecommendDailySongs();
+	getRecommendDailySongs().then((res) => {
+		dailySongs.value = res;
+	});
 });
 </script>
 <style scoped lang="less">

@@ -67,7 +67,7 @@ import { getMyList, deleteList, createList } from "service/api/api";
 import { listBriefType } from "@/interface/interface";
 import listCard from "@/components/content/list-card/list-card.vue";
 import { showNotification } from "utils/utils-content";
-import type { FormInstance, FormRules } from "element-plus";
+import type { FormRules } from "element-plus";
 const store = useUserStore();
 
 onMounted(async () => {

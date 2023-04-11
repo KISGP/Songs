@@ -42,6 +42,9 @@ const store = useDataStore();
 			right: 20px;
 			bottom: 10px;
 			backdrop-filter: blur(10px);
+			border-radius: 7px;
+			overflow: hidden;
+			padding: 3px 2px;
 		}
 	}
 	.dark2 {
