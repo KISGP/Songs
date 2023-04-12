@@ -9,11 +9,19 @@ module.exports = [
 				// 歌曲推荐
 				path: "recommend",
 				component: recommendSong,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 			{
 				// 关注新歌
 				path: "subscribed",
 				component: subscribedNewSong,
+				meta: {
+					requireLogin: true,
+					searchVisible: true,
+				},
 			},
 		],
 	},

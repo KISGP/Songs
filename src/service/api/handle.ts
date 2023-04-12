@@ -5,7 +5,28 @@ import { transformTimeStamp, handlePeopleCount } from "utils/utils-common";
 import { getArtistsName, getArtistsArray } from "utils/utils-content";
 import * as TYPE from "@/interface/interface";
 
-export function personalized_newsong(res: any): Array<TYPE.songDetailedType> {
+function _handle1(e: any, artistsStr: string) {
+	return {
+		song: {
+			id: e.id,
+			name: e.name,
+			alia: e.alia,
+			cover: e.al.picUrl,
+			artistsStr,
+		},
+		artists: {
+			artistsStr,
+			artists: e.ar,
+		},
+		album: {
+			id: e.al.id,
+			name: e.al.name,
+			cover: e.al.picUrl,
+		},
+	};
+}
+
+export function personalized_newsong(res: any): TYPE.songDetailedType[] {
 	return res.result.map((e: any) => {
 		let artistsStr = getArtistsName(e.song.artists, null);
 		return {
@@ -28,26 +49,10 @@ export function personalized_newsong(res: any): Array<TYPE.songDetailedType> {
 	});
 }
 
-export function recommend_songs(res: any): Array<TYPE.songDetailedType> {
+export function recommend_songs(res: any): TYPE.songDetailedType[] {
 	return res.data.dailySongs.map((e: any) => {
 		let artistsStr = getArtistsName(e.ar, null);
-		return {
-			song: {
-				id: e.id,
-				name: e.name,
-				cover: e.al.picUrl,
-				artistsStr,
-			},
-			artists: {
-				artistsStr,
-				artists: getArtistsArray(e.ar),
-			},
-			album: {
-				id: e.al.id,
-				name: e.al.name,
-				cover: e.al.picUrl,
-			},
-		};
+		return _handle1(e, artistsStr);
 	});
 }
 
@@ -230,52 +235,16 @@ export function playlist_detail(res: any): TYPE.listDetailedType {
 	};
 }
 
-export function playlist_track_all(res: any): Array<TYPE.songDetailedType> {
+export function playlist_track_all(res: any): TYPE.songDetailedType[] {
 	return res.songs.map((e: any) => {
-		const artistsStr = getArtistsName(e.ar);
-		return {
-			song: {
-				id: e.id,
-				name: e.name,
-				cover: e.al.picUrl,
-				artistsStr: artistsStr,
-				url: "",
-			},
-			artists: {
-				artistsStr: artistsStr,
-				artists: getArtistsArray(e.ar),
-			},
-			album: {
-				id: e.al.id,
-				name: e.al.name,
-				cover: e.al.picUrl,
-			},
-		};
+		return _handle1(e, getArtistsName(e.ar, null));
 	});
 }
 
 export function album(res: any): TYPE.albumDetailedType {
 	return {
 		songs: res.songs.map((e: any) => {
-			let artistsStr = getArtistsName(e.ar, null);
-			return {
-				song: {
-					id: e.id,
-					name: e.name,
-					alia: e.alia,
-					cover: e.al.picUrl,
-					artistsStr,
-				},
-				artists: {
-					artistsStr,
-					artists: e.ar,
-				},
-				album: {
-					id: e.al.id,
-					name: e.al.name,
-					cover: e.al.picUrl,
-				},
-			};
+			return _handle1(e, getArtistsName(e.ar, null));
 		}),
 		album: {
 			id: res.album.id,
@@ -347,7 +316,7 @@ export function comment_floor(res: any): Array<TYPE.commentType> {
 	});
 }
 
-export function song_detail(res: any): Array<TYPE.songDetailedType> {
+export function song_detail(res: any): TYPE.songDetailedType[] {
 	return res.songs.map((e: any) => {
 		const artistsStr = getArtistsName(e.ar, null);
 		return {
@@ -387,7 +356,7 @@ export function artist_detail(res: any): TYPE.artistInfoType {
 	};
 }
 
-export function artist_top_song(res: any): Array<TYPE.songDetailedType> {
+export function artist_top_song(res: any): TYPE.songDetailedType[] {
 	return song_detail(res);
 }
 
@@ -449,26 +418,7 @@ export function artist_new_song(res: any): Array<TYPE.SubscribedNewSongsType> {
 				cover: e.blockTitle.imgUrl,
 			},
 			songs: e.songLists.map((e: any) => {
-				const artistsStr = getArtistsName(e.ar, null);
-				return {
-					song: {
-						id: e.id,
-						name: e.name,
-						cover: e.al.picUrl,
-						artistsStr: artistsStr,
-						alia: e.alia,
-						url: "",
-					},
-					artists: {
-						artistsStr: artistsStr,
-						artists: getArtistsArray(e.ar),
-					},
-					album: {
-						id: e.al.id,
-						name: e.al.name,
-						cover: e.al.picUrl,
-					},
-				};
+				return _handle1(e, getArtistsName(e.ar, null));
 			}),
 		};
 	});
@@ -504,14 +454,20 @@ export function top_artists(res: any): {
 
 export function artist_list(res: any): { more: boolean; artists: TYPE.artistBriefType[] } {
 	return {
-		more:res.more,
-		artists:res.artists.map((e: any) => {
+		more: res.more,
+		artists: res.artists.map((e: any) => {
 			return {
 				id: e.id,
 				name: e.name,
-				cover: e.picUrl+ "?param=150y150",
+				cover: e.picUrl + "?param=150y150",
 				alias: e.alias,
 			};
-		})
-	}
+		}),
+	};
+}
+
+export function artist_songs(res: any): TYPE.songDetailedType[] {
+	return res.songs.map((e: any) => {
+		return _handle1(e, getArtistsName(e.ar, null));
+	});
 }

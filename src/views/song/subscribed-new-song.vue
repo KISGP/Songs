@@ -1,46 +1,39 @@
 <template>
-	<el-scrollbar>
-		<div class="back">
-			<el-timeline>
-				<el-timeline-item
-					v-for="item in data"
-					:timestamp="item.publishDate + ` ` + item.type + '上线'"
-					placement="top"
-				>
-					<div class="card-back">
-						<div class="head">
-							<el-image class="cover" :src="item.artist.cover" fit="cover" loading="lazy" />
-							<div class="message" @click="router.push(`/singer/${item.artist.id}`)">
-								<span>{{ item.artist.name }}</span>
+	<div class="back">
+		<el-timeline>
+			<el-timeline-item
+				v-for="item in data"
+				:timestamp="item.publishDate + ` ` + item.type + '上线'"
+				placement="top"
+			>
+				<div class="card-back">
+					<div class="head">
+						<el-image class="cover" :src="item.artist.cover" fit="cover" loading="lazy" />
+						<div class="message" @click="router.push(`/singer/${item.artist.id}`)">
+							<span>{{ item.artist.name }}</span>
+						</div>
+					</div>
+					<el-space wrap alignment="flex-start">
+						<div v-if="item.type === '单曲'" class="card" v-for="e in item.songs" @click="play(e)">
+							<el-image class="img" :src="e.song.cover" fit="cover" lazy />
+							<div class="data">
+								<span>{{ e.song.name }}</span>
+								<span>
+									<i v-for="alia in e.song.alia">{{ alia }}</i>
+								</span>
 							</div>
 						</div>
-						<el-space wrap alignment="flex-start">
-							<div
-								v-if="item.type === '单曲'"
-								class="card"
-								v-for="e in item.songs"
-								@click="play(e)"
-							>
-								<el-image class="img" :src="e.song.cover" fit="cover" lazy />
-								<div class="data">
-									<span>{{ e.song.name }}</span>
-									<span>
-										<i v-for="alia in e.song.alia">{{ alia }}</i>
-									</span>
-								</div>
+						<div v-else class="card" @click="router.push(`/album/${item.resourceId}`)">
+							<el-image class="img" :src="item.resourceIdCover" fit="cover" lazy />
+							<div class="data">
+								<span>{{ item.resourceName }}</span>
 							</div>
-							<div v-else class="card" @click="router.push(`/album/${item.resourceId}`)">
-								<el-image class="img" :src="item.resourceIdCover" fit="cover" lazy />
-								<div class="data">
-									<span>{{ item.resourceName }}</span>
-								</div>
-							</div>
-						</el-space>
-					</div>
-				</el-timeline-item>
-			</el-timeline>
-		</div>
-	</el-scrollbar>
+						</div>
+					</el-space>
+				</div>
+			</el-timeline-item>
+		</el-timeline>
+	</div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";

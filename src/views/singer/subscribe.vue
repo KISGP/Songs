@@ -1,17 +1,18 @@
 <template>
-	<el-scrollbar>
-		<div class="back">
-			<h2>关注歌手</h2>
-			<el-space wrap :size="50" alignment="flex-start">
-				<div class="artist" v-for="item in subscribeArtists">
-					<artist-card style="border-right: 1px solid rgba(60, 60, 60, 0.6);" :data="item"></artist-card>
-					<el-icon class="del" size="20" @click.stop="changeDialogVisible(item)">
-						<MoreFilled />
-					</el-icon>
-				</div>
-			</el-space>
-		</div>
-	</el-scrollbar>
+	<div class="back">
+		<h2>关注歌手</h2>
+		<el-space wrap :size="50" alignment="flex-start">
+			<div class="artist" v-for="item in subscribeArtists">
+				<artist-card
+					style="border-right: 1px solid rgba(60, 60, 60, 0.6)"
+					:data="item"
+				></artist-card>
+				<el-icon class="del" size="20" @click.stop="changeDialogVisible(item)">
+					<MoreFilled />
+				</el-icon>
+			</div>
+		</el-space>
+	</div>
 	<el-dialog v-model="dialogVisible" title="取消关注" width="30%">
 		<div class="dialog">
 			<p>取消关注后对方将从你的关注列表移除</p>

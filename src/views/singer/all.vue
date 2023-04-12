@@ -1,49 +1,47 @@
 <template>
-	<el-scrollbar>
-		<div
-			class="back"
-			v-infinite-scroll="load"
-			:infinite-scroll-immediate="false"
-			:infinite-scroll-delay="1000"
-		>
-			<h2>全部歌手</h2>
-			<div class="filter">
-				<span>类型：</span>
-				<el-radio-group v-model="filter.type" @change="change">
-					<el-radio :label="-1" border>全部</el-radio>
-					<el-radio :label="1" border>男歌手</el-radio>
-					<el-radio :label="2" border>女歌手</el-radio>
-					<el-radio :label="3" border>乐队</el-radio>
-				</el-radio-group>
-			</div>
-			<div class="filter">
-				<span>地区：</span>
-				<el-radio-group v-model="filter.area" @change="change">
-					<el-radio :label="-1" border>全部</el-radio>
-					<el-radio :label="7" border>华语</el-radio>
-					<el-radio :label="96" border>欧美</el-radio>
-					<el-radio :label="8" border>日本</el-radio>
-					<el-radio :label="16" border>韩国</el-radio>
-					<el-radio :label="0" border>其他</el-radio>
-				</el-radio-group>
-			</div>
-			<div class="filter">
-				<span>首字母索引：</span>
-				<div style="max-width: 100px">
-					<el-input
-						v-model="filter.initial"
-						size="small"
-						maxlength="1"
-						@input="check"
-						@change="change"
-					/>
-				</div>
-			</div>
-			<el-space style="margin-top: 30px" wrap :size="50" alignment="flex-start">
-				<artist-card v-for="item in data" :key="item.id" :data="item"></artist-card>
-			</el-space>
+	<div
+		class="back"
+		v-infinite-scroll="load"
+		:infinite-scroll-immediate="false"
+		:infinite-scroll-delay="1000"
+	>
+		<h2>全部歌手</h2>
+		<div class="filter">
+			<span>类型：</span>
+			<el-radio-group v-model="filter.type" @change="change">
+				<el-radio :label="-1" border>全部</el-radio>
+				<el-radio :label="1" border>男歌手</el-radio>
+				<el-radio :label="2" border>女歌手</el-radio>
+				<el-radio :label="3" border>乐队</el-radio>
+			</el-radio-group>
 		</div>
-	</el-scrollbar>
+		<div class="filter">
+			<span>地区：</span>
+			<el-radio-group v-model="filter.area" @change="change">
+				<el-radio :label="-1" border>全部</el-radio>
+				<el-radio :label="7" border>华语</el-radio>
+				<el-radio :label="96" border>欧美</el-radio>
+				<el-radio :label="8" border>日本</el-radio>
+				<el-radio :label="16" border>韩国</el-radio>
+				<el-radio :label="0" border>其他</el-radio>
+			</el-radio-group>
+		</div>
+		<div class="filter">
+			<span>首字母索引：</span>
+			<div style="max-width: 100px">
+				<el-input
+					v-model="filter.initial"
+					size="small"
+					maxlength="1"
+					@input="check"
+					@change="change"
+				/>
+			</div>
+		</div>
+		<el-space style="margin-top: 30px" wrap :size="50" alignment="flex-start">
+			<artist-card v-for="item in data" :key="item.id" :data="item"></artist-card>
+		</el-space>
+	</div>
 </template>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";

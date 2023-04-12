@@ -7,6 +7,10 @@ module.exports = [
 			{
 				path: "theme",
 				component: themeSet,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 			{
 				path: "data",

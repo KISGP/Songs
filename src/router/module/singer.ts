@@ -12,29 +12,46 @@ module.exports = [
 				// 歌手详情
 				path: ":id",
 				component: detailedSinger,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 			// 关注歌手
 			{
 				path: "subscribe",
 				component: subscribeSinger,
+				meta: {
+					requireLogin: true,
+					searchVisible: true,
+				},
 			},
 			// 热门歌手
 			{
 				path: "hot",
 				component: hotSinger,
 				meta: {
-					keepAlive: false,
+					requireLogin: false,
+					searchVisible: true,
 				},
 			},
 			// 歌手排行榜
 			{
 				path: "top",
 				component: topSinger,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 			// 全部歌手
 			{
 				path: "all",
 				component: allSinger,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 		],
 	},

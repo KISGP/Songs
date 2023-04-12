@@ -1,20 +1,18 @@
 <template>
-	<el-scrollbar>
-		<el-tabs v-model="activePage" class="tabs">
-			<el-tab-pane name="new">
-				<template #label>
-					<span class="tabs-tittle">新音乐</span>
-				</template>
-				<songs-table :songs="newSongs" />
-			</el-tab-pane>
-			<el-tab-pane name="daily">
-				<template #label>
-					<span class="tabs-tittle">每日推荐</span>
-				</template>
-				<songs-table v-if="dailySongs" :songs="dailySongs" />
-			</el-tab-pane>
-		</el-tabs>
-	</el-scrollbar>
+	<el-tabs v-model="activePage" class="tabs">
+		<el-tab-pane name="new">
+			<template #label>
+				<span class="tabs-tittle">新音乐</span>
+			</template>
+			<songs-table :songs="newSongs" />
+		</el-tab-pane>
+		<el-tab-pane name="daily">
+			<template #label>
+				<span class="tabs-tittle">每日推荐</span>
+			</template>
+			<songs-table v-if="dailySongs" :songs="dailySongs" />
+		</el-tab-pane>
+	</el-tabs>
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";

@@ -1,9 +1,7 @@
 <template>
-	<el-scrollbar>
-		<div class="back">
-			<list-card-group :list="topList" />
-		</div>
-	</el-scrollbar>
+	<div class="back">
+		<list-card-group :list="topList" />
+	</div>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";

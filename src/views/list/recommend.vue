@@ -1,5 +1,4 @@
 <template>
-	<el-scrollbar>
 		<el-tabs v-model="activePage" class="tabs">
 			<el-tab-pane name="list">
 				<template #label>
@@ -18,7 +17,6 @@
 				</div>
 			</el-tab-pane>
 		</el-tabs>
-	</el-scrollbar>
 </template>
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";

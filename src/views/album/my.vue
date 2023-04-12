@@ -1,26 +1,24 @@
 <template>
-	<el-scrollbar>
-		<div
-			class="back"
-			v-infinite-scroll="load"
-			:infinite-scroll-immediate="false"
-			:infinite-scroll-delay="1000"
-		>
-			<div class="head">
-				<h2>我的专辑</h2>
-				<span><i>含收藏及购买专辑</i></span>
-			</div>
-			<el-space wrap :size="50" alignment="flex-start">
-				<div class="card" v-for="item in myAlbums.albums" :key="item.id">
-					<albumCard @click="to(item.id)">
-						<el-image class="img" :src="item.cover" fit="cover" loading="lazy" />
-					</albumCard>
-					<span class="name" :title="item.name">{{ item.name }}</span>
-					<span class="artist" :title="item.artists.artistsStr">{{ item.artists.artistsStr }}</span>
-				</div>
-			</el-space>
+	<div
+		class="back"
+		v-infinite-scroll="load"
+		:infinite-scroll-immediate="false"
+		:infinite-scroll-delay="1000"
+	>
+		<div class="head">
+			<h2>我的专辑</h2>
+			<span><i>含收藏及购买专辑</i></span>
 		</div>
-	</el-scrollbar>
+		<el-space wrap :size="50" alignment="flex-start">
+			<div class="card" v-for="item in myAlbums.albums" :key="item.id">
+				<albumCard @click="to(item.id)">
+					<el-image class="img" :src="item.cover" fit="cover" loading="lazy" />
+				</albumCard>
+				<span class="name" :title="item.name">{{ item.name }}</span>
+				<span class="artist" :title="item.artists.artistsStr">{{ item.artists.artistsStr }}</span>
+			</div>
+		</el-space>
+	</div>
 </template>
 <script setup lang="ts">
 import { ref, Ref, onMounted } from "vue";

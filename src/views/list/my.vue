@@ -1,38 +1,36 @@
 <template>
-	<el-scrollbar>
-		<div class="back">
-			<div class="head">
-				<el-row>
-					<el-col :span="5"><span>我的歌单</span></el-col>
-					<el-col :span="8" :offset="11">
-						<el-button text @click="changeVisible">新建歌单</el-button>
-						<el-button :text="!deleting" @click="changeDeleting" :type="buttonType">
-							删除歌单
-						</el-button>
-						<el-popconfirm
-							title="请确认是否删除全部歌单"
-							confirm-button-text="确认"
-							cancel-button-text="取消"
-							confirm-button-type="danger"
-							@confirm="deleteAllList"
-						>
-							<template #reference>
-								<el-button text>删除所有歌单</el-button>
-							</template>
-						</el-popconfirm>
-					</el-col>
-				</el-row>
-			</div>
-			<div class="content">
-				<el-space wrap size="large" alignment="flex-start">
-					<div v-for="(item, index) in list" :class="{ card: deleting }" :key="item.id">
-						<div class="cover" @click="deleteOneList(index)">删除该歌单</div>
-						<list-card :list="item" />
-					</div>
-				</el-space>
-			</div>
+	<div class="back">
+		<div class="head">
+			<el-row>
+				<el-col :span="5"><span>我的歌单</span></el-col>
+				<el-col :span="8" :offset="11">
+					<el-button text @click="changeVisible">新建歌单</el-button>
+					<el-button :text="!deleting" @click="changeDeleting" :type="buttonType">
+						删除歌单
+					</el-button>
+					<el-popconfirm
+						title="请确认是否删除全部歌单"
+						confirm-button-text="确认"
+						cancel-button-text="取消"
+						confirm-button-type="danger"
+						@confirm="deleteAllList"
+					>
+						<template #reference>
+							<el-button text>删除所有歌单</el-button>
+						</template>
+					</el-popconfirm>
+				</el-col>
+			</el-row>
 		</div>
-	</el-scrollbar>
+		<div class="content">
+			<el-space wrap size="large" alignment="flex-start">
+				<div v-for="(item, index) in list" :class="{ card: deleting }" :key="item.id">
+					<div class="cover" @click="deleteOneList(index)">删除该歌单</div>
+					<list-card :list="item" />
+				</div>
+			</el-space>
+		</div>
+	</div>
 	<el-dialog v-model="createBoxVisible" title="新建歌单" align-center width="30%">
 		<el-form :model="form" ref="ruleFormRef" :rules="rules">
 			<el-form-item label="歌单名称" prop="name">

@@ -889,3 +889,25 @@ export async function getFilteredArtist(
 		},
 	});
 }
+
+export async function getArtistAllSongs(
+	id: number,
+	order: "hot" | "time" = "hot",
+	offset: number = 0,
+	limit: number = 30
+): Promise<TYPE.songDetailedType[]> {
+	return await NETEASE.get({
+		url: "/artist/songs",
+		myParams: {
+			id,
+			order,
+			limit,
+			offset
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.artist_songs(res);
+			},
+		},
+	});
+}

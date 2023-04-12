@@ -4,7 +4,7 @@
 			<span class="logo">Songs</span>
 		</div>
 		<div>
-			<search />
+			<search v-show="store.searchVisible"/>
 		</div>
 		<div>
 			<div>
@@ -17,9 +17,11 @@
 	</div>
 </template>
 <script setup lang="ts">
+import { useDataStore } from "store/index";
 import { useRouter } from "vue-router";
 import search from "components/content/search-input/index.vue";
 const router = useRouter();
+const store = useDataStore();
 </script>
 <style scoped lang="less">
 @import "style/common.less";

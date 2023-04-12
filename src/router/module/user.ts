@@ -4,16 +4,24 @@ module.exports = [
 	{
 		path: "/user",
 		children: [
-      {
+			{
 				// 用户主页
-        path: ":id",
+				path: ":id",
 				component: homeUser,
-      },
+				meta: {
+					requireLogin: true,
+					searchVisible: true,
+				},
+			},
 			{
 				// 登录
 				path: "login",
 				component: loginUser,
-			}
+				meta: {
+					requireLogin: false,
+					searchVisible: false,
+				},
+			},
 		],
 	},
 ];

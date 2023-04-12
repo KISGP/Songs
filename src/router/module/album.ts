@@ -8,11 +8,19 @@ module.exports = [
 				// 我的专辑
 				path: "my",
 				component: myAlbum,
+				meta: {
+					requireLogin: true,
+					searchVisible: true,
+				},
 			},
 			{
 				// 详情
 				path: ":id",
 				component: detailedAlbum,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+				},
 			},
 		],
 	},

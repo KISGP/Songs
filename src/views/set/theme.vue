@@ -18,9 +18,7 @@
 </template>
 <script setup lang="ts">
 import { useDataStore } from "store/index";
-import { themeType } from "@/interface/interface";
 const store = useDataStore();
-
 </script>
 <style scoped lang="less">
 .back {
@@ -48,10 +46,10 @@ const store = useDataStore();
 		}
 	}
 	.dark2 {
-		background-image: url(../../assets/img/dark.png);
+		background-image: url(../../assets/img/dark-pre.png);
 	}
 	.light2 {
-		background-image: url(../../assets/img/light.jpg);
+		background-image: url(../../assets/img/light-pre.png);
 	}
 	.save {
 		margin: 20px;

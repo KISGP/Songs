@@ -9,12 +9,14 @@
 				<el-aside class="layout-menu"><menu-bar /></el-aside>
 				<!-- 内容 -->
 				<el-main class="layout-content">
-					<router-view v-slot="{ Component }" :key="$route.fullPath">
-						<keep-alive>
-							<component :is="Component" v-if="$route.meta.keepAlive" />
-						</keep-alive>
-						<component :is="Component" v-if="!$route.meta.keepAlive" />
-					</router-view>
+					<el-scrollbar ref="eScrollBar">
+						<router-view v-slot="{ Component }" :key="$route.fullPath">
+							<keep-alive>
+								<component :is="Component" v-if="$route.meta.keepAlive" />
+							</keep-alive>
+							<component :is="Component" v-if="!$route.meta.keepAlive" />
+						</router-view>
+					</el-scrollbar>
 				</el-main>
 			</el-container>
 			<footer-bar class="layout-footer" />
@@ -23,20 +25,22 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useSongStore } from "store/index";
+import { onMounted, ref } from "vue";
+import { useSongStore, useDataStore} from "store/index";
 import { fixUserInfo, getLikedSongs, getMyCreateList, initTheme } from "./index";
 import headerBar from "./content/header/index.vue";
 import menuBar from "./content/menu/index.vue";
 import footerBar from "./content/footer/index.vue";
 import hiddenBtn from "./content/footer/button-hide.vue";
 const SongStore = useSongStore();
-
+const DataStore = useDataStore();
+const eScrollBar = ref();
 onMounted(async () => {
 	await fixUserInfo();
 	getLikedSongs();
 	getMyCreateList();
 	initTheme();
+	DataStore.init_eScrollBar(eScrollBar);
 	document.addEventListener("visibilitychange", function () {
 		if (document.visibilityState === "visible") {
 			document.title = "Song";

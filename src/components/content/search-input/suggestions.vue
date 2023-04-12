@@ -74,11 +74,12 @@ const playSong = async (id: number) => {
 	background-color: var(--suggestion-bg-color);
 	border-radius: 6px;
 	box-shadow: var(--el-box-shadow-lighter);
+	font-size: 0.9rem;
 	.suggestion-item {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 5px 15px;
+		padding: 2px 15px;
 		& > span {
 			width: 50%;
 			overflow: hidden;

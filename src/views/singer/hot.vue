@@ -1,17 +1,15 @@
 <template>
-	<el-scrollbar>
-		<div
-			class="back"
-			v-infinite-scroll="load"
-			:infinite-scroll-immediate="false"
-			:infinite-scroll-delay="1000"
-		>
-			<h2>热门歌手</h2>
-			<el-space wrap :size="50" alignment="flex-start">
-				<artist-card v-for="(item, index) in hot" :key="item.id" :data="item" :top="index" />
-			</el-space>
-		</div>
-	</el-scrollbar>
+	<div
+		class="back"
+		v-infinite-scroll="load"
+		:infinite-scroll-immediate="false"
+		:infinite-scroll-delay="1000"
+	>
+		<h2>热门歌手</h2>
+		<el-space wrap :size="50" alignment="flex-start">
+			<artist-card v-for="(item, index) in hot" :key="item.id" :data="item" :top="index" />
+		</el-space>
+	</div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
