@@ -1,8 +1,9 @@
 <template>
-	<div class="artists" v-for="(item, index) in props.artists">
+	<div class="artists" v-for="(item, index) in props.artists?.slice(0, maxArtists)">
 		<span @click.stop="to(item.id)" class="artist"> {{ item.name }}</span>
-		<span>{{ index < props.artists!.length - 1 ? " / " : "" }}</span>
+		<span>{{ index < Math.min(maxArtists, artists?.length as number) - 1 ? " / " : "" }}</span>
 	</div>
+	<span v-if="maxArtists < (artists?.length as number)"> ......</span>
 </template>
 <script setup lang="ts">
 import { PropType } from "vue";
@@ -13,6 +14,11 @@ const props = defineProps({
 	artists: {
 		type: Array as PropType<Array<artistType>>,
 		require: true,
+	},
+	maxArtists: {
+		type: Number as PropType<number>,
+		require: false,
+		default: 6,
 	},
 });
 

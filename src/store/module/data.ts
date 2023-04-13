@@ -9,6 +9,7 @@ type stateType = {
 	eScrollbar: InstanceType<typeof ElScrollbar> | null;
 	scrollTop: number;
 	searchVisible: boolean;
+	menuVisible: boolean;
 };
 
 export const useDataStore = defineStore("DataStore", {
@@ -18,6 +19,7 @@ export const useDataStore = defineStore("DataStore", {
 			eScrollbar: null,
 			scrollTop: 0,
 			searchVisible: true,
+			menuVisible: true,
 		};
 	},
 	getters: {},
@@ -61,6 +63,12 @@ export const useDataStore = defineStore("DataStore", {
 		 * */
 		update_searchVisible() {
 			this.searchVisible = !this.searchVisible;
+		},
+		/**
+		 * @description 修改菜单的可见性
+		 * */
+		update_menuVisible() {
+			this.menuVisible = !this.menuVisible;
 		},
 	},
 });

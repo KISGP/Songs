@@ -1,11 +1,13 @@
 <template>
 	<div class="switch-box" @click="hideOrShow">
-		<div class="switch">
-			<el-icon size="2vw" id="icon">
-				<svg-icon v-if="SongStore.playerStatus == 'hidden'" name="show"></svg-icon>
-				<svg-icon v-if="SongStore.playerStatus == 'min'" name="hide"></svg-icon>
-			</el-icon>
-		</div>
+		<transition name="switch">
+			<div class="switch">
+				<el-icon size="2vw" id="icon">
+					<svg-icon v-if="SongStore.playerStatus == 'hidden'" name="show"></svg-icon>
+					<svg-icon v-if="SongStore.playerStatus == 'min'" name="hide"></svg-icon>
+				</el-icon>
+			</div>
+		</transition>
 	</div>
 </template>
 <script setup lang="ts">
@@ -40,4 +42,10 @@ const hideOrShow = () => {
 		}
 	}
 }
+// .switch-enter-active {
+// 	animation: fadeIn 300ms ease;
+// }
+// .switch-leave-active {
+// 	animation: fadeOut 500ms ease;
+// }
 </style>

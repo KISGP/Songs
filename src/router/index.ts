@@ -32,6 +32,9 @@ router.beforeEach((to, from, next) => {
 	if (to.meta.searchVisible != DataStore.searchVisible) {
 		DataStore.update_searchVisible();
 	}
+	if (to.meta.menuVisible != DataStore.menuVisible) {
+		DataStore.update_menuVisible();
+	}
 	next();
 });
 

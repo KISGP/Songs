@@ -1,4 +1,4 @@
-const searchResult = () => import("@/views/search/result.vue");
+const searchResult = () => import("@/views/search/search.vue");
 module.exports = [
 	{
 		// 搜索结果
@@ -7,6 +7,7 @@ module.exports = [
 		meta: {
 			requireLogin: false,
 			searchVisible: false,
+			menuVisible: true,
 		},
 	},
 ];

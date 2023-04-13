@@ -15,6 +15,7 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			// 关注歌手
@@ -24,6 +25,7 @@ module.exports = [
 				meta: {
 					requireLogin: true,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			// 热门歌手
@@ -33,6 +35,7 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			// 歌手排行榜
@@ -42,6 +45,7 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			// 全部歌手
@@ -51,6 +55,7 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 		],

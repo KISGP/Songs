@@ -1,5 +1,5 @@
 const themeSet = () => import("@/views/set/theme.vue");
-const dataSet = () => import("@/views/set/data.vue");
+const basicSet = () => import("@/views/set/basic.vue");
 module.exports = [
 	{
 		path: "/set",
@@ -10,11 +10,17 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			{
-				path: "data",
-				component: dataSet,
+				path: "basic",
+				component: basicSet,
+				meta: {
+					requireLogin: false,
+					searchVisible: true,
+					menuVisible: true,
+				},
 			},
 		],
 	},

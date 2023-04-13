@@ -44,7 +44,6 @@ const createQR = async (): Promise<boolean> => {
 		return false;
 	}
 };
-
 // 检查二维码状态
 const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 	if (!base64.value) return;
@@ -61,12 +60,12 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 			store.update_cookie(cookie);
 			const { id, name } = await getUserInfo();
 			store.update_login(true);
-			store.update_id(id);
+			store.update_id(parseInt(id));
 			store.update_name(name);
 			setItem("cookie", cookie);
 			setItem("id", id);
 			setItem("name", name);
-			router.push("/");
+			router.push((router.currentRoute.value.query.redirect as string | undefined) || "/");
 			break;
 		default:
 			break;

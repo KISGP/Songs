@@ -185,7 +185,7 @@ export function search_suggest(res: any): TYPE.suggestionsType {
 
 export function album_sublist(res: any): {
 	albumCount: number;
-	albums: Array<TYPE.albumBriefType>;
+	albums: TYPE.albumBriefType[];
 } {
 	return {
 		albumCount: res.count,
@@ -469,5 +469,123 @@ export function artist_list(res: any): { more: boolean; artists: TYPE.artistBrie
 export function artist_songs(res: any): TYPE.songDetailedType[] {
 	return res.songs.map((e: any) => {
 		return _handle1(e, getArtistsName(e.ar, null));
+	});
+}
+
+export function cloudsearch(res: any, type: TYPE.searchType): TYPE.searchResultType {
+	let countKey: string = "";
+	let resultKey: string = "";
+	let h;
+	switch (type) {
+		case "单曲":
+			countKey = "songCount";
+			resultKey = "songs";
+			h = (e: any): TYPE.songDetailedType => _handle1(e, getArtistsName(e.ar, null));
+			break;
+		case "专辑":
+			countKey = "albumCount";
+			resultKey = "albums";
+			h = (e: any): TYPE.albumBriefType => {
+				return {
+					id: e.id,
+					name: e.name,
+					cover: e.picUrl + "?param=200y200",
+					songCount: e.size,
+					artists: {
+						artistsStr: getArtistsName(e.artists, null),
+						artists: e.artists.map((artist: any) => {
+							return {
+								id: artist.id,
+								name: artist.name,
+							};
+						}),
+					},
+				};
+			};
+			break;
+		case "歌手":
+			countKey = "artistCount";
+			resultKey = "artists";
+			h = (e: any): TYPE.artistBriefType => {
+				return {
+					id: e.id,
+					name: e.name,
+					cover: e.picUrl + "?param=200y200",
+					alias: e.alias,
+				};
+			};
+			break;
+		case "MV":
+			break;
+		case "声音":
+			break;
+		case "歌单":
+			countKey = "playlistCount";
+			resultKey = "playlists";
+			h = (e: any): TYPE.listBriefType => {
+				return {
+					id: e.id,
+					name: e.name,
+					cover: e.coverImgUrl + "?param=200y200",
+					songCount: e.trackCount,
+					playCount: e.playCount,
+					subscribed: false,
+				};
+			};
+			break;
+		case "歌词":
+			break;
+		case "用户":
+			break;
+		case "电台":
+			break;
+		case "综合":
+			break;
+		case "视频":
+			break;
+		default:
+			break;
+	}
+
+	return {
+		count: res.result[countKey],
+		result: res.result[resultKey].map(h),
+	};
+}
+
+export function artist_album(res: any): TYPE.albumBriefType[] {
+	return res.hotAlbums.map((e: any): TYPE.albumBriefType => {
+		return {
+			id: e.id,
+			name: e.name,
+			cover: e.blurPicUrl + "?param=200y200",
+			songCount: e.size,
+			artists: {
+				artistsStr: getArtistsName(e.artists, null),
+				artists: e.artists.map((artist: any) => {
+					return {
+						id: artist.id,
+						name: artist.name,
+					};
+				}),
+			},
+		};
+	});
+}
+
+export function artist_mv(res: any): TYPE.videoType[] {
+	return res.mvs.map((e: any): TYPE.videoType => {
+		return {
+			id: e.id,
+			name: e.name,
+			cover: e.imgurl16v9,
+			artist: {
+				id: e.artist.id,
+				name: e.artist.name,
+			},
+			playCount: e.playCount,
+			duration: e.duration,
+			publishTime: e.publishTime,
+		};
 	});
 }

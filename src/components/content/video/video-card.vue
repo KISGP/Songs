@@ -1,46 +1,47 @@
 <template>
-	<div style="display: flex; justify-content: center">
-		<div class="back">
-			<div class="cover">
-				<el-image class="img" :src="r?.cover" fit="cover" lazy />
-				<div class="count">
-					<span>
-						<el-icon><VideoPlay /></el-icon>
-						{{ r?.playCount }}
-					</span>
-					<span>{{ ms2min(r?.duration!) }}</span>
-				</div>
+	<div class="back" @click="play">
+		<div class="cover">
+			<el-image class="img" :src="data?.cover" fit="cover" lazy />
+			<div class="count">
+				<span>
+					<el-icon><VideoPlay /></el-icon>
+					{{ data?.playCount }}
+				</span>
+				<span>{{ ms2min(data?.duration!) }}</span>
 			</div>
-			<div class="title">
-				<span>{{ r?.name }}</span>
-			</div>
-			<div class="info">
-				<span>{{ r?.artist.name }}</span>
-				<span>{{ r?.publishTime }}</span>
-			</div>
+		</div>
+		<div class="title">
+			<span>{{ data?.name }}</span>
+		</div>
+		<div class="info">
+			<span>{{ data?.artist.name }}</span>
+			<span>{{ data?.publishTime }}</span>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, PropType } from "vue";
-import { useRouter } from "vue-router";
+import { PropType } from "vue";
 import { ms2min } from "utils/utils-common";
 import { videoType } from "@/interface/interface";
-import { getArtistMV } from "service/api/api";
-const r = ref<videoType>();
-const router = useRouter();
+import { getMVUrl } from "service/api/api";
+
 const props = defineProps({
 	w: {
 		type: Number as PropType<number>,
 		required: false,
 		default: 260,
 	},
+	data: {
+		type: Object as PropType<videoType>,
+		required: true,
+	},
 });
 const width: string = props.w + "px";
 const height: string = props.w * (9 / 16) + "px";
-onMounted(async () => {
-	r.value = (await getArtistMV(1047282))[0];
-});
+
+const play = async () => {
+	window.open(await getMVUrl(props.data.id), "_blank");
+};
 </script>
 <style scoped lang="less">
 .back {
@@ -51,6 +52,7 @@ onMounted(async () => {
 	background-color: var(--dark-fill);
 	color: var(--primary-text);
 	padding-bottom: 4px;
+	max-width: v-bind(width);
 	&:hover {
 		background-color: var(--darker-fill);
 	}

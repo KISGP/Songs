@@ -104,3 +104,25 @@ html {
 .el-timeline {
 	--el-timeline-node-color: var(--darker-fill) !important;
 }
+.el-select-dropdown__list {
+	background-color: var(--light-fill);
+	border: none;
+	.el-select-dropdown__item {
+		color: var(--secondary-text);
+	}
+	.el-select-dropdown__item.hover,
+	.el-select-dropdown__item:hover {
+		background-color: var(--dark-fill);
+	}
+}
+.el-popper.is-light .el-popper__arrow::before {
+	border: 1px solid transparent !important;
+	background: var(--light-fill);
+}
+.el-select__popper.el-popper {
+	background-color: transparent !important;
+	border: 1px solid transparent !important;
+	box-shadow: var(--el-box-shadow-light);
+	border-radius: 7px;
+	overflow: hidden;
+}

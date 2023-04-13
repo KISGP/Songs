@@ -9,7 +9,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AlbumGroup: typeof import('./src/components/content/album-group/album-group.vue')['default']
     ArtistCard: typeof import('./src/components/content/artist-card/artist-card.vue')['default']
+    ArtistCardGroup: typeof import('./src/components/content/artist-card/artist-card-group.vue')['default']
     ArtistIntroductionBrief: typeof import('./src/components/content/artist-introduction/artist-introduction-brief.vue')['default']
     ArtistIntroductionDetailed: typeof import('./src/components/content/artist-introduction/artist-introduction-detailed.vue')['default']
     Artists: typeof import('./src/components/content/artists/artists.vue')['default']
@@ -36,11 +38,13 @@ declare module '@vue/runtime-core' {
     ElMain: typeof import('element-plus/es')['ElMain']
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
+    ElOption: typeof import('element-plus/es')['ElOption']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSlider: typeof import('element-plus/es')['ElSlider']
     ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
@@ -63,6 +67,8 @@ declare module '@vue/runtime-core' {
     SongTableList: typeof import('./src/components/content/songs-table/song-table-list.vue')['default']
     Suggestions: typeof import('./src/components/content/search-input/suggestions.vue')['default']
     SvgIcon: typeof import('./src/components/common/svg-icon/index.vue')['default']
+    VideoCard: typeof import('./src/components/content/video/video-card.vue')['default']
+    VideoCardGroup: typeof import('./src/components/content/video/video-card-group.vue')['default']
   }
   export interface ComponentCustomProperties {
     vInfiniteScroll: typeof import('element-plus/es')['ElInfiniteScroll']

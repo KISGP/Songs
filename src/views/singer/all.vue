@@ -38,17 +38,14 @@
 				/>
 			</div>
 		</div>
-		<el-space style="margin-top: 30px" wrap :size="50" alignment="flex-start">
-			<artist-card v-for="item in data" :key="item.id" :data="item"></artist-card>
-		</el-space>
+		<artistCardGroup style="margin-top: 30px;" :data="data" :size="30"/>
 	</div>
 </template>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
 import { getFilteredArtist } from "service/api/api";
 import { artistBriefType } from "@/interface/interface";
-import artistCard from "@/components/content/artist-card/artist-card.vue";
-
+import artistCardGroup from "@/components/content/artist-card/artist-card-group.vue";
 const filter = reactive<{
 	type: number;
 	area: number;

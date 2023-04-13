@@ -3,6 +3,19 @@ import * as TYPE from "@/interface/interface";
 import * as HANDLE from "./handle";
 
 const RESOURCE = ["歌曲", "mv", "歌单", "专辑", "电台节目", "视频", "动态", "电台"];
+const searchResultType: { [key in TYPE.searchType]: number } = {
+	单曲: 1,
+	专辑: 10,
+	歌手: 100,
+	歌单: 1000,
+	用户: 1002,
+	MV: 1004,
+	歌词: 1006,
+	电台: 1009,
+	视频: 1014,
+	综合: 1018,
+	声音: 2000,
+};
 /**
  * @description 获取歌曲的播放url
  */
@@ -890,6 +903,9 @@ export async function getFilteredArtist(
 	});
 }
 
+/**
+ * @description 歌手全部歌曲
+ * */
 export async function getArtistAllSongs(
 	id: number,
 	order: "hot" | "time" = "hot",
@@ -902,11 +918,100 @@ export async function getArtistAllSongs(
 			id,
 			order,
 			limit,
-			offset
+			offset,
 		},
 		interceptors: {
 			responseInterceptor(res) {
 				return HANDLE.artist_songs(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 搜索
+ * */
+export async function search(
+	keywords: string,
+	type: TYPE.searchType,
+	offset: number = 0,
+	limit: number = 30
+): Promise<TYPE.searchResultType> {
+	return await NETEASE.get({
+		url: "/cloudsearch",
+		myParams: {
+			keywords,
+			type: searchResultType[type],
+			offset,
+			limit,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return HANDLE.cloudsearch(res, type);
+			},
+		},
+	});
+}
+
+/**
+ * @description 获取歌手专辑
+ * */
+export async function getArtistAlbums(
+	id: number,
+	offset: number = 0,
+	limit: number = 30
+): Promise<TYPE.albumBriefType[]> {
+	return NETEASE.get({
+		url: "/artist/album",
+		myParams: {
+			id,
+			offset,
+			limit,
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.artist_album(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description 获取歌手MV
+ * */
+export async function getArtistMV(
+	id: number,
+	offset: number = 0,
+	limit: number = 20
+): Promise<TYPE.videoType[]> {
+	return await NETEASE.get({
+		url: "/artist/mv",
+		myParams: {
+			id,
+			offset,
+			limit
+		},
+		interceptors: {
+			responseInterceptor(res) {
+				return HANDLE.artist_mv(res);
+			},
+		},
+	});
+}
+
+/**
+ * @description mv 地址
+ * */
+export async function getMVUrl(id: number, resolution: number = 1080): Promise<string> {
+	return await NETEASE.get({
+		url: "/mv/url",
+		myParams: {
+			id,
+			r: resolution,
+		},
+		interceptors: {
+			responseInterceptor(res: any) {
+				return res.data.url;
 			},
 		},
 	});

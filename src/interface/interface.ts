@@ -227,3 +227,34 @@ export interface SubscribedNewSongsType {
 }
 
 export type themeType = "light" | "light2" | "dark" | "dark2";
+
+export type searchType =
+	| "单曲"
+	| "专辑"
+	| "歌手"
+	| "歌单"
+	| "用户"
+	| "MV"
+	| "歌词"
+	| "电台"
+	| "视频"
+	| "综合"
+	| "声音";
+
+export interface searchResultType {
+	count: number;
+	result: songDetailedType[] | albumBriefType[] | artistBriefType[] | listBriefType[];
+}
+
+export interface videoType {
+	id: number;
+	name: string;
+	cover: string;
+	artist: {
+		id: number;
+		name: string;
+	};
+	playCount: number;
+	publishTime: string;
+	duration: number;
+}

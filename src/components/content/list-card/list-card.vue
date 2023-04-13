@@ -35,7 +35,7 @@ const props = defineProps({
 });
 const bg = ref<string>(`url(${props.list.cover})`);
 const to = () => {
-	router.push(`${props.list.id}`);
+	router.push(`/list/${props.list.id}`);
 };
 </script>
 <style scoped lang="less">

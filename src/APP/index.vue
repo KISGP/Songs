@@ -6,7 +6,7 @@
 			<el-header class="layout-header"><header-bar /></el-header>
 			<el-container>
 				<!-- 菜单 -->
-				<el-aside class="layout-menu"><menu-bar /></el-aside>
+				<el-aside class="layout-menu" v-show="DataStore.menuVisible"><menu-bar /></el-aside>
 				<!-- 内容 -->
 				<el-main class="layout-content">
 					<el-scrollbar ref="eScrollBar">
@@ -25,22 +25,23 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useSongStore, useDataStore} from "store/index";
+import { onMounted, ref, Ref } from "vue";
+import { useSongStore, useDataStore } from "store/index";
 import { fixUserInfo, getLikedSongs, getMyCreateList, initTheme } from "./index";
+import { ElScrollbar } from "element-plus";
 import headerBar from "./content/header/index.vue";
 import menuBar from "./content/menu/index.vue";
 import footerBar from "./content/footer/index.vue";
 import hiddenBtn from "./content/footer/button-hide.vue";
 const SongStore = useSongStore();
 const DataStore = useDataStore();
-const eScrollBar = ref();
+const eScrollBar: Ref<InstanceType<typeof ElScrollbar> | null> = ref(null);
 onMounted(async () => {
 	await fixUserInfo();
 	getLikedSongs();
 	getMyCreateList();
 	initTheme();
-	DataStore.init_eScrollBar(eScrollBar);
+	DataStore.init_eScrollBar(eScrollBar as Ref<InstanceType<typeof ElScrollbar>>);
 	document.addEventListener("visibilitychange", function () {
 		if (document.visibilityState === "visible") {
 			document.title = "Song";

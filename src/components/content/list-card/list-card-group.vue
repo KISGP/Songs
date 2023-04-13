@@ -1,6 +1,6 @@
 <template>
 	<el-space wrap size="large" alignment="flex-start">
-		<list-card v-for="item in list" :list="item" />
+		<list-card v-for="item in list" :list="item" :key="item.id"/>
 	</el-space>
 </template>
 <script setup lang="ts">

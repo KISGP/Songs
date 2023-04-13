@@ -12,6 +12,7 @@ module.exports = [
 				meta: {
 					requireLogin: false,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 			{
@@ -21,6 +22,7 @@ module.exports = [
 				meta: {
 					requireLogin: true,
 					searchVisible: true,
+					menuVisible: true,
 				},
 			},
 		],

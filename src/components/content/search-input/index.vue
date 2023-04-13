@@ -73,7 +73,19 @@ const input = debounce(async () => {
 		suggestionsVisible.value = false;
 	}
 }, 400);
-const search = async () => {};
+const search = async () => {
+	if (value.value) {
+		router.push({
+			path: "/search",
+			query: {
+				content: value.value,
+				type: 1,
+			},
+		});
+	} else {
+		router.push("/search");
+	}
+};
 </script>
 <style scoped lang="less">
 @import "../../../assets/style/common.less";

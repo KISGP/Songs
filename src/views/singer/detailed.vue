@@ -2,14 +2,14 @@
 	<div class="back">
 		<div class="data">
 			<div class="head">
-				<el-image class="cover" :src="artistData?.info.cover" fit="cover" />
+				<el-image class="cover" :src="data.artistData?.info.cover" fit="cover" />
 				<div class="message">
 					<div class="name">
-						<span>{{ artistData?.info.name }}</span>
-						<i v-for="item in artistData?.info.alias">{{ item }}</i>
+						<span>{{ data.artistData?.info.name }}</span>
+						<i v-for="item in data.artistData?.info.alias">{{ item }}</i>
 					</div>
-					<div class="signature" v-if="artistData?.info.signature">
-						<span>个性介绍：{{ artistData?.info.signature }}</span>
+					<div class="signature" v-if="data.artistData?.info.signature">
+						<span>个性介绍：{{ data.artistData?.info.signature }}</span>
 					</div>
 					<div>
 						<el-button>关注</el-button>
@@ -22,21 +22,21 @@
 						<template #label>
 							<span class="tabs-tittle">
 								热门歌曲
-								<i>{{ hotSongs?.length }}</i>
+								<i>{{ data.hotSongs?.length }}</i>
 							</span>
 						</template>
-						<song-table-common v-if="hotSongs" :songs="hotSongs" />
+						<song-table-common v-if="data.hotSongs" :songs="data.hotSongs" />
 					</el-tab-pane>
 					<el-tab-pane name="song">
 						<template #label>
 							<span class="tabs-tittle">
 								歌曲
-								<i>{{ artistData?.info.count.song }}</i>
+								<i>{{ data.artistData?.info.count.song }}</i>
 							</span>
 						</template>
 						<song-table-common
-							v-if="allSong && activePage === 'song'"
-							:songs="allSong"
+							v-if="data.allSong && activePage === 'song'"
+							:songs="data.allSong"
 							v-infinite-scroll="load"
 							:infinite-scroll-immediate="false"
 							:infinite-scroll-delay="1000"
@@ -46,17 +46,31 @@
 						<template #label>
 							<span class="tabs-tittle">
 								专辑
-								<i>{{ artistData?.info.count.album }}</i>
+								<i>{{ data.artistData?.info.count.album }}</i>
 							</span>
 						</template>
+						<albumGroup
+							style="margin: 5% 0 0 5%"
+							:data="data.albums"
+							:size="60"
+							v-infinite-scroll="load"
+							:infinite-scroll-immediate="false"
+							:infinite-scroll-delay="1000"
+						/>
 					</el-tab-pane>
 					<el-tab-pane name="mv">
 						<template #label>
 							<span class="tabs-tittle">
 								视频
-								<i>{{ artistData?.info.count.mv }}</i>
+								<i>{{ data.artistData?.info.count.mv }}</i>
 							</span>
 						</template>
+						<videoCardGroup
+							:data="data.mv"
+							v-infinite-scroll="load"
+							:infinite-scroll-immediate="false"
+							:infinite-scroll-delay="1000"
+						/>
 					</el-tab-pane>
 					<el-tab-pane name="dynamic">
 						<template #label>
@@ -72,7 +86,7 @@
 					歌手信息
 					<el-icon><ArrowRightBold /></el-icon>
 				</span>
-				<artistIntroductionBrief :introduction="artistData?.introduction" />
+				<artistIntroductionBrief :introduction="data.artistData?.introduction" />
 			</div>
 			<div>
 				<span @click="changeVisible('similarArtists')">
@@ -84,7 +98,7 @@
 	</div>
 
 	<el-dialog v-model="visible.introduction" title="歌手信息" width="50%" center>
-		<artistIntroductionDetailed :introduction="artistData?.introduction" />
+		<artistIntroductionDetailed :introduction="data.artistData?.introduction" />
 	</el-dialog>
 
 	<el-dialog v-model="visible.similarArtists" title="相似歌手" width="50%" center>
@@ -94,38 +108,61 @@
 <script setup lang="ts">
 import { ref, onBeforeMount, reactive } from "vue";
 import { useRouter } from "vue-router";
+import { useDataStore } from "store/index";
 import {
 	getDetailedArtist,
 	getArtistHotSongs,
 	getSimilarArtists,
 	getArtistAllSongs,
+	getArtistAlbums,
+	getArtistMV,
 } from "service/api/api";
-import { useDataStore } from "store/index";
-import type { artistDetailedType, songDetailedType, artistBriefType } from "@/interface/interface";
-
+import type {
+	artistDetailedType,
+	songDetailedType,
+	artistBriefType,
+	albumBriefType,
+	videoType,
+} from "@/interface/interface";
 import artistIntroductionBrief from "@/components/content/artist-introduction/artist-introduction-brief.vue";
 import artistIntroductionDetailed from "@/components/content/artist-introduction/artist-introduction-detailed.vue";
 import artistsSimilar from "@/components/content/artists-similar/artists-similar.vue";
 import songTableCommon from "@/components/content/songs-table/song-table-common.vue";
+import albumGroup from "@/components/content/album-group/album-group.vue";
+import videoCardGroup from "@/components/content/video/video-card-group.vue";
 
 const router = useRouter();
 const DataStore = useDataStore();
 const id: number = parseInt(router.currentRoute.value.params.id as string);
 
 // 歌手信息
-const artistData = ref<artistDetailedType>();
-// 热门歌曲
-const hotSongs = ref<Array<songDetailedType>>();
-// 全部歌曲
-const allSong = ref<Array<songDetailedType>>();
+const data = reactive<{
+	artistData: artistDetailedType | null;
+	hotSongs: songDetailedType[];
+	allSong: songDetailedType[];
+	albums: albumBriefType[];
+	mv: videoType[];
+}>({
+	artistData: null,
+	hotSongs: [],
+	allSong: [],
+	albums: [],
+	mv: [],
+});
 onBeforeMount(async () => {
-	artistData.value = await getDetailedArtist(id);
-	hotSongs.value = await getArtistHotSongs(id);
+	data.artistData = await getDetailedArtist(id);
+	data.hotSongs = await getArtistHotSongs(id);
 	getSimilarArtists(id).then((res) => {
 		similarArtists.value = res;
 	});
 	getArtistAllSongs(id).then((res) => {
-		allSong.value = res;
+		data.allSong = res;
+	});
+	getArtistAlbums(id).then((res) => {
+		data.albums = res;
+	});
+	getArtistMV(id).then((res) => {
+		data.mv = res;
 	});
 });
 
@@ -134,18 +171,33 @@ const tabsChange = () => {
 	DataStore.update_eScrollBar();
 };
 
-const visible = reactive({
+const visible = reactive<{
+	introduction: boolean;
+	similarArtists: boolean;
+}>({
 	introduction: false,
 	similarArtists: false,
 });
 const changeVisible = (key: "introduction" | "similarArtists") => {
-	visible[key as keyof Object] != visible[key as keyof Object];
+	visible[key] = !visible[key];
 };
 
 const similarArtists = ref<Array<artistBriefType>>();
 
 const load = async () => {
-	allSong.value = allSong.value?.concat(await getArtistAllSongs(id, "hot", allSong.value.length));
+	switch (activePage.value) {
+		case "song":
+			data.allSong = data.allSong.concat(await getArtistAllSongs(id, "hot", data.allSong.length));
+			break;
+		case "album":
+			data.albums = data.albums.concat(await getArtistAlbums(id, data.albums.length));
+			break;
+		case "mv":
+			data.mv = data.mv.concat(await getArtistMV(id, data.mv.length));
+			break;
+		default:
+			break;
+	}
 	DataStore.update_eScrollBar();
 };
 </script>
@@ -156,7 +208,7 @@ const load = async () => {
 	position: relative;
 	.data {
 		height: 100%;
-		width: 80%;
+		width: 100%;
 		.head {
 			height: 300px;
 			display: flex;
