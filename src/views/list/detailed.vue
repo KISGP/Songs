@@ -69,7 +69,7 @@ import { useSongStore, useDataStore } from "store/index";
 import { listDetailedType, songDetailedType } from "@/interface/interface";
 import { getDetailedList, getListPartSong } from "service/api/api";
 
-import songsTableList from "components/content/songs-table/song-table-list.vue";
+import songsTableList from "components/content/songs-table/song-table-my.vue";
 import songTableCommon from "@/components/content/songs-table/song-table-common.vue";
 import description from "@/components/content/description/description.vue";
 import comment from "@/components/content/comment/index.vue";

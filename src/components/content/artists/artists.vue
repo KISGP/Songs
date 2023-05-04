@@ -1,12 +1,14 @@
 <template>
-	<div class="artists" v-for="(item, index) in props.artists?.slice(0, maxArtists)">
-		<span @click.stop="to(item.id)" class="artist"> {{ item.name }}</span>
-		<span>{{ index < Math.min(maxArtists, artists?.length as number) - 1 ? " / " : "" }}</span>
+	<div class="artists">
+		<template v-for="(item, index) in props.artists?.slice(0, maxArtists)" :key="item.id">
+			<span @click.stop="to(item.id)" class="artist"> {{ item.name }}</span>
+			<span>{{ index < min ? " / " : "" }}</span>
+		</template>
+		<span v-if="maxArtists < (artists?.length as number)"> ......</span>
 	</div>
-	<span v-if="maxArtists < (artists?.length as number)"> ......</span>
 </template>
 <script setup lang="ts">
-import { PropType } from "vue";
+import { PropType, computed } from "vue";
 import { useRouter } from "vue-router";
 import { artistType } from "@/interface/interface";
 const router = useRouter();
@@ -20,6 +22,9 @@ const props = defineProps({
 		require: false,
 		default: 6,
 	},
+});
+const min = computed(() => {
+	return Math.min(props.maxArtists, props.artists?.length as number) - 1;
 });
 
 const to = (id: any): void => {

@@ -11,7 +11,8 @@ function _handle1(e: any, artistsStr: string) {
 			id: e.id,
 			name: e.name,
 			alia: e.alia,
-			cover: e.al.picUrl,
+			cover: e.al.picUrl + "?param=160y160",
+			coverSize: 160,
 			artistsStr,
 		},
 		artists: {
@@ -21,7 +22,8 @@ function _handle1(e: any, artistsStr: string) {
 		album: {
 			id: e.al.id,
 			name: e.al.name,
-			cover: e.al.picUrl,
+			cover: e.al.picUrl + "?param=160y160",
+			coverSize: 160,
 		},
 	};
 }
@@ -33,7 +35,8 @@ export function personalized_newsong(res: any): TYPE.songDetailedType[] {
 			song: {
 				id: e.id,
 				name: e.name,
-				cover: e.picUrl,
+				cover: e.picUrl + "?param=160y160",
+				coverSize: 160,
 				artistsStr,
 			},
 			artists: {
@@ -44,6 +47,7 @@ export function personalized_newsong(res: any): TYPE.songDetailedType[] {
 				id: e.song.album.id,
 				name: e.song.album.name,
 				cover: e.song.album.blurPicUrl,
+				coverSize: 160,
 			},
 		};
 	});
@@ -62,6 +66,7 @@ export function personalized(res: any): Array<TYPE.listBriefType> {
 			id: e.id,
 			name: e.name,
 			cover: e.picUrl + "?param=160y160",
+			coverSize: 160,
 			songCount: e.trackCount,
 			playCount: e.playCount,
 		};
@@ -74,6 +79,7 @@ export function recommend_resource(res: any): Array<TYPE.listBriefType> {
 			id: e.id,
 			name: e.name,
 			cover: e.picUrl + "?param=160y160",
+			coverSize: 160,
 			songCount: e.trackCount,
 			playCount: e.playcount,
 		};
@@ -86,6 +92,7 @@ export function toplist(res: any): Array<TYPE.listBriefType> {
 			id: e.id,
 			name: e.name,
 			cover: e.coverImgUrl + "?param=160y160",
+			coverSize: 160,
 			songCount: e.trackCount,
 			playCount: e.playCount,
 		};
@@ -103,6 +110,7 @@ export function user_playlist(
 				id: e.id,
 				name: e.name,
 				cover: e.coverImgUrl + "?param=160y160",
+				coverSize: 160,
 				songCount: e.trackCount,
 				playCount: e.playCount,
 			};
@@ -115,6 +123,7 @@ export function user_playlist(
 					id: e.id,
 					name: e.name,
 					cover: e.coverImgUrl + "?param=160y160",
+					coverSize: 160,
 					songCount: e.trackCount,
 					playCount: e.playCount,
 				});
@@ -129,6 +138,7 @@ export function user_playlist(
 					id: e.id,
 					name: e.name,
 					cover: e.coverImgUrl + "?param=160y160",
+					coverSize: 160,
 					songCount: e.trackCount,
 					playCount: e.playCount,
 				});
@@ -141,14 +151,18 @@ export function user_playlist(
 export function lyric_new(res: any): TYPE.lyricType {
 	let lyricArray = res.lrc.lyric.slice(res.lrc.lyric.indexOf("[00:")).split("\n");
 	lyricArray.pop();
-	return lyricArray.map((e: string) => {
-		let temp = e.split("]");
-		let t = temp[0].replace(/[\[\]]+/g, "").split(":");
-		return {
-			time: Math.floor((parseInt(t[0]) * 60 + parseFloat(t[1])) * 1000) / 1000,
-			content: temp[1].trim(),
-		};
-	});
+	return lyricArray
+		.map((e: string) => {
+			let temp = e.split("]");
+			let t = temp[0].replace(/[\[\]]+/g, "").split(":");
+			return {
+				time: Math.floor((parseInt(t[0]) * 60 + parseFloat(t[1])) * 1000) / 1000,
+				content: temp[1].trim(),
+			};
+		})
+		.filter((lyric: { time: number; content: string }) => {
+			return lyric.content.length > 0;
+		});
 }
 
 export function search_suggest(res: any): TYPE.suggestionsType {
@@ -194,6 +208,7 @@ export function album_sublist(res: any): {
 				id: e.id,
 				name: e.name,
 				cover: e.picUrl + "?param=200y200",
+				coverSize: 200,
 				songCount: e.size,
 				artists: {
 					artistsStr: getArtistsName(e.artists, null),
@@ -214,7 +229,8 @@ export function playlist_detail(res: any): TYPE.listDetailedType {
 		list: {
 			id: res.playlist.id,
 			name: res.playlist.name,
-			cover: res.playlist.coverImgUrl,
+			cover: res.playlist.coverImgUrl + "?param=200y200",
+			coverSize: 200,
 			updateTime: transformTimeStamp(res.playlist.updateTime),
 			description: res.playlist.description,
 			tags: res.playlist.tags,
@@ -249,7 +265,8 @@ export function album(res: any): TYPE.albumDetailedType {
 		album: {
 			id: res.album.id,
 			name: res.album.name,
-			cover: res.album.picUrl,
+			cover: res.album.picUrl + "?param=160y160",
+			coverSize: 160,
 			publishTime: transformTimeStamp(res.album.publishTime),
 			description: res.album.description,
 			type: res.album.subType,
@@ -323,7 +340,8 @@ export function song_detail(res: any): TYPE.songDetailedType[] {
 			song: {
 				id: e.id,
 				name: e.name,
-				cover: e.al.picUrl,
+				cover: e.al.picUrl + "?param=160y160",
+				coverSize: 160,
 				artistsStr: artistsStr,
 				alia: e.alia,
 				url: "",
@@ -335,7 +353,8 @@ export function song_detail(res: any): TYPE.songDetailedType[] {
 			album: {
 				id: e.al.id,
 				name: e.al.name,
-				cover: e.al.picUrl,
+				cover: e.al.picUrl + "?param=160y160",
+				coverSize: 160,
 			},
 		};
 	});
@@ -490,6 +509,7 @@ export function cloudsearch(res: any, type: TYPE.searchType): TYPE.searchResultT
 					id: e.id,
 					name: e.name,
 					cover: e.picUrl + "?param=200y200",
+					coverSize: 200,
 					songCount: e.size,
 					artists: {
 						artistsStr: getArtistsName(e.artists, null),
@@ -527,6 +547,7 @@ export function cloudsearch(res: any, type: TYPE.searchType): TYPE.searchResultT
 					id: e.id,
 					name: e.name,
 					cover: e.coverImgUrl + "?param=200y200",
+					coverSize: 200,
 					songCount: e.trackCount,
 					playCount: e.playCount,
 					subscribed: false,
@@ -559,6 +580,7 @@ export function artist_album(res: any): TYPE.albumBriefType[] {
 			id: e.id,
 			name: e.name,
 			cover: e.blurPicUrl + "?param=200y200",
+			coverSize: 200,
 			songCount: e.size,
 			artists: {
 				artistsStr: getArtistsName(e.artists, null),

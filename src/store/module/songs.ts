@@ -13,7 +13,9 @@ export const useSongStore = defineStore("SongStore", {
 					id: 0,
 					name: "",
 					cover: "",
+					coverSize: 160,
 					url: "",
+					alia: [],
 					artistsStr: "",
 					isLiked: false,
 				},
@@ -25,6 +27,7 @@ export const useSongStore = defineStore("SongStore", {
 					name: "",
 					id: 0,
 					cover: "",
+					coverSize: 160,
 				},
 			},
 			// 喜欢的音乐ID
@@ -45,10 +48,13 @@ export const useSongStore = defineStore("SongStore", {
 	getters: {},
 	actions: {
 		/**
+		 * @param {songDetailedType} value 要播放的歌曲信息
 		 * @description 更新播放歌曲
 		 * */
 		async update_song(value: songDetailedType): Promise<void> {
+			// 获取歌曲播放链接
 			if (!value.song.url) value.song.url = await getSongUrl(value.song.id);
+			// 判断是否我喜欢的歌曲
 			value.song.isLiked = this.check_song_isLiked(value.song.id);
 			this.song = value;
 			this.isPlaying = true;
@@ -66,9 +72,9 @@ export const useSongStore = defineStore("SongStore", {
 			return this.playList.indexOf(song) > -1 ? true : false;
 		},
 		/**
-		 * @param function(likedSongsID) 传入一个操作函数，该函数会自动传入播放列表
+		 * @param {function} fn 传入一个操作函数，该函数会自动传入播放列表
 		 * @description 更新播放列表
-		 * */
+		 */
 		update_playList(fn: (playList: Array<songDetailedType>) => void) {
 			fn(this.playList);
 		},
@@ -87,19 +93,23 @@ export const useSongStore = defineStore("SongStore", {
 		 * @description 更新播放器显示状态（全屏|隐藏|最小）
 		 * */
 		async update_playerStatus(value: "hidden" | "max" | "min") {
-			this.playerStatus = value;
+			// FIXME: 1.一直存在卡卡顿问题，尝试更换另一种修改方法 2.逻辑存在严重缺陷
 			switch (value) {
 				case "hidden":
 					setCssVar("--height-content", "94vh");
 					setCssVar("--height-player", "0vh");
+					this.playerStatus = value;
 					break;
 				case "min":
 					setCssVar("--height-player", "8vh");
-					await wait(600);
 					setCssVar("--height-content", "86vh");
+					this.playerStatus = value;
 					break;
 				case "max":
-					setCssVar("--height-player", "100vh");
+					if (this.song.song.id) {
+						setCssVar("--height-player", "100vh");
+						this.playerStatus = value;
+					}
 					break;
 			}
 		},

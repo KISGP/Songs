@@ -8,13 +8,13 @@
 		>
 			<el-tab-pane name="recommend">
 				<template #label>
-					<span>推荐(接口存在问题)</span>
+					<span>推荐(error)</span>
 				</template>
 				<comment-item :comments="recommendC!" :type="type" :id="id" />
 			</el-tab-pane>
 			<el-tab-pane name="hot">
 				<template #label>
-					<span>最热(接口存在问题)</span>
+					<span>最热(error)</span>
 				</template>
 				<comment-item :comments="hotC!" :type="type" :id="id" />
 			</el-tab-pane>
@@ -60,7 +60,7 @@ onMounted(async () => {
 
 const activePage = ref<string>("recommend");
 
-// TODO: 推荐评论只能请求第一页评论，第二页以后没有请求数据。热度评论请求成功，但无法拼接到数组后面。只有时间评论正常
+// FIXME: 推荐评论只能请求第一页评论，第二页以后没有请求数据。热度评论请求成功，但无法拼接到数组后面。只有时间评论正常
 const load = async () => {
 	if (activePage.value === "hot") {
 		// hotC.value = hotC.value.concat(await getComment(props.id, "热度", props.type, ++hotPage.value));

@@ -12,6 +12,7 @@
 	</div>
 </template>
 <script setup lang="ts">
+// TODO: 需要优化，当页面存在大量这个组件时会造成卡顿
 import { ref, onMounted } from "vue";
 const props = defineProps({
 	width: {

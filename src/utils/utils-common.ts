@@ -126,9 +126,3 @@ export function setCssVarS(css_S: { [key: string]: string }): void {
 	}
 }
 
-export function fileDownload(
-	url: string = "http://m801.music.126.net/20230330133459/d7221390394427b6a5cbc8f8730b0ceb/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/26003178573/8a4f/ffcf/af63/76ef5dd931f023800a5a820b5bfae80c.mp3",
-	download: boolean = true
-) {
-	
-}

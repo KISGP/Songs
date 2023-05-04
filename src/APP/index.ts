@@ -7,22 +7,22 @@ import { themeType } from "@/interface/interface";
 
 // 检查用户信息是否完整并挂载到pinia
 export async function fixUserInfo() {
-	const UserStore = useUserStore();
-	const { cookie, id, name } = getAll();
-	if (cookie) {
-		UserStore.update_cookie(cookie);
-		if (id && name) {
-			UserStore.update_id(parseInt(id));
-			UserStore.update_name(name);
-		} else {
-			const user = await getUserInfo();
-			UserStore.update_id(parseInt(user.id));
-			UserStore.update_name(user.name);
-		}
-		UserStore.update_login(true);
-	} else {
-		UserStore.update_login(false);
-	}
+	// const UserStore = useUserStore();
+	// const { cookie, id, name } = getAll();
+	// if (cookie) {
+	// 	UserStore.update_cookie(cookie);
+	// 	if (id && name) {
+	// 		UserStore.update_id(parseInt(id));
+	// 		UserStore.update_name(name);
+	// 	} else {
+	// 		const user = await getUserInfo();
+	// 		UserStore.update_id(parseInt(user.id));
+	// 		UserStore.update_name(user.name);
+	// 	}
+	// 	UserStore.update_login(true);
+	// } else {
+	// 	UserStore.update_login(false);
+	// }
 }
 
 // 获取喜欢的音乐列表

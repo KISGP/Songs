@@ -1,17 +1,18 @@
-import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
-import { useUserStore, useDataStore } from "store/index";
+import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore, useDataStore, useSongStore } from "store/index";
 
 declare module "vue-router" {
 	interface RouteMeta {}
 }
 
+// 导入路由文件
 let routeArray: Array<RouteRecordRaw> = [];
 const context = require.context("./module", false, /\.ts$/);
 context.keys().map((key) => {
 	routeArray.push(...context(key));
 });
-
+// 设置根路径重定向
 routeArray.push({
 	path: "/",
 	redirect: "/song/recommend",
@@ -23,18 +24,20 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const store = useUserStore();
+	const UserStore = useUserStore();
 	const DataStore = useDataStore();
-	if (to.meta.requireLogin && !store.netease_login) {
+	const SongStore = useSongStore();
+	// 检查是否登录
+	if (to.meta.requireLogin && !UserStore.netease_login) {
 		next({ path: "/user/login", query: { redirect: to.fullPath } });
 		return;
 	}
-	if (to.meta.searchVisible != DataStore.searchVisible) {
-		DataStore.update_searchVisible();
-	}
-	if (to.meta.menuVisible != DataStore.menuVisible) {
-		DataStore.update_menuVisible();
-	}
+	// 搜索框显示隐藏
+	to.meta.searchVisible != DataStore.searchVisible && DataStore.update_searchVisible();
+	// 左侧主菜单显示隐藏
+	to.meta.menuVisible != DataStore.menuVisible && DataStore.update_menuVisible();
+	// 退出歌曲全屏
+	SongStore.playerStatus == "max" && SongStore.update_playerStatus("min");
 	next();
 });
 

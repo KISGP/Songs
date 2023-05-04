@@ -5,11 +5,11 @@ import { ElScrollbar } from "element-plus";
 import { themeType } from "@/interface/interface";
 
 type stateType = {
-	theme: themeType;
-	eScrollbar: InstanceType<typeof ElScrollbar> | null;
+	theme: themeType; // 主题
+	eScrollbar: InstanceType<typeof ElScrollbar> | null; // 全局滚动条
 	scrollTop: number;
-	searchVisible: boolean;
-	menuVisible: boolean;
+	searchVisible: boolean; // 搜索框是否可见
+	menuVisible: boolean; // 菜单是否可见
 };
 
 export const useDataStore = defineStore("DataStore", {

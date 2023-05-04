@@ -223,7 +223,7 @@ const download = () => {
 .min {
 	height: @height;
 	max-height: @height;
-	// overflow: hidden;
+	overflow: hidden;
 	.left {
 		height: @height;
 		position: relative;

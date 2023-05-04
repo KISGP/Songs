@@ -1,7 +1,6 @@
 import router from "router/index";
 import { store } from "store/index";
 import Toast, { PluginOptions } from "vue-toastification";
-import "vue-toastification/dist/index.css";
 import svgIcon from "components/common/svg-icon/index.vue";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 

@@ -12,6 +12,7 @@ const app = createApp(App);
 // 导入样式文件
 import "style/index.less";
 import "animate.css";
+import "vue-toastification/dist/index.css";
 
 // 注册
 registerStore(app);

@@ -115,7 +115,7 @@ export async function getMyList(
 	userName: string,
 	returnListType: "all" | "created" | "subscribed" = "all"
 ): Promise<Array<TYPE.listBriefType>> {
-	return await await NETEASE.get({
+	return await NETEASE.get({
 		url: "/user/playlist",
 		myParams: {
 			uid: userId,
@@ -422,7 +422,6 @@ export async function getListPartSong(
 }
 /**
  * @description 获取歌单所有歌曲
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e6%ad%8c%e5%8d%95%e6%89%80%e6%9c%89%e6%ad%8c%e6%9b%b2
  * */
 export async function getListAllSong(id: number): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({

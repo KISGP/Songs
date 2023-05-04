@@ -56,12 +56,14 @@ export type artistIntroductionType = {
  */
 export interface albumType extends baseType {
 	cover: string;
+	coverSize: number;
 }
 /**
  * @description 专辑简略信息
  */
 export interface albumBriefType extends baseType {
 	cover: string;
+	coverSize: number;
 	songCount: number;
 	artists: artistsType;
 }
@@ -75,6 +77,7 @@ export interface albumDetailedType {
 		id: number | string;
 		name: string;
 		cover: string;
+		coverSize: number;
 		publishTime: string;
 		description: string;
 		type: string;
@@ -93,6 +96,7 @@ export interface albumDetailedType {
 interface songBriefType extends baseType {
 	alia?: Array<string>;
 	cover: string;
+	coverSize: number;
 	artistsStr: string;
 	url?: string;
 	isLiked?: boolean;
@@ -136,6 +140,7 @@ export interface SongsState {
  * */
 export interface listBriefType extends baseType {
 	cover: string;
+	coverSize: number;
 	songCount: number;
 	playCount: number | string;
 	subscribed?: boolean;
@@ -148,6 +153,7 @@ export interface listDetailedType {
 		id: number | string;
 		name: string;
 		cover: string;
+		coverSize: number;
 		updateTime: string;
 		description: string;
 		tags: Array<string>;

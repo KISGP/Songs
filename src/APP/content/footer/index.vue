@@ -34,11 +34,16 @@
 				/>
 			</template>
 		</playerMin>
-		<playerMax v-if="SongStore.playerStatus == 'max'" @minimize="minimizePlayer" />
+		<playerMax
+			v-if="SongStore.playerStatus == 'max' && SongStore.song.song.id"
+			@minimize="minimizePlayer"
+			@play="play"
+			@pause="pause"
+		/>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, Ref, watch, reactive } from "vue";
+import { onMounted, ref, watch, reactive, provide } from "vue";
 import { useSongStore } from "store/index";
 import { getLyric, likeSong } from "service/api/api";
 import type { lyricType } from "@/interface/interface";
@@ -49,6 +54,18 @@ import playerMax from "./player-max.vue";
 
 const SongStore = useSongStore();
 
+onMounted(() => {
+	// FIXME: 按下ESC键最 大/小 化
+	// window.addEventListener("keyup", (e) => {
+	// 	if (e.key == "Escape") {
+	// 		if (SongStore.playerStatus == "max") {
+	// 			minimizePlayer();
+	// 		} else if (SongStore.playerStatus == "min") {
+	// 			maximizePlayer();
+	// 		}
+	// 	}
+	// });
+});
 watch(
 	() => SongStore.song,
 	async () => {
@@ -58,14 +75,14 @@ watch(
 );
 
 // 播放器（全屏 / 最小化）
-const maximizePlayer = (): void => {
+const maximizePlayer = () => {
 	SongStore.update_playerStatus("max");
 };
-const minimizePlayer = (): void => {
+const minimizePlayer = () => {
 	SongStore.update_playerStatus("min");
 };
 
-const audioRef: Ref<HTMLAudioElement | null> = ref(null);
+const audioRef = ref<HTMLAudioElement | null>(null);
 const audio: {
 	currentTime: number;
 	maxTime: number;
@@ -73,12 +90,14 @@ const audio: {
 	currentTime: 0,
 	maxTime: 0,
 });
+// audio更新
 const audioUpdate = debounce(() => {
 	audio.currentTime = audioRef.value!.currentTime;
 	if (lyricArray.value.length > 0) {
 		updateCurrentLyric();
 	}
 }, 200);
+
 // 歌曲时长
 const getMaxTime = () => {
 	audio.maxTime = audioRef.value!.duration;
@@ -116,19 +135,28 @@ const pause = () => {
 	audioRef.value!.pause();
 	SongStore.update_isPlaying(false);
 };
+
+// 进度条更新
 const progressUpdate = (val: number) => {
 	audioRef.value!.currentTime = val;
 	audio.currentTime = val;
 };
 
-// 歌曲
-const lyricArray: Ref<lyricType> = ref([]);
-const currentLyric: Ref<string> = ref("");
+// 全部歌词
+const lyricArray = ref<lyricType>([]);
+// 当前歌词
+const currentLyric = ref<string>("");
+const currentLyricIndex = ref<number>(0);
+provide("lyric", lyricArray);
+provide("lyricIndex", currentLyricIndex);
+// 更新当前歌词
 const updateCurrentLyric = () => {
 	for (let index = 0; index < lyricArray.value.length; index++) {
 		if (audio.currentTime < lyricArray.value[index].time) {
-			if (currentLyric.value != lyricArray.value[index - 1].content)
+			if (currentLyric.value != lyricArray.value[index - 1].content) {
 				currentLyric.value = lyricArray.value[index - 1].content;
+				currentLyricIndex.value = index - 1;
+			}
 			return;
 		}
 	}
@@ -151,16 +179,19 @@ const like = async (isLiked: boolean) => {
 	}
 };
 
+// 修改音量
 const changeVolume = (val: number) => {
 	audioRef.value!.volume = val;
 };
 </script>
 <style scoped lang="less">
 .player {
+	position: relative;
 	height: var(--height-player);
 	transition: height 0.6s ease;
 	border-top: 1px solid var(--footer-player-border-color);
 	background-color: var(--lighter-fill);
+	box-shadow: var(--el-box-shadow-light);
 	overflow: hidden;
 	z-index: 2;
 }

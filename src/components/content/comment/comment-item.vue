@@ -11,6 +11,7 @@
 				<span>{{ comment.user.name }}</span>
 			</div>
 			<!-- 点赞 -->
+			<!-- TODO: 添加点赞动画 -->
 			<div :class="{ 'like-base': true, like: comment.liked }" @click="like(index)">
 				<el-icon><svg-icon name="good" /></el-icon>
 				<span>{{ comment.likeCount }}</span>
