@@ -10,17 +10,28 @@
 			<el-icon title="暂停" size="25" class="icon" @click="playOrPause">
 				<svg-icon :name="SongStore.isPlaying ? 'play' : 'pause'" />
 			</el-icon>
+			<el-icon title="聚焦" size="25" class="icon" @click="focus">
+				<svg-icon :name="focusStatus ? 'focus-in' : 'focus-out'" />
+			</el-icon>
+			<el-icon
+				v-if="translationV"
+				title="翻译"
+				size="25"
+				class="icon"
+				@click="changeTranslationVisible"
+			>
+				<svg-icon name="translate" />
+			</el-icon>
 		</div>
 		<div class="main">
 			<transition name="card">
 				<song-card v-show="cardVisible" />
 			</transition>
-			<song-lyric />
+			<song-lyric :focus-status="focusStatus" :translation-visible="translationVisible" />
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-// TODO： 实现全屏播放
 import { ref } from "vue";
 import { useSongStore } from "store/index";
 import songLyric from "@/components/content/song-lyric/song-lyric.vue";
@@ -28,17 +39,37 @@ import songCard from "@/components/content/song-card/song-card.vue";
 const SongStore = useSongStore();
 
 const emits = defineEmits(["minimize", "play", "pause"]);
+const props = defineProps({
+	translationV: {
+		type: Boolean,
+	},
+});
 
 const minimize = () => {
 	emits("minimize");
 };
+
+// 播放暂停
 const playOrPause = () => {
 	SongStore.isPlaying ? emits("pause") : emits("play");
 };
 
+// 歌曲封面
 const cardVisible = ref<boolean>(true);
 const changeCardVisible = () => {
 	cardVisible.value = !cardVisible.value;
+};
+
+// 歌词聚焦
+const focusStatus = ref<boolean>(false);
+const focus = () => {
+	focusStatus.value = !focusStatus.value;
+};
+
+// 翻译
+const translationVisible = ref<boolean>(true);
+const changeTranslationVisible = () => {
+	translationVisible.value = !translationVisible.value;
 };
 </script>
 <style scoped lang="less">

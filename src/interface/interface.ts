@@ -189,12 +189,23 @@ type suggestionItem = {
 };
 
 /**
- * @description 歌词类型
+ * @description 歌词基础类型
  * */
-export type lyricType = Array<{
+export type lyricBaseType = {
 	time: number;
 	content: string;
-}>;
+	translation?: string;
+};
+/**
+ * @description 请求返回的歌词类型
+ * */
+export type lyricsType = {
+	lyric: lyricBaseType[] | null;
+	translator: {
+		id: number;
+		name: string;
+	} | null;
+};
 
 export interface commentType {
 	id: string | number;

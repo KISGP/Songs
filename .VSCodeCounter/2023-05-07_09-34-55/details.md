@@ -1,0 +1,132 @@
+# Details
+
+Date : 2023-05-07 09:34:55
+
+Directory c:\\Users\\LENOVO\\Desktop\\Songs\\src
+
+Total : 117 files,  7414 codes, 472 comments, 405 blanks, all 8291 lines
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)
+
+## Files
+| filename | language | code | comment | blank | total |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| [src/APP/content/footer/button-hide.vue](/src/APP/content/footer/button-hide.vue) | vue | 50 | 0 | 2 | 52 |
+| [src/APP/content/footer/index.vue](/src/APP/content/footer/index.vue) | vue | 187 | 0 | 12 | 199 |
+| [src/APP/content/footer/player-max.vue](/src/APP/content/footer/player-max.vue) | vue | 81 | 0 | 6 | 87 |
+| [src/APP/content/footer/player-min.vue](/src/APP/content/footer/player-min.vue) | vue | 358 | 12 | 14 | 384 |
+| [src/APP/content/header/index.vue](/src/APP/content/header/index.vue) | vue | 66 | 0 | 2 | 68 |
+| [src/APP/content/menu/index.vue](/src/APP/content/menu/index.vue) | vue | 88 | 0 | 2 | 90 |
+| [src/APP/index.ts](/src/APP/index.ts) | TypeScript | 16 | 40 | 5 | 61 |
+| [src/APP/index.vue](/src/APP/index.vue) | vue | 81 | 4 | 1 | 86 |
+| [src/assets/style/common.less](/src/assets/style/common.less) | Less | 42 | 2 | 3 | 47 |
+| [src/assets/style/detailedPage.less](/src/assets/style/detailedPage.less) | Less | 62 | 0 | 0 | 62 |
+| [src/assets/style/index.less](/src/assets/style/index.less) | Less | 117 | 0 | 12 | 129 |
+| [src/assets/style/theme/dark.less](/src/assets/style/theme/dark.less) | Less | 40 | 0 | 1 | 41 |
+| [src/assets/style/theme/light.less](/src/assets/style/theme/light.less) | Less | 40 | 0 | 1 | 41 |
+| [src/assets/svg/add2List.svg](/src/assets/svg/add2List.svg) | SVG | 11 | 0 | 0 | 11 |
+| [src/assets/svg/album.svg](/src/assets/svg/album.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/comment.svg](/src/assets/svg/comment.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/exit.svg](/src/assets/svg/exit.svg) | SVG | 9 | 0 | 0 | 9 |
+| [src/assets/svg/fullScreen.svg](/src/assets/svg/fullScreen.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/fullScreen_exit.svg](/src/assets/svg/fullScreen_exit.svg) | SVG | 6 | 0 | 0 | 6 |
+| [src/assets/svg/github.svg](/src/assets/svg/github.svg) | SVG | 1 | 0 | 0 | 1 |
+| [src/assets/svg/good.svg](/src/assets/svg/good.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/hide.svg](/src/assets/svg/hide.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/left.svg](/src/assets/svg/left.svg) | SVG | 6 | 0 | 0 | 6 |
+| [src/assets/svg/like.svg](/src/assets/svg/like.svg) | SVG | 6 | 0 | 0 | 6 |
+| [src/assets/svg/list.svg](/src/assets/svg/list.svg) | SVG | 11 | 0 | 0 | 11 |
+| [src/assets/svg/list_add.svg](/src/assets/svg/list_add.svg) | SVG | 9 | 0 | 0 | 9 |
+| [src/assets/svg/list_footer.svg](/src/assets/svg/list_footer.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/netease.svg](/src/assets/svg/netease.svg) | SVG | 11 | 0 | 0 | 11 |
+| [src/assets/svg/next_song.svg](/src/assets/svg/next_song.svg) | SVG | 1 | 0 | 0 | 1 |
+| [src/assets/svg/pause.svg](/src/assets/svg/pause.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/play.svg](/src/assets/svg/play.svg) | SVG | 1 | 0 | 0 | 1 |
+| [src/assets/svg/play_list.svg](/src/assets/svg/play_list.svg) | SVG | 11 | 0 | 0 | 11 |
+| [src/assets/svg/previous_song.svg](/src/assets/svg/previous_song.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/qq_music.svg](/src/assets/svg/qq_music.svg) | SVG | 9 | 0 | 0 | 9 |
+| [src/assets/svg/right.svg](/src/assets/svg/right.svg) | SVG | 6 | 0 | 0 | 6 |
+| [src/assets/svg/show.svg](/src/assets/svg/show.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/song.svg](/src/assets/svg/song.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/video.svg](/src/assets/svg/video.svg) | SVG | 11 | 0 | 0 | 11 |
+| [src/assets/svg/volume.svg](/src/assets/svg/volume.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/assets/svg/volume_no.svg](/src/assets/svg/volume_no.svg) | SVG | 8 | 0 | 0 | 8 |
+| [src/components/common/card-3D/card-3D.vue](/src/components/common/card-3D/card-3D.vue) | vue | 81 | 0 | 6 | 87 |
+| [src/components/common/card/card.vue](/src/components/common/card/card.vue) | vue | 41 | 0 | 2 | 43 |
+| [src/components/common/svg-icon/index.vue](/src/components/common/svg-icon/index.vue) | vue | 25 | 0 | 3 | 28 |
+| [src/components/content/album-group/album-group.vue](/src/components/content/album-group/album-group.vue) | vue | 61 | 0 | 2 | 63 |
+| [src/components/content/artist-card/artist-card-group.vue](/src/components/content/artist-card/artist-card-group.vue) | vue | 22 | 0 | 1 | 23 |
+| [src/components/content/artist-card/artist-card.vue](/src/components/content/artist-card/artist-card.vue) | vue | 60 | 0 | 1 | 61 |
+| [src/components/content/artist-introduction/artist-introduction-brief.vue](/src/components/content/artist-introduction/artist-introduction-brief.vue) | vue | 37 | 0 | 1 | 38 |
+| [src/components/content/artist-introduction/artist-introduction-detailed.vue](/src/components/content/artist-introduction/artist-introduction-detailed.vue) | vue | 32 | 0 | 2 | 34 |
+| [src/components/content/artists-similar/artists-similar.vue](/src/components/content/artists-similar/artists-similar.vue) | vue | 50 | 0 | 4 | 54 |
+| [src/components/content/artists/artists.vue](/src/components/content/artists/artists.vue) | vue | 43 | 0 | 2 | 45 |
+| [src/components/content/comment/comment-floor.vue](/src/components/content/comment/comment-floor.vue) | vue | 87 | 8 | 3 | 98 |
+| [src/components/content/comment/comment-item.vue](/src/components/content/comment/comment-item.vue) | vue | 69 | 5 | 4 | 78 |
+| [src/components/content/comment/index.vue](/src/components/content/comment/index.vue) | vue | 80 | 0 | 7 | 87 |
+| [src/components/content/comment/style/style.less](/src/components/content/comment/style/style.less) | Less | 54 | 0 | 1 | 55 |
+| [src/components/content/description/description.vue](/src/components/content/description/description.vue) | vue | 61 | 0 | 1 | 62 |
+| [src/components/content/list-card/list-card-group.vue](/src/components/content/list-card/list-card-group.vue) | vue | 17 | 0 | 2 | 19 |
+| [src/components/content/list-card/list-card.vue](/src/components/content/list-card/list-card.vue) | vue | 88 | 3 | 2 | 93 |
+| [src/components/content/login/login.vue](/src/components/content/login/login.vue) | vue | 8 | 0 | 3 | 11 |
+| [src/components/content/playList/playList.vue](/src/components/content/playList/playList.vue) | vue | 78 | 0 | 5 | 83 |
+| [src/components/content/search-input/index.vue](/src/components/content/search-input/index.vue) | vue | 115 | 0 | 7 | 122 |
+| [src/components/content/search-input/suggestions.vue](/src/components/content/search-input/suggestions.vue) | vue | 97 | 0 | 3 | 100 |
+| [src/components/content/song-add2List/song-add2List.vue](/src/components/content/song-add2List/song-add2List.vue) | vue | 72 | 0 | 2 | 74 |
+| [src/components/content/song-card/song-card.vue](/src/components/content/song-card/song-card.vue) | vue | 92 | 0 | 4 | 96 |
+| [src/components/content/song-lyric/song-lyric.vue](/src/components/content/song-lyric/song-lyric.vue) | vue | 87 | 0 | 6 | 93 |
+| [src/components/content/songs-table/song-table-common.vue](/src/components/content/songs-table/song-table-common.vue) | vue | 81 | 0 | 3 | 84 |
+| [src/components/content/songs-table/song-table-my.vue](/src/components/content/songs-table/song-table-my.vue) | vue | 89 | 0 | 3 | 92 |
+| [src/components/content/songs-table/song-table.less](/src/components/content/songs-table/song-table.less) | Less | 23 | 0 | 1 | 24 |
+| [src/components/content/songs-table/song-table.ts](/src/components/content/songs-table/song-table.ts) | TypeScript | 57 | 6 | 7 | 70 |
+| [src/components/content/video/video-card-group.vue](/src/components/content/video/video-card-group.vue) | vue | 22 | 0 | 1 | 23 |
+| [src/components/content/video/video-card.vue](/src/components/content/video/video-card.vue) | vue | 107 | 0 | 4 | 111 |
+| [src/hook/register.ts](/src/hook/register.ts) | TypeScript | 26 | 6 | 6 | 38 |
+| [src/interface/interface.ts](/src/interface/interface.ts) | TypeScript | 202 | 45 | 20 | 267 |
+| [src/main.ts](/src/main.ts) | TypeScript | 19 | 2 | 4 | 25 |
+| [src/router/index.ts](/src/router/index.ts) | TypeScript | 33 | 6 | 6 | 45 |
+| [src/router/module/album.ts](/src/router/module/album.ts) | TypeScript | 27 | 2 | 1 | 30 |
+| [src/router/module/list.ts](/src/router/module/list.ts) | TypeScript | 47 | 4 | 2 | 53 |
+| [src/router/module/search.ts](/src/router/module/search.ts) | TypeScript | 12 | 1 | 1 | 14 |
+| [src/router/module/set.ts](/src/router/module/set.ts) | TypeScript | 27 | 0 | 1 | 28 |
+| [src/router/module/singer.ts](/src/router/module/singer.ts) | TypeScript | 57 | 5 | 2 | 64 |
+| [src/router/module/songs.ts](/src/router/module/songs.ts) | TypeScript | 27 | 2 | 2 | 31 |
+| [src/router/module/test.ts](/src/router/module/test.ts) | TypeScript | 7 | 0 | 1 | 8 |
+| [src/router/module/user.ts](/src/router/module/user.ts) | TypeScript | 27 | 2 | 1 | 30 |
+| [src/service/api/api.ts](/src/service/api/api.ts) | TypeScript | 808 | 167 | 43 | 1,018 |
+| [src/service/api/handle.ts](/src/service/api/handle.ts) | TypeScript | 578 | 3 | 33 | 614 |
+| [src/service/index.ts](/src/service/index.ts) | TypeScript | 16 | 2 | 4 | 22 |
+| [src/service/request/index.ts](/src/service/request/index.ts) | TypeScript | 73 | 24 | 7 | 104 |
+| [src/service/request/type.ts](/src/service/request/type.ts) | TypeScript | 11 | 0 | 3 | 14 |
+| [src/shims-vue.d.ts](/src/shims-vue.d.ts) | TypeScript | 5 | 1 | 1 | 7 |
+| [src/store/index.ts](/src/store/index.ts) | TypeScript | 6 | 0 | 4 | 10 |
+| [src/store/module/data.ts](/src/store/module/data.ts) | TypeScript | 51 | 21 | 3 | 75 |
+| [src/store/module/songs.ts](/src/store/module/songs.ts) | TypeScript | 105 | 46 | 2 | 153 |
+| [src/store/module/user.ts](/src/store/module/user.ts) | TypeScript | 27 | 12 | 1 | 40 |
+| [src/test/test.js](/src/test/test.js) | JavaScript | 20 | 0 | 1 | 21 |
+| [src/test/test.ts](/src/test/test.ts) | TypeScript | 4 | 0 | 1 | 5 |
+| [src/test/test.vue](/src/test/test.vue) | vue | 93 | 0 | 2 | 95 |
+| [src/utils/storage.ts](/src/utils/storage.ts) | TypeScript | 31 | 8 | 9 | 48 |
+| [src/utils/utils-common.ts](/src/utils/utils-common.ts) | TypeScript | 101 | 17 | 11 | 129 |
+| [src/utils/utils-content.ts](/src/utils/utils-content.ts) | TypeScript | 110 | 4 | 8 | 122 |
+| [src/views/album/detailed.vue](/src/views/album/detailed.vue) | vue | 86 | 6 | 8 | 100 |
+| [src/views/album/my.vue](/src/views/album/my.vue) | vue | 63 | 0 | 3 | 66 |
+| [src/views/list/detailed.vue](/src/views/list/detailed.vue) | vue | 103 | 6 | 7 | 116 |
+| [src/views/list/my.vue](/src/views/list/my.vue) | vue | 170 | 0 | 6 | 176 |
+| [src/views/list/recommend.vue](/src/views/list/recommend.vue) | vue | 47 | 0 | 2 | 49 |
+| [src/views/list/top.vue](/src/views/list/top.vue) | vue | 21 | 0 | 2 | 23 |
+| [src/views/search/search.vue](/src/views/search/search.vue) | vue | 141 | 0 | 4 | 145 |
+| [src/views/set/basic.vue](/src/views/set/basic.vue) | vue | 52 | 0 | 2 | 54 |
+| [src/views/set/theme.vue](/src/views/set/theme.vue) | vue | 58 | 0 | 1 | 59 |
+| [src/views/singer/all.vue](/src/views/singer/all.vue) | vue | 102 | 0 | 3 | 105 |
+| [src/views/singer/detailed.vue](/src/views/singer/detailed.vue) | vue | 281 | 0 | 10 | 291 |
+| [src/views/singer/hot.vue](/src/views/singer/hot.vue) | vue | 41 | 0 | 3 | 44 |
+| [src/views/singer/subscribe.vue](/src/views/singer/subscribe.vue) | vue | 81 | 0 | 4 | 85 |
+| [src/views/singer/top.vue](/src/views/singer/top.vue) | vue | 88 | 0 | 3 | 91 |
+| [src/views/song/detailed.vue](/src/views/song/detailed.vue) | vue | 8 | 0 | 3 | 11 |
+| [src/views/song/recommend.vue](/src/views/song/recommend.vue) | vue | 39 | 0 | 3 | 42 |
+| [src/views/song/subscribed-new-song.vue](/src/views/song/subscribed-new-song.vue) | vue | 115 | 0 | 3 | 118 |
+| [src/views/user/home.vue](/src/views/user/home.vue) | vue | 10 | 0 | 1 | 11 |
+| [src/views/user/login-qr.vue](/src/views/user/login-qr.vue) | vue | 89 | 0 | 3 | 92 |
+
+[Summary](results.md) / Details / [Diff Summary](diff.md) / [Diff Details](diff-details.md)

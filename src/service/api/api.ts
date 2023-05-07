@@ -53,9 +53,8 @@ export async function getSongsDetail(ids: Array<number>): Promise<Array<TYPE.son
 
 /**
  * @description 获取歌词
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e9%80%90%e5%ad%97%e6%ad%8c%e8%af%8d
  */
-export async function getLyric(id: string | number): Promise<TYPE.lyricType> {
+export async function getLyric(id: string | number): Promise<TYPE.lyricsType> {
 	return await NETEASE.get({
 		url: `/lyric/new`,
 		myParams: {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useToast } from "vue-toastification";
-import { artistType } from "../interface/interface";
+import { artistType, lyricBaseType } from "../interface/interface";
 import { ElMessage, MessageParams } from "element-plus";
 import "element-plus/es/components/message/style/css";
 
@@ -35,27 +35,6 @@ export function getArtistsArray(artists: any): Array<artistType> {
 		});
 	});
 	return res;
-}
-
-// 歌词处理，返回[{time:"",content:""}]
-type resultType = Array<{ time: number; content: string }>;
-export function handleLyric(lyric: any): resultType {
-	let result: resultType = [];
-	const lyricArray = lyric.slice(lyric.indexOf("[00:")).split("\n");
-	lyricArray.pop();
-	lyricArray.forEach((item: string) => {
-		let index = item.indexOf("]") + 1;
-		const foo = item
-			.slice(0, index)
-			.replace(/[\[\]]+/g, "")
-			.split(":");
-		const time = parseInt(foo[0]) * 60 + parseFloat(parseFloat(foo[1]).toFixed(3));
-		result.push({
-			time: time,
-			content: item.slice(index),
-		});
-	});
-	return result;
 }
 
 // 获取时间戳

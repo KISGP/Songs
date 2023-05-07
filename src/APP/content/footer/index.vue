@@ -39,6 +39,7 @@
 			@minimize="minimizePlayer"
 			@play="play"
 			@pause="pause"
+			:translation-v="lyric?.translator?.id != null"
 		/>
 	</div>
 </template>
@@ -46,7 +47,7 @@
 import { onMounted, ref, watch, reactive, provide } from "vue";
 import { useSongStore } from "store/index";
 import { getLyric, likeSong } from "service/api/api";
-import type { lyricType } from "@/interface/interface";
+import type { lyricsType } from "@/interface/interface";
 import { s2min, debounce } from "utils/utils-common";
 import { showSuccessMessage, showErrorMessage } from "utils/utils-content";
 import playerMin from "./player-min.vue";
@@ -70,7 +71,7 @@ watch(
 	() => SongStore.song,
 	async () => {
 		SongStore.playerStatus != "min" && SongStore.update_playerStatus("min");
-		lyricArray.value = await getLyric(SongStore.song.song.id);
+		lyric.value = await getLyric(SongStore.song.song.id);
 	}
 );
 
@@ -93,9 +94,7 @@ const audio: {
 // audio更新
 const audioUpdate = debounce(() => {
 	audio.currentTime = audioRef.value!.currentTime;
-	if (lyricArray.value.length > 0) {
-		updateCurrentLyric();
-	}
+	updateCurrentLyric();
 }, 200);
 
 // 歌曲时长
@@ -143,21 +142,23 @@ const progressUpdate = (val: number) => {
 };
 
 // 全部歌词
-const lyricArray = ref<lyricType>([]);
+const lyric = ref<lyricsType>();
 // 当前歌词
 const currentLyric = ref<string>("");
 const currentLyricIndex = ref<number>(0);
-provide("lyric", lyricArray);
+provide("lyric", lyric);
 provide("lyricIndex", currentLyricIndex);
 // 更新当前歌词
 const updateCurrentLyric = () => {
-	for (let index = 0; index < lyricArray.value.length; index++) {
-		if (audio.currentTime < lyricArray.value[index].time) {
-			if (currentLyric.value != lyricArray.value[index - 1].content) {
-				currentLyric.value = lyricArray.value[index - 1].content;
-				currentLyricIndex.value = index - 1;
+	if (lyric.value?.lyric) {
+		for (let index = 0; index < lyric.value?.lyric.length; index++) {
+			if (audio.currentTime < lyric.value?.lyric[index].time) {
+				if (currentLyric.value != lyric.value?.lyric[index - 1].content) {
+					currentLyric.value = lyric.value?.lyric[index - 1].content;
+					currentLyricIndex.value = index - 1;
+				}
+				return;
 			}
-			return;
 		}
 	}
 };

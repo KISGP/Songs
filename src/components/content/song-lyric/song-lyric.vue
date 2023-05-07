@@ -1,13 +1,16 @@
 <template>
 	<div ref="back" class="back">
 		<el-scrollbar ref="scroll">
-			<div class="contain" @mouseup="mouseUp" @mousedown="mouseDown">
+			<div :class="{ contain: true, focus: focusStatus }" @mouseup="mouseUp" @mousedown="mouseDown">
 				<p
-					v-for="(item, index) in lyricArray"
+					v-for="(item, index) in lyrics?.lyric"
 					:key="item.time"
 					:class="{ current: index == lyricIndex }"
 				>
-					{{ item.content }}
+					<span>{{ item.content }}</span>
+					<span v-show="translationVisible" :class="{ translation: index != lyricIndex }">
+						{{ item.translation }}
+					</span>
 				</p>
 			</div>
 		</el-scrollbar>
@@ -16,14 +19,25 @@
 <script setup lang="ts">
 import { onMounted, inject, ref, Ref, watch } from "vue";
 import type { ElScrollbar } from "element-plus";
-import type { lyricType } from "@/interface/interface";
+import type { lyricsType } from "@/interface/interface";
+
+const props = defineProps({
+	focusStatus: {
+		type: Boolean,
+		default: false,
+	},
+	translationVisible: {
+		type: Boolean,
+		default: true,
+	},
+});
 
 // ref 对象
 const back = ref<HTMLDivElement>();
 const scroll = ref<InstanceType<typeof ElScrollbar>>();
 
 // 注入的歌词
-const lyricArray: Ref<lyricType> | undefined = inject("lyric");
+const lyrics: Ref<lyricsType> | undefined = inject("lyric");
 const lyricIndex: Ref<number> | undefined = inject("lyricIndex");
 
 // 手动滑动歌词
@@ -75,18 +89,32 @@ onMounted(() => {
 		flex-direction: column;
 		align-items: center;
 		margin: v-bind(containMargin);
-		& > p {
-			font-size: 1rem;
-			color: var(--regular-text);
+		font-size: 1rem;
+		color: var(--regular-text);
+		p {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 		}
 		.current {
 			font-size: 1.5rem;
 			color: var(--theme-color);
+			filter: none;
+			& > span:nth-child(2) {
+				font-size: 1rem;
+			}
 		}
 		&:active {
 			cursor: grab;
 			user-select: none;
 		}
+		.translation {
+			color: var(--secondary-text);
+			font-size: 0.8rem;
+		}
+	}
+	.focus > p {
+		filter: blur(3px);
 	}
 }
 </style>

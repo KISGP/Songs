@@ -1,18 +1,20 @@
 <template>
-	<el-button @click="f">aaa</el-button>
 	<div class="back">
 		<el-scrollbar ref="e">
 			<div class="a">
-				<p v-for="item in lyricArray">{{ item.content }}</p>
+				<template v-for="item in lyricArray">
+					<p>
+						{{ item.content }}
+						<span class="x">哈哈哈哈或或或</span>
+					</p>
+				</template>
 			</div>
 		</el-scrollbar>
 	</div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import type { lyricType } from "@/interface/interface";
-import { ElScrollbar } from "element-plus";
-const lyricArray: lyricType = [
+const lyricArray = [
 	{ time: 0, content: "作词 : Tizzy T" },
 	{ time: 1, content: "作曲 : Tizzy T" },
 	{ time: 2, content: "编曲 : Tim姜皓天" },
@@ -74,7 +76,7 @@ const lyricArray: lyricType = [
 	{ time: 178.15, content: "特别鸣谢：Tizzy T工作室" },
 ];
 
-const e = ref<InstanceType<typeof ElScrollbar>>();
+const e = ref();
 const f = () => {
 	console.log(e.value!.wrapRef?.scrollHeight);
 };
@@ -89,6 +91,13 @@ const f = () => {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		p{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.x {
+		}
 	}
 }
 </style>

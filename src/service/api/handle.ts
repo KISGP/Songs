@@ -148,21 +148,60 @@ export function user_playlist(
 	}
 }
 
-export function lyric_new(res: any): TYPE.lyricType {
-	let lyricArray = res.lrc.lyric.slice(res.lrc.lyric.indexOf("[00:")).split("\n");
-	lyricArray.pop();
-	return lyricArray
-		.map((e: string) => {
-			let temp = e.split("]");
-			let t = temp[0].replace(/[\[\]]+/g, "").split(":");
+export function lyric_new(res: any): TYPE.lyricsType {
+	const result: TYPE.lyricsType = { lyric: null, translator: null };
+	// 判断是否存歌词
+	if (res.lrc.lyric) {
+		// 歌词处理
+		let a = res.lrc.lyric.slice(res.lrc.lyric.indexOf("[00:")).split("\n");
+		a.pop();
+		result.lyric = a.map((e: string): TYPE.lyricBaseType => {
+			let splitIndex = e.indexOf("]");
+			let foo = e.slice(1, splitIndex).split(":");
 			return {
-				time: Math.floor((parseInt(t[0]) * 60 + parseFloat(t[1])) * 1000) / 1000,
-				content: temp[1].trim(),
+				time: Math.floor((parseInt(foo[0]) * 60 + parseFloat(foo[1])) * 1000) / 1000,
+				content: e.slice(splitIndex + 1).trim(),
+				translation: "",
 			};
-		})
-		.filter((lyric: { time: number; content: string }) => {
+		});
+		// 翻译处理
+		let tr: { time: number; content: string }[] = [];
+		if (res.tlyric.lyric) {
+			let temp: string[] = res.tlyric.lyric.slice(res.tlyric.lyric.indexOf("[00:")).split("\n");
+			temp.pop();
+			tr = temp.map((e: string) => {
+				let splitIndex = e.indexOf("]");
+				let foo = e.slice(1, splitIndex).split(":");
+				return {
+					time: Math.floor((parseInt(foo[0]) * 60 + parseFloat(foo[1])) * 1000) / 1000,
+					content: e.slice(splitIndex + 1).trim(),
+				};
+			});
+			// 填充翻译
+			let firstIndex = 0;
+			for (let i = 0; i < result.lyric!.length; i++) {
+				if (tr[0].time == result.lyric![i].time) {
+					firstIndex = i;
+					break;
+				}
+			}
+			for (let i = firstIndex, j = 0; i < result.lyric!.length && i < tr.length; i++, j++) {
+				result.lyric![i].translation = tr[j].content;
+			}
+			// 译者
+			result.translator = {
+				id: res.transUser.userid,
+				name: res.transUser.nickname,
+			};
+		}
+		// 去除空的歌词
+		result.lyric!.filter((lyric: TYPE.lyricBaseType) => {
 			return lyric.content.length > 0;
 		});
+	} else {
+		result.lyric = result.translator = null;
+	}
+	return result;
 }
 
 export function search_suggest(res: any): TYPE.suggestionsType {
