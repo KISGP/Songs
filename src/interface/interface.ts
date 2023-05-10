@@ -112,30 +112,6 @@ export interface songDetailedType {
 }
 
 /**
- * @description user
- */
-export interface UserState {
-	netease_name: string;
-	netease_id: number;
-	netease_cookie: string;
-	netease_login: boolean;
-}
-
-/**
- * @description song
- */
-export interface SongsState {
-	song: songDetailedType;
-	likedSongsID?: Array<number>;
-	isPlaying: boolean;
-	playList: Array<songDetailedType>;
-	historyList: Array<songDetailedType>;
-	playerStatus: "hidden" | "max" | "min";
-	myCreatedList: Array<listBriefType>;
-	myCreatedListID: Array<number>;
-}
-
-/**
  * @description 歌单简略信息
  * */
 export interface listBriefType extends baseType {

@@ -65,6 +65,7 @@ declare module '@vue/runtime-core' {
     SongAdd2List: typeof import('./src/components/content/song-add2List/song-add2List.vue')['default']
     SongCard: typeof import('./src/components/content/song-card/song-card.vue')['default']
     SongLyric: typeof import('./src/components/content/song-lyric/song-lyric.vue')['default']
+    SongLyricOld: typeof import('./src/components/content/song-lyric/song-lyric-old.vue')['default']
     SongTableCommon: typeof import('./src/components/content/songs-table/song-table-common.vue')['default']
     SongTableMy: typeof import('./src/components/content/songs-table/song-table-my.vue')['default']
     Suggestions: typeof import('./src/components/content/search-input/suggestions.vue')['default']

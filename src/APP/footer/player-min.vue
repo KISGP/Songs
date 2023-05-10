@@ -12,7 +12,7 @@
 						</div>
 						<el-image
 							style="width: 100%; height: 100%"
-							:src="SongStore.song.song.cover"
+							:src="SongStore.song?.song.cover"
 							fit="cover"
 						/>
 					</div>
@@ -48,7 +48,7 @@
 						<div class="barBox">
 							<div class="messageBox" ref="messageBoxRef">
 								<!-- 歌名 -->
-								<span> {{ SongStore.song.song.name || "歌名" }} </span>
+								<span> {{ SongStore.song?.song.name || "歌名" }} </span>
 								<!-- 时间 -->
 								<span style="margin-left: 10px">
 									{{ s2min(props.currentTime as number) }} /
@@ -66,11 +66,11 @@
 			</el-col>
 			<el-col :span="6">
 				<div class="right">
-					<div :class="{ liked: true, 'liked-true': SongStore.song.song.isLiked }">
+					<div :class="{ liked: true, 'liked-true': SongStore.song?.song.isLiked }">
 						<el-icon
 							size="25"
-							:title="SongStore.song.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
-							@click="emits('like', !SongStore.song.song.isLiked)"
+							:title="SongStore.song?.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
+							@click="emits('like', SongStore.song?.song.isLiked)"
 						>
 							<svg-icon name="like" />
 						</el-icon>
@@ -115,7 +115,7 @@
 					vertical
 					height="150px"
 					:show-tooltip="false"
-					:disabled="!SongStore.song.song.id"
+					:disabled="SongStore.song?.song.id"
 					@input="volumeChange"
 				/>
 			</div>
@@ -214,7 +214,7 @@ const volumeChange = (val: number) => {
 
 // 下载
 const download = () => {
-	SongStore.song.song.url && downloadFile(SongStore.song.song.url, SongStore.song.song.name);
+	SongStore.song?.song.url && downloadFile(SongStore.song.song.url, SongStore.song.song.name);
 };
 </script>
 <style scoped lang="less">

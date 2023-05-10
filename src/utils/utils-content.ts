@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useToast } from "vue-toastification";
-import { artistType, lyricBaseType } from "../interface/interface";
+import { artistType } from "../interface/interface";
 import { ElMessage, MessageParams } from "element-plus";
 import "element-plus/es/components/message/style/css";
 

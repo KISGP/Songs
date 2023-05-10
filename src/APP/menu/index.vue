@@ -67,18 +67,18 @@
 </template>
 <script setup lang="ts">
 import { useUserStore } from "store/index";
-import { removeAll } from "utils/storage";
 import { showSuccessMessage } from "utils/utils-content";
+import storage from "utils/storage";
 const UserStore = useUserStore();
 const openPage = (url: string) => {
 	window.open(url, "_blank");
 };
 
-const exit = ()=>{
-	removeAll();
+const exit = () => {
+	storage.removeAll();
 	UserStore.update_login(false);
 	showSuccessMessage("退出成功");
-}
+};
 </script>
 <style scoped lang="less">
 .el-menu {

@@ -1,9 +1,10 @@
 import axios from "axios";
-import { GPRequestConfig, GPRequestInterceptors } from "./type";
 import type { AxiosInstance } from "axios";
+import { GPRequestConfig, GPRequestInterceptors } from "./type";
 import { getTimeStamp } from "utils/utils-content";
-import { getItem } from "utils/storage";
 import { useUserStore } from "store/index";
+import storage from "utils/storage";
+
 const controller = new AbortController();
 
 export default class GPRequest {
@@ -51,9 +52,10 @@ export default class GPRequest {
 			// params修改验证
 			if (config.myParams) {
 				// 添加cookie
-				if (typeof config.myParams.cookie === "boolean") {
+				if (typeof config.myParams.cookie === "boolean" && config.myParams.cookie) {
 					if (
-						!(config.myParams.cookie = useUserStore().netease_cookie || getItem("cookie") || "")
+						!(config.myParams.cookie =
+							useUserStore().netease_cookie || storage.getItem("cookie") || "")
 					) {
 						config.signal = controller.signal;
 						console.log(config.url, "cookie获取错误");
@@ -61,7 +63,7 @@ export default class GPRequest {
 					}
 				}
 				// 添加时间戳
-				if (typeof config.myParams.timeStamp == "boolean") {
+				if (typeof config.myParams.timeStamp == "boolean" && config.myParams.timeStamp) {
 					config.myParams.timeStamp = getTimeStamp();
 				}
 				// 检查uid

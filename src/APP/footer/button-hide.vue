@@ -3,24 +3,19 @@
 		<transition name="switch">
 			<div class="switch">
 				<el-icon size="2vw" id="icon">
-					<svg-icon v-if="SongStore.playerStatus == 'hidden'" name="show"></svg-icon>
-					<svg-icon v-if="SongStore.playerStatus == 'min'" name="hide"></svg-icon>
+					<svg-icon v-if="DataStore.audioDisplayStatus == 'hidden'" name="show"></svg-icon>
+					<svg-icon v-if="DataStore.audioDisplayStatus == 'min'" name="hide"></svg-icon>
 				</el-icon>
 			</div>
 		</transition>
 	</div>
 </template>
 <script setup lang="ts">
-import { ref, Ref } from "vue";
-import { useSongStore } from "store/module/songs";
-const SongStore = useSongStore();
+import { useDataStore } from "store/index";
+const DataStore = useDataStore();
 
 const hideOrShow = () => {
-	if (SongStore.playerStatus == "min") {
-		SongStore.update_playerStatus("hidden");
-	} else {
-		SongStore.update_playerStatus("min");
-	}
+	DataStore.update_audioDisplayStatus(DataStore.audioDisplayStatus === "min" ? "hidden" : "min");
 };
 </script>
 <style scoped lang="less">
@@ -42,10 +37,4 @@ const hideOrShow = () => {
 		}
 	}
 }
-// .switch-enter-active {
-// 	animation: fadeIn 300ms ease;
-// }
-// .switch-leave-active {
-// 	animation: fadeOut 500ms ease;
-// }
 </style>

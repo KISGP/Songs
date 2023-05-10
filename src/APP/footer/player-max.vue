@@ -91,7 +91,7 @@ const changeTranslationVisible = () => {
 		}
 	}
 	.main {
-		max-height: calc(100vh - 35px);
+		height: calc(100vh - 35px);
 		flex-grow: 1;
 		display: flex;
 		justify-content: space-evenly;
@@ -99,10 +99,10 @@ const changeTranslationVisible = () => {
 }
 
 .card-enter-active {
-	animation: hidden 200ms ease reverse;
+	animation: hidden 150ms ease-in reverse;
 }
 .card-leave-active {
-	animation: hidden 350ms ease;
+	animation: hidden 200ms ease-in;
 }
 @keyframes hidden {
 	from {

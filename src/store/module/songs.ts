@@ -1,35 +1,23 @@
 import { defineStore } from "pinia";
-import { getItem } from "utils/storage";
-import { setCssVar, wait } from "utils/utils-common";
-import { SongsState, songDetailedType, listBriefType } from "@/interface/interface";
+import { songDetailedType, listBriefType } from "@/interface/interface";
 import { getSongUrl, getLikedSongsID } from "@/service/api/api";
+import storage from "utils/storage";
+
+type SongsState = {
+	song: songDetailedType | null;
+	likedSongsID: Array<number>;
+	isPlaying: boolean;
+	playList: Array<songDetailedType>;
+	historyList: Array<songDetailedType>;
+	myCreatedList: Array<listBriefType>;
+	myCreatedListID: Array<number>;
+};
 
 export const useSongStore = defineStore("SongStore", {
 	state: (): SongsState => {
 		return {
 			// 当前歌曲
-			song: {
-				song: {
-					id: 0,
-					name: "",
-					cover: "",
-					coverSize: 160,
-					url: "",
-					alia: [],
-					artistsStr: "",
-					isLiked: false,
-				},
-				artists: {
-					artistsStr: "",
-					artists: [],
-				},
-				album: {
-					name: "",
-					id: 0,
-					cover: "",
-					coverSize: 160,
-				},
-			},
+			song: null,
 			// 喜欢的音乐ID
 			likedSongsID: [],
 			// 是否正在播放
@@ -38,8 +26,6 @@ export const useSongStore = defineStore("SongStore", {
 			playList: [],
 			// 历史播放（但似乎没有相关功能）
 			historyList: [],
-			// 播放器状态
-			playerStatus: "hidden",
 			// 我创建的歌单
 			myCreatedList: [],
 			myCreatedListID: [],
@@ -51,7 +37,7 @@ export const useSongStore = defineStore("SongStore", {
 		 * @param {songDetailedType} value 要播放的歌曲信息
 		 * @description 更新播放歌曲
 		 * */
-		async update_song(value: songDetailedType): Promise<void> {
+		async update_song(value: songDetailedType) {
 			// 获取歌曲播放链接
 			if (!value.song.url) value.song.url = await getSongUrl(value.song.id);
 			// 判断是否我喜欢的歌曲
@@ -90,30 +76,6 @@ export const useSongStore = defineStore("SongStore", {
 			}
 		},
 		/**
-		 * @description 更新播放器显示状态（全屏|隐藏|最小）
-		 * */
-		async update_playerStatus(value: "hidden" | "max" | "min") {
-			// FIXME: 1.一直存在卡卡顿问题，尝试更换另一种修改方法 2.逻辑存在严重缺陷
-			switch (value) {
-				case "hidden":
-					setCssVar("--height-content", "94vh");
-					setCssVar("--height-player", "0vh");
-					this.playerStatus = value;
-					break;
-				case "min":
-					setCssVar("--height-player", "8vh");
-					setCssVar("--height-content", "86vh");
-					this.playerStatus = value;
-					break;
-				case "max":
-					if (this.song.song.id) {
-						setCssVar("--height-player", "100vh");
-						this.playerStatus = value;
-					}
-					break;
-			}
-		},
-		/**
 		 * @param function(likedSongsID) 传入一个操作函数，该函数会自动传入 Array<喜欢的音乐ID>
 		 * @description 更新喜欢的音乐ID列表
 		 * */
@@ -124,8 +86,8 @@ export const useSongStore = defineStore("SongStore", {
 		 * @description 刷新喜欢的音乐ID列表
 		 * */
 		async reload_likedSongsID() {
-			const id = getItem("id");
-			if (id) {
+			const id = storage.getItem("id");
+			if (id && this.song) {
 				this.likedSongsID = await getLikedSongsID(parseInt(id));
 				this.song.song.isLiked = this.check_song_isLiked(this.song.song.id);
 			}

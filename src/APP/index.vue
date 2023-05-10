@@ -21,34 +21,69 @@
 			</el-container>
 			<footer-bar class="layout-footer" />
 		</el-container>
-		<hidden-btn v-show="SongStore.playerStatus === 'hidden' || SongStore.playerStatus === 'min'" />
+		<hidden-btn
+			v-show="DataStore.audioDisplayStatus === 'hidden' || DataStore.audioDisplayStatus === 'min'"
+		/>
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
-import { useSongStore, useDataStore } from "store/index";
-import { fixUserInfo, getLikedSongs, getMyCreateList, initTheme } from "./index";
+import { onMounted, ref } from "vue";
+import storage from "utils/storage";
+import { useUserStore, useSongStore, useDataStore } from "store/index";
+import { getUserInfo, getLikedSongsID, getMyList } from "service/api/api";
+import { themeType } from "@/interface/interface";
 import { ElScrollbar } from "element-plus";
-import headerBar from "./content/header/index.vue";
-import menuBar from "./content/menu/index.vue";
-import footerBar from "./content/footer/index.vue";
-import hiddenBtn from "./content/footer/button-hide.vue";
+import headerBar from "./header/index.vue";
+import menuBar from "./menu/index.vue";
+import footerBar from "./footer/index.vue";
+import hiddenBtn from "./footer/button-hide.vue";
+
 const SongStore = useSongStore();
 const DataStore = useDataStore();
-const eScrollBar: Ref<InstanceType<typeof ElScrollbar> | null> = ref(null);
+const UserStore = useUserStore();
+const eScrollBar = ref<InstanceType<typeof ElScrollbar>>();
+
 onMounted(async () => {
-	await fixUserInfo();
-	getLikedSongs();
-	getMyCreateList();
-	initTheme();
-	DataStore.init_eScrollBar(eScrollBar as Ref<InstanceType<typeof ElScrollbar>>);
-	document.addEventListener("visibilitychange", function () {
-		if (document.visibilityState === "visible") {
-			document.title = "Song";
-		} else {
-			document.title = SongStore.song.song.name || "Song";
-		}
-	});
+	// // 获取localStorage下存储的用户信息
+	// const { cookie, id, name } = storage.getAll();
+	// if (cookie) {
+	// 	// 存储用户cookie到pinia
+	// 	UserStore.update_cookie(cookie);
+	// 	// 存储用户ID和Name到pinia
+	// 	if (id && name) {
+	// 		UserStore.update_id(parseInt(id));
+	// 		UserStore.update_name(name);
+	// 	} else {
+	// 		const user = await getUserInfo();
+	// 		UserStore.update_id(user.id);
+	// 		UserStore.update_name(user.name);
+	// 	}
+	// 	// 修改登录状态
+	// 	UserStore.update_login(true);
+	// 	// 获取喜欢的音乐列表ID
+	// 	SongStore.update_likedSongsID(async (likedSongsID) => {
+	// 		(await getLikedSongsID(UserStore.netease_id)).forEach((id: number) => {
+	// 			likedSongsID.push(id);
+	// 		});
+	// 	});
+	// 	// 获取我创建的歌单
+	// 	(await getMyList(UserStore.netease_id, UserStore.netease_name, "created")).forEach((list) => {
+	// 		SongStore.push_myCreatedList(list);
+	// 		SongStore.push_myCreatedListID(list.id);
+	// 	});
+	// }
+	// // 初始化主题
+	// DataStore.update_theme((storage.getItem("theme") as themeType) || DataStore.theme);
+	// // 存储滚动条ref对象到pinia
+	// DataStore.init_eScrollBar(eScrollBar.value!);
+	// // 监听网页变化，修改标题
+	// document.addEventListener("visibilitychange", function () {
+	// 	if (document.visibilityState === "visible") {
+	// 		document.title = "Song";
+	// 	} else {
+	// 		document.title = SongStore.song?.song.name || "Song";
+	// 	}
+	// });
 });
 </script>
 <style scoped lang="less">

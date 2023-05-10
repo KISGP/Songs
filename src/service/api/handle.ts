@@ -5,14 +5,14 @@ import { transformTimeStamp, handlePeopleCount } from "utils/utils-common";
 import { getArtistsName, getArtistsArray } from "utils/utils-content";
 import * as TYPE from "@/interface/interface";
 
-function _handle1(e: any, artistsStr: string) {
+function _handle1(e: any, artistsStr: string, coverSize: number = 160) {
 	return {
 		song: {
 			id: e.id,
 			name: e.name,
 			alia: e.alia,
-			cover: e.al.picUrl + "?param=160y160",
-			coverSize: 160,
+			cover: e.al.picUrl + `?param=${coverSize}y${coverSize}`,
+			coverSize: coverSize,
 			artistsStr,
 		},
 		artists: {
@@ -22,8 +22,8 @@ function _handle1(e: any, artistsStr: string) {
 		album: {
 			id: e.al.id,
 			name: e.al.name,
-			cover: e.al.picUrl + "?param=160y160",
-			coverSize: 160,
+			cover: e.al.picUrl + `?param=${coverSize}y${coverSize}`,
+			coverSize: coverSize,
 		},
 	};
 }
@@ -449,7 +449,7 @@ export function artist_sublist(res: any): Array<TYPE.artistBriefType> {
 	});
 }
 
-export function artist_new_song(res: any): Array<TYPE.SubscribedNewSongsType> {
+export function artist_new_song(res: any, coverSize: number): Array<TYPE.SubscribedNewSongsType> {
 	return res.data.newWorks.map((e: any) => {
 		let type: string;
 		switch (e.blockType) {
@@ -466,7 +466,7 @@ export function artist_new_song(res: any): Array<TYPE.SubscribedNewSongsType> {
 		return {
 			resourceId: e.blockTitle.resourceId,
 			resourceName: e.blockTitle.resourceName,
-			resourceIdCover: e.blockTitle.resourcePicUrl,
+			resourceIdCover: e.blockTitle.resourcePicUrl + `?param=${coverSize}y${coverSize}`,
 			publishTime: e.blockTitle.publishTime,
 			publishDate: e.blockTitle.publishDate,
 			type,
@@ -476,7 +476,7 @@ export function artist_new_song(res: any): Array<TYPE.SubscribedNewSongsType> {
 				cover: e.blockTitle.imgUrl,
 			},
 			songs: e.songLists.map((e: any) => {
-				return _handle1(e, getArtistsName(e.ar, null));
+				return _handle1(e, getArtistsName(e.ar, null), coverSize);
 			}),
 		};
 	});

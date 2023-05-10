@@ -1,47 +1,82 @@
-import { themeType } from "@/interface/interface";
+type StorageKey = "cookie" | "id" | "name" | "theme" | "firstSearch";
 
-// 存储数据的key
-type localStorageType = "cookie" | "id" | "name" | "theme" | "firstSearch";
+class LocalStorage<T extends string> {
+	private storage: Storage = window.localStorage;
 
-// 判断浏览器是否支持 LocalStorage 存储
-export function isSupportLocalStorage() {
-	if (!window.localStorage) {
+	/**
+	 * @description 判断浏览器是否支持LocalStorage
+	 * */
+	isSupport(): boolean {
+		return this.storage ? true : false;
+	}
+
+	/**
+	 * @description 储存指定数据
+	 * */
+	setItem(key: T, value: string) {
+		this.storage.setItem(key, value);
+	}
+
+	/**
+	 * @description 储存多个指定数据
+	 * */
+	setItems(data: { [key in T]?: string }) {
+		for (const key in data) {
+			this.setItem(key, data[key]!);
+		}
+	}
+
+	/**
+	 * @description 获取指定数据
+	 * */
+	getItem(key: T): string | null {
+		return this.storage.getItem(key);
+	}
+
+	/**
+	 * @description 获取多个指定数据
+	 * */
+	getItems(...key: T[]): { [key in T]?: string | null } {
+		let r: { [key in T]?: string | null } = {};
+		key.forEach((k) => {
+			r[k] = this.getItem(k);
+		});
+		return r;
+	}
+
+	/**
+	 * @description 获取localStorage存储的所有数据
+	 * */
+	getAll(): { [key: string]: string | null } {
+		let r: { [key: string]: string | null } = {};
+		for (const key in this.storage) {
+			r[key] = this.storage.getItem(key);
+		}
+		return r;
+	}
+
+	/**
+	 * @description 删除指定数据
+	 * */
+	removeItem(key: T) {
+		this.storage.removeItem(key);
+	}
+
+	/**
+	 * @description 删除多个指定数据
+	 * */
+	removeItems(...keys: T[]) {
+		keys.forEach((key) => {
+			this.storage.removeItem(key);
+		});
+	}
+
+	/**
+	 * @description 删除所有数据
+	 * */
+	removeAll() {
+		this.storage.clear();
 	}
 }
 
-// 储存数据
-export const setItem = (key: localStorageType, value: string): void => {
-	window.localStorage.setItem(key, value);
-};
-
-// 获取指定数据
-export function getItem(key: localStorageType): string | null {
-	return window.localStorage.getItem(key);
-}
-
-// 获取所有数据
-export function getAll(): { [key: string]: string } {
-	let r: { [key: string]: string } = {};
-	for (let i = 0; i < window.localStorage.length; i++) {
-		const key: string = window.localStorage.key(i) || "";
-		r[key] = getItem(key as localStorageType) || "";
-	}
-	return r;
-}
-
-// 删除指定缓存数据
-export function removeItem(key: localStorageType): void {
-	window.localStorage.removeItem(key);
-}
-
-// 删除多个缓存数据
-export function removeItemS(keys: Array<localStorageType>): void {
-	keys.forEach((key) => {
-		window.localStorage.removeItem(key);
-	});
-}
-
-// 删除所有缓存数据
-export function removeAll(): void {
-	window.localStorage.clear();
-}
+export default new LocalStorage<StorageKey>();

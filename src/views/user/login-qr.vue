@@ -12,7 +12,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "store/module/user";
 import { getQRKey, getQRImgBase64, checkQRStatus, getUserInfo } from "service/api/api";
 import { showNotification } from "utils/utils-content";
-import { setItem } from "utils/storage";
+import storage from "utils/storage";
 const store = useUserStore();
 const router = useRouter();
 onMounted(() => {
@@ -56,15 +56,17 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 			createQR();
 			break;
 		case 803: // 登录成功
-			showNotification("success", "登录成功,稍后跳转");
+			showNotification("success", "登录成功");
 			store.update_cookie(cookie);
 			const { id, name } = await getUserInfo();
 			store.update_login(true);
-			store.update_id(parseInt(id));
+			store.update_id(id);
 			store.update_name(name);
-			setItem("cookie", cookie);
-			setItem("id", id);
-			setItem("name", name);
+			storage.setItems({
+				cookie,
+				id: id.toString(),
+				name,
+			});
 			router.push((router.currentRoute.value.query.redirect as string | undefined) || "/");
 			break;
 		default:

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 // 等待（ms）
 export function wait(ms: number): Promise<null> {
 	return new Promise((resolve) => {
@@ -111,18 +109,18 @@ export function getCssVar(key: string): string {
 	return getComputedStyle(document.documentElement).getPropertyValue(key);
 }
 
-// 设置CSS变量(单个)
+/**
+ * @description 设置CSS变量
+ */
 export function setCssVar(key: string, value: string): void {
 	document.documentElement.style.setProperty(key, value);
 }
 
 /**
- * 设置CSS变量(多个)
- * @param css_S CSS变量数组，[[key, value, isImportant],]
+ * @description 设置CSS变量
  */
 export function setCssVarS(css_S: { [key: string]: string }): void {
 	for (const key in css_S) {
 		setCssVar(key, css_S[key]);
 	}
 }
-

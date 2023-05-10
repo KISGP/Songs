@@ -37,7 +37,7 @@ router.beforeEach((to, from, next) => {
 	// 左侧主菜单显示隐藏
 	to.meta.menuVisible != DataStore.menuVisible && DataStore.update_menuVisible();
 	// 退出歌曲全屏
-	SongStore.playerStatus == "max" && SongStore.update_playerStatus("min");
+	DataStore.audioDisplayStatus == "max" && DataStore.update_audioDisplayStatus("min");
 	next();
 });
 
