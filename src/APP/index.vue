@@ -36,7 +36,7 @@ import { ElScrollbar } from "element-plus";
 import headerBar from "./header/index.vue";
 import menuBar from "./menu/index.vue";
 import footerBar from "./footer/index.vue";
-import hiddenBtn from "./footer/button-hide.vue";
+import hiddenBtn from "@/components/content/button-hide/button-hide.vue";
 
 const SongStore = useSongStore();
 const DataStore = useDataStore();

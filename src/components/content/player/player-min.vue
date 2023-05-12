@@ -5,7 +5,7 @@
 				<!-- 歌曲图片 -->
 				<div class="left">
 					<div class="song-img">
-						<div class="cover" @click="emits('maximize')">
+						<div class="cover" @click="DataStore.update_audioDisplayStatus('max')">
 							<el-icon size="40">
 								<svg-icon name="fullScreen" />
 							</el-icon>
@@ -25,21 +25,19 @@
 						<div class="operate">
 							<div class="operateBtn">
 								<!-- 上一首 -->
-								<el-icon class="foo" size="40" @click="emits('prev')">
+								<el-icon class="foo" size="40" @click="SongStore.operate_audio('prev')">
 									<svg-icon name="previous_song" class="operateColor" />
 								</el-icon>
 								<!-- 暂停/继续 -->
 								<el-icon class="foo" size="40">
 									<svg-icon
-										v-if="SongStore.isPlaying"
-										name="play"
 										class="operateColor"
-										@click="emits('pause')"
+										:name="SongStore.isPlaying ? 'play' : 'pause'"
+										@click="SongStore.operate_audio(SongStore.isPlaying ? 'pause' : 'play')"
 									/>
-									<svg-icon v-else name="pause" class="operateColor" @click="emits('play')" />
 								</el-icon>
 								<!-- 下一首 -->
-								<el-icon class="foo" size="40" @click="emits('next')">
+								<el-icon class="foo" size="40" @click="SongStore.operate_audio('next')">
 									<svg-icon name="next_song" class="operateColor" />
 								</el-icon>
 							</div>
@@ -51,14 +49,13 @@
 								<span> {{ SongStore.song?.song.name || "歌名" }} </span>
 								<!-- 时间 -->
 								<span style="margin-left: 10px">
-									{{ s2min(props.currentTime as number) }} /
-									{{ s2min(props.maxTime as number) }}
+									{{ `${s2min(SongStore.currentTime)} / ${s2min(SongStore.audio?.duration ?? 0)}` }}
 								</span>
 							</div>
 							<slot name="progress"> </slot>
 							<!-- 歌词 -->
 							<div class="lyric">
-								<span>[{{ props.lyric }}] </span>
+								<span>{{ SongStore.currentLyric.content }}&nbsp;</span>
 							</div>
 						</div>
 					</div>
@@ -70,7 +67,7 @@
 						<el-icon
 							size="25"
 							:title="SongStore.song?.song.isLiked ? '移出我喜欢的音乐' : '添加我喜欢的音乐'"
-							@click="emits('like', SongStore.song?.song.isLiked)"
+							@click="SongStore.likeSong(!SongStore.song?.song.isLiked!)"
 						>
 							<svg-icon name="like" />
 						</el-icon>
@@ -115,7 +112,7 @@
 					vertical
 					height="150px"
 					:show-tooltip="false"
-					:disabled="SongStore.song?.song.id"
+					:disabled="SongStore.song?.song.id == undefined"
 					@input="volumeChange"
 				/>
 			</div>
@@ -134,17 +131,17 @@
 	<el-drawer v-model="list.visible" :with-header="false">
 		<el-tabs v-model="activeList" class="demo-tabs">
 			<el-tab-pane label="播放列表" name="播放列表">
-				<playList :songs="SongStore.playList" :songs-count="SongStore.playList.length" />
+				<playList :songs="DataStore.playList" :songs-count="DataStore.playList.length" />
 			</el-tab-pane>
 			<el-tab-pane label="历史播放" name="历史播放">
-				<playList :songs="SongStore.historyList" :songs-count="SongStore.historyList.length" />
+				<playList :songs="DataStore.historyList" :songs-count="DataStore.historyList.length" />
 			</el-tab-pane>
 		</el-tabs>
 	</el-drawer>
 </template>
 <script setup lang="ts">
 import { ref, reactive } from "vue";
-import { useSongStore, useUserStore } from "store/index";
+import { useSongStore, useUserStore, useDataStore } from "store/index";
 import { downloadFile } from "utils/utils-content";
 import { s2min } from "utils/utils-common";
 import playList from "components/content/playList/playList.vue";
@@ -152,13 +149,7 @@ import songAdd2List from "@/components/content/song-add2List/song-add2List.vue";
 
 const SongStore = useSongStore();
 const UserStore = useUserStore();
-const props = defineProps({
-	currentTime: Number,
-	maxTime: Number,
-	lyric: String,
-});
-
-const emits = defineEmits(["maximize", "play", "pause", "prev", "next", "like", "volume"]);
+const DataStore = useDataStore();
 
 const activeList = ref("播放列表");
 
@@ -209,7 +200,7 @@ const changeVolumeVisible = () => {
 	add2list.visible = list.visible = false;
 };
 const volumeChange = (val: number) => {
-	emits("volume", val / 100);
+	SongStore.modify_audio("volume", val / 100);
 };
 
 // 下载

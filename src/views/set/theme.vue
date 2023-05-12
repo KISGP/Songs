@@ -1,16 +1,16 @@
 <template>
 	<div class="back">
 		<el-space wrap size="large" alignment="flex-start">
-			<div class="pre" style="background-color: #fff" @click="store.updateTheme('light')">
+			<div class="pre" style="background-color: #fff" @click="store.update_theme('light')">
 				<span style="color: rgb(48, 49, 51)">浅色</span>
 			</div>
-			<div class="pre" style="background-color: #1b1b1b" @click="store.updateTheme('dark')">
+			<div class="pre" style="background-color: #1b1b1b" @click="store.update_theme('dark')">
 				<span style="color: rgb(186, 186, 186)">深色</span>
 			</div>
-			<div class="pre dark2" @click="store.updateTheme('dark2')">
+			<div class="pre dark2" @click="store.update_theme('dark2')">
 				<span style="color: rgb(186, 186, 186)">深色图片</span>
 			</div>
-			<div class="pre light2" @click="store.updateTheme('light2')">
+			<div class="pre light2" @click="store.update_theme('light2')">
 				<span style="color: rgb(48, 49, 51)">浅色图片</span>
 			</div>
 		</el-space>

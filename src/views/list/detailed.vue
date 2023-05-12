@@ -41,7 +41,7 @@
 		<!-- 歌单歌曲 -->
 		<div class="list">
 			<songsTableList
-				v-if="store.myCreatedListID.indexOf(parseInt(id)) > -1"
+				v-if="DataStore.myCreatedListID.indexOf(parseInt(id)) > -1"
 				:id="parseInt(id)"
 				type="歌单"
 				:songs="songs"
@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useSongStore, useDataStore } from "store/index";
+import { useDataStore } from "store/index";
 import { listDetailedType, songDetailedType } from "@/interface/interface";
 import { getDetailedList, getListPartSong } from "service/api/api";
 
@@ -75,7 +75,6 @@ import description from "@/components/content/description/description.vue";
 import comment from "@/components/content/comment/index.vue";
 
 const router = useRouter();
-const store = useSongStore();
 const DataStore = useDataStore();
 
 const id: string = router.currentRoute.value.params.id as string;

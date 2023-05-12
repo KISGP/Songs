@@ -2,12 +2,15 @@
 	<div class="wrapper">
 		<div :class="{ content: true, focus: focusStatus }">
 			<p
-				v-for="(item, index) in lyrics?.lyric"
+				v-for="(item, index) in SongStore.lyric"
 				:key="item.time"
-				:class="{ current: index == lyricIndex }"
+				:class="{ current: index == SongStore.currentLyric.index }"
 			>
 				<span>{{ item.content }}</span>
-				<span v-show="translationVisible" :class="{ translation: index != lyricIndex }">
+				<span
+					v-show="showTranslation"
+					:class="{ translation: index != SongStore.currentLyric.index }"
+				>
 					{{ item.translation }}
 				</span>
 			</p>
@@ -15,8 +18,8 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { inject, onMounted, Ref, watch } from "vue";
-import type { lyricsType } from "@/interface/interface";
+import { onMounted, watch } from "vue";
+import { useSongStore } from "store/index";
 
 import BScroll from "@better-scroll/core";
 import MouseWheel from "@better-scroll/mouse-wheel";
@@ -25,20 +28,18 @@ import { BScrollConstructor } from "@better-scroll/core/dist/types/BScroll";
 BScroll.use(MouseWheel);
 BScroll.use(ScrollBar);
 
+const SongStore = useSongStore();
+
 const props = defineProps({
 	focusStatus: {
 		type: Boolean,
 		default: false,
 	},
-	translationVisible: {
+	showTranslation: {
 		type: Boolean,
 		default: true,
 	},
 });
-
-// 注入的歌词
-const lyrics: Ref<lyricsType> | undefined = inject("lyric");
-const lyricIndex: Ref<number> | undefined = inject("lyricIndex");
 
 let scroll: BScrollConstructor;
 onMounted(() => {
@@ -55,7 +56,7 @@ onMounted(() => {
 // 歌词滚动
 let middleHeight: number = 0;
 watch(
-	() => lyricIndex?.value,
+	() => SongStore.currentLyric.index,
 	() => {
 		scroll.scrollToElement(".current", 1000, true, middleHeight);
 	}

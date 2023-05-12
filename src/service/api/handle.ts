@@ -149,13 +149,13 @@ export function user_playlist(
 }
 
 export function lyric_new(res: any): TYPE.lyricsType {
-	const result: TYPE.lyricsType = { lyric: null, translator: null };
+	const result: TYPE.lyricsType = { lyricArray: null, translator: null };
 	// 判断是否存歌词
 	if (res.lrc.lyric) {
 		// 歌词处理
 		let a = res.lrc.lyric.slice(res.lrc.lyric.indexOf("[00:")).split("\n");
 		a.pop();
-		result.lyric = a.map((e: string): TYPE.lyricBaseType => {
+		result.lyricArray = a.map((e: string): TYPE.lyricBaseType => {
 			let splitIndex = e.indexOf("]");
 			let foo = e.slice(1, splitIndex).split(":");
 			return {
@@ -179,14 +179,14 @@ export function lyric_new(res: any): TYPE.lyricsType {
 			});
 			// 填充翻译
 			let firstIndex = 0;
-			for (let i = 0; i < result.lyric!.length; i++) {
-				if (tr[0].time == result.lyric![i].time) {
+			for (let i = 0; i < result.lyricArray!.length; i++) {
+				if (tr[0].time == result.lyricArray![i].time) {
 					firstIndex = i;
 					break;
 				}
 			}
-			for (let i = firstIndex, j = 0; i < result.lyric!.length && i < tr.length; i++, j++) {
-				result.lyric![i].translation = tr[j].content;
+			for (let i = firstIndex, j = 0; i < result.lyricArray!.length && i < tr.length; i++, j++) {
+				result.lyricArray![i].translation = tr[j].content;
 			}
 			// 译者
 			result.translator = {
@@ -195,11 +195,11 @@ export function lyric_new(res: any): TYPE.lyricsType {
 			};
 		}
 		// 去除空的歌词
-		result.lyric!.filter((lyric: TYPE.lyricBaseType) => {
+		result.lyricArray!.filter((lyric: TYPE.lyricBaseType) => {
 			return lyric.content.length > 0;
 		});
 	} else {
-		result.lyric = result.translator = null;
+		result.lyricArray = result.translator = null;
 	}
 	return result;
 }

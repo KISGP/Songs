@@ -1,12 +1,13 @@
-import { useSongStore } from "store/index";
+import { useDataStore, useSongStore } from "store/index";
 import { getListAllSong, updateList } from "service/api/api";
 import { songDetailedType, resources } from "@/interface/interface";
 import { showSuccessMessage } from "utils/utils-content";
-const store = useSongStore();
+const DataStore = useDataStore();
+const SongStore = useSongStore();
 
 // 添加到播放列表
 export function add2List(songData: songDetailedType, feedback?: boolean) {
-	store.push_playList(songData) &&
+	DataStore.push_playList(songData) &&
 		feedback &&
 		showSuccessMessage(`[ ${songData.song.name} ]已添加到播放列表`);
 }
@@ -26,18 +27,18 @@ export async function playAll(
 
 // 播放选中歌曲（添加到播放列表）
 export function playSelect(songs: songDetailedType[]) {
-	store.update_playList((playList) => {
+	DataStore.update_playList((playList) => {
 		songs.forEach((song) => {
 			playList.push(song);
 		});
 	});
-	store.update_song(songs[0]);
+	SongStore.update_song(songs[0]);
 	showSuccessMessage(`已添加到播放列表`);
 }
 
 // 播放歌曲
 export function playSong(row: songDetailedType) {
-	store.update_song(row);
+	SongStore.update_song(row);
 	add2List(row, false);
 }
 
@@ -47,7 +48,7 @@ export async function delSelect(
 	id?: number,
 	type?: resources | undefined
 ) {
-	console.log(id,type);
+	console.log(id, type);
 	if (id && type === "歌单") {
 		let songsId: Array<number> = [];
 		songs.forEach((item: songDetailedType) => {

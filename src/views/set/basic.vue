@@ -5,7 +5,7 @@
 			<span>搜索首选设置</span>
 			<el-select
 				v-model="firstSearch"
-				:placeholder="getItem('firstSearch')"
+				:placeholder="storage.getItem('firstSearch')"
 				@change="saveFirstSearch"
 			>
 				<el-option
@@ -13,7 +13,7 @@
 					:key="item.value"
 					:label="item.label"
 					:value="item.value"
-					:disabled="getItem('firstSearch') === item.value"
+					:disabled="storage.getItem('firstSearch') === item.value"
 				/>
 			</el-select>
 		</div>
@@ -21,7 +21,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { setItem, getItem } from "utils/storage";
+import storage from "utils/storage";
 const firstSearch = ref<string>("");
 const firstSearchOptions = [
 	{ value: "单曲", label: "单曲" },
@@ -37,7 +37,7 @@ const firstSearchOptions = [
 ];
 
 const saveFirstSearch = () => {
-	setItem("firstSearch", firstSearch.value);
+	storage.setItem("firstSearch", firstSearch.value);
 };
 </script>
 <style scoped lang="less">

@@ -6,25 +6,27 @@ export function wait(ms: number): Promise<null> {
 }
 
 // 防抖
-export function debounce(func: any, delay: number): () => void {
+export function debounce(func: any, delay_ms: number): () => void {
 	let timer: ReturnType<typeof setTimeout>;
 	return () => {
 		clearTimeout(timer);
-		timer = setTimeout(func, delay);
+		timer = setTimeout(func, delay_ms);
 	};
 }
-// 节流
-export function throttle(fn: any, delay: number): () => void {
+// 节流(Date.now)
+export function throttle(fn: any, delay_ms: number): () => void {
 	let lastTime: number = Date.now();
 	return function () {
 		let nowTime: number = Date.now();
-		if (nowTime - lastTime > delay) {
+		if (nowTime - lastTime > delay_ms) {
 			fn();
 			lastTime = nowTime;
 		}
 	};
 }
-export function throttle2(fn: any, delay: number): () => void {
+
+// 节流(setTimeout)
+export function throttle2(fn: any, delay_ms: number): () => void {
 	let status: boolean = true;
 	return function () {
 		if (status) {
@@ -32,7 +34,7 @@ export function throttle2(fn: any, delay: number): () => void {
 			setTimeout(() => {
 				fn();
 				status = true;
-			}, delay);
+			}, delay_ms);
 		}
 	};
 }

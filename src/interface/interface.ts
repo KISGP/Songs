@@ -173,10 +173,18 @@ export type lyricBaseType = {
 	translation?: string;
 };
 /**
+ * @description 歌词基础类型
+ * */
+export type currentLyricType = {
+	index: number;
+	content: string;
+	translation?: string;
+};
+/**
  * @description 请求返回的歌词类型
  * */
 export type lyricsType = {
-	lyric: lyricBaseType[] | null;
+	lyricArray: lyricBaseType[] | null;
 	translator: {
 		id: number;
 		name: string;

@@ -584,9 +584,8 @@ export async function subscribeAlbum(id: number | string, isSubscribe: boolean):
 
 /**
  * @description 喜欢音乐
- * @link https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%96%9c%e6%ac%a2%e9%9f%b3%e4%b9%90
  * */
-export async function likeSong(id: number | string, isLiked: boolean = true): Promise<boolean> {
+export async function like(id: number | string, isLiked: boolean = true): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/like",
 		myParams: {

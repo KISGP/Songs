@@ -7,7 +7,12 @@
 			<el-icon title="隐藏歌曲封面" size="20" class="icon" @click="changeCardVisible">
 				<svg-icon :name="cardVisible ? 'left' : 'right'" />
 			</el-icon>
-			<el-icon title="暂停" size="25" class="icon" @click="playOrPause">
+			<el-icon
+				size="25"
+				class="icon"
+				:title="SongStore.isPlaying ? '暂停' : '播放'"
+				@click="SongStore.operate_audio(SongStore.isPlaying ? 'pause' : 'play')"
+			>
 				<svg-icon :name="SongStore.isPlaying ? 'play' : 'pause'" />
 			</el-icon>
 			<el-icon title="聚焦" size="25" class="icon" @click="focus">
@@ -24,21 +29,21 @@
 			</el-icon>
 		</div>
 		<div class="main">
-			<transition name="card">
+			<transition name="card" appear>
 				<song-card v-show="cardVisible" />
 			</transition>
-			<song-lyric :focus-status="focusStatus" :translation-visible="translationVisible" />
+			<song-lyric :focus-status="focusStatus" :show-translation="translationVisible" />
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { useSongStore } from "store/index";
+import { useSongStore, useDataStore } from "store/index";
 import songLyric from "@/components/content/song-lyric/song-lyric.vue";
 import songCard from "@/components/content/song-card/song-card.vue";
 const SongStore = useSongStore();
+const DataStore = useDataStore();
 
-const emits = defineEmits(["minimize", "play", "pause"]);
 const props = defineProps({
 	translationV: {
 		type: Boolean,
@@ -46,12 +51,7 @@ const props = defineProps({
 });
 
 const minimize = () => {
-	emits("minimize");
-};
-
-// 播放暂停
-const playOrPause = () => {
-	SongStore.isPlaying ? emits("pause") : emits("play");
+	DataStore.update_audioDisplayStatus("min");
 };
 
 // 歌曲封面

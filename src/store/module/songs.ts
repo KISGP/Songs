@@ -1,49 +1,172 @@
 import { defineStore } from "pinia";
-import { songDetailedType, listBriefType } from "@/interface/interface";
-import { getSongUrl, getLikedSongsID } from "@/service/api/api";
-import storage from "utils/storage";
+import { getSongUrl, getLyric, like } from "@/service/api/api";
+import { useDataStore } from "./data";
+import { throttle } from "utils/utils-common";
+import {
+	songDetailedType,
+	lyricsType,
+	lyricBaseType,
+	currentLyricType,
+} from "@/interface/interface";
 
 type SongsState = {
+	// audio对象
+	audio: HTMLAudioElement | null;
+	// 歌曲播放时间（使用SongStore.audio.currentTime会使进度条拖拽卡顿）
+	currentTime: number;
+	// (不，单曲，播放列表)循环
+	loop: "no" | "song" | "playList";
+	// 当前歌曲
 	song: songDetailedType | null;
-	likedSongsID: Array<number>;
+	// 歌词
+	lyricObject: lyricsType;
+	// 当前歌词
+	currentLyric: currentLyricType;
+	// 是否正在播放
 	isPlaying: boolean;
-	playList: Array<songDetailedType>;
-	historyList: Array<songDetailedType>;
-	myCreatedList: Array<listBriefType>;
-	myCreatedListID: Array<number>;
 };
 
 export const useSongStore = defineStore("SongStore", {
 	state: (): SongsState => {
 		return {
-			// 当前歌曲
+			audio: null,
+			currentTime: 0,
+			loop: "playList",
 			song: null,
-			// 喜欢的音乐ID
-			likedSongsID: [],
-			// 是否正在播放
+			lyricObject: { lyricArray: null, translator: null },
+			currentLyric: { content: "", translation: "", index: 0 },
 			isPlaying: false,
-			// 当前播放列表
-			playList: [],
-			// 历史播放（但似乎没有相关功能）
-			historyList: [],
-			// 我创建的歌单
-			myCreatedList: [],
-			myCreatedListID: [],
 		};
 	},
-	getters: {},
+	getters: {
+		lyric(state): lyricBaseType[] | null {
+			return state.lyricObject.lyricArray;
+		},
+		maxTime(state) {
+			return state.audio?.duration;
+		},
+	},
 	actions: {
 		/**
-		 * @param {songDetailedType} value 要播放的歌曲信息
+		 * @description 初始化audio对象,初始化监听事件
+		 * */
+		init_audio(audio: HTMLAudioElement) {
+			this.audio = audio;
+			// 歌曲播放结束
+			audio.addEventListener("ended", () => {
+				this.update_isPlaying(false);
+				this.currentTime = 0;
+			});
+			// audio更新
+			audio.addEventListener(
+				"timeupdate",
+				throttle(() => {
+					if (this.audio) {
+						// 更新当前播放时间
+						this.currentTime = this.audio?.currentTime;
+						// 更新当前歌词
+						this.update_currentLyric(null, this.audio?.currentTime);
+					}
+				}, 500)
+			);
+		},
+		/**
+		 * @description audio的一些操作函数（播放、暂停、下一首、上一首）
+		 * */
+		operate_audio(operation: "play" | "pause" | "next" | "prev") {
+			if (this.audio) {
+				const DataStore = useDataStore();
+				switch (operation) {
+					case "play":
+						this.audio.play();
+						this.update_isPlaying(true);
+						break;
+					case "pause":
+						this.audio.pause();
+						this.update_isPlaying(false);
+						break;
+					case "next":
+						this.update_song(
+							DataStore.playList[
+								(DataStore.playList.indexOf(this.song!) + 1) % DataStore.playList.length
+							]
+						);
+						break;
+					case "prev":
+						const length = DataStore.playList.length;
+						let index = DataStore.playList.indexOf(this.song!);
+						if (index < 1) {
+							index = length;
+						}
+						this.update_song(DataStore.playList[(index - 1) % length]);
+						break;
+					default:
+						break;
+				}
+			}
+		},
+		/**
+		 * @description 修改audio(声音，速率,时间)
+		 * */
+		modify_audio(target: "volume" | "rate" | "time", newValue: number) {
+			if (this.audio) {
+				switch (target) {
+					case "volume":
+						this.audio.volume = newValue;
+						break;
+					case "rate":
+						// 火狐速率范围是0.25 ~ 5 , Google 速率上限是 16。
+						if (newValue <= 5 && newValue >= 0.25) {
+							this.audio.playbackRate = newValue;
+						}
+						break;
+					case "time":
+						this.audio.currentTime = newValue;
+						break;
+				}
+			}
+		},
+		/**
+		 * @description 初始化audio对象,初始化监听事件
+		 * */
+		update_loop(mode: "no" | "song" | "playList") {
+			this.loop = mode;
+		},
+		/**
 		 * @description 更新播放歌曲
 		 * */
 		async update_song(value: songDetailedType) {
 			// 获取歌曲播放链接
 			if (!value.song.url) value.song.url = await getSongUrl(value.song.id);
 			// 判断是否我喜欢的歌曲
-			value.song.isLiked = this.check_song_isLiked(value.song.id);
+			value.song.isLiked = useDataStore().check_song_isLiked(value.song.id);
+			// 获取歌词
+			this.lyricObject = await getLyric(value.song.id);
+			// 修改播放状态
+			this.update_isPlaying(true);
+			// 显示播放器
+			const { audioDisplayStatus, update_audioDisplayStatus } = useDataStore();
+			audioDisplayStatus === "hidden" && update_audioDisplayStatus("min");
 			this.song = value;
-			this.isPlaying = true;
+		},
+		/**
+		 * @description 喜欢歌曲(默认当前播放歌曲)
+		 * */
+		async likeSong(isLiked: boolean, id?: number | null) {
+			if (this.song?.song.id) {
+				const res: boolean = await like(id || this.song?.song.id, isLiked);
+				if (res && !isLiked) {
+					// showSuccessMessage("成功移出我喜欢的音乐");
+					this.song.song.isLiked = isLiked;
+				} else if (res && isLiked) {
+					// showSuccessMessage("成功添加到我喜欢的音乐");
+					this.song.song.isLiked = isLiked;
+				} else {
+					// showErrorMessage("移出/添加 错误");
+				}
+				// 刷新喜欢的歌曲
+				useDataStore().refresh_likedSongsID();
+			}
 		},
 		/**
 		 * @description 更新播放状态
@@ -52,63 +175,27 @@ export const useSongStore = defineStore("SongStore", {
 			this.isPlaying = value;
 		},
 		/**
-		 * @description 判断歌曲是否在当前的播放列表里
+		 * @description 更新当前歌词
 		 * */
-		isExited_playList(song: songDetailedType): boolean {
-			return this.playList.indexOf(song) > -1 ? true : false;
-		},
-		/**
-		 * @param {function} fn 传入一个操作函数，该函数会自动传入播放列表
-		 * @description 更新播放列表
-		 */
-		update_playList(fn: (playList: Array<songDetailedType>) => void) {
-			fn(this.playList);
-		},
-		/**
-		 * @description push歌曲到播放列表
-		 * */
-		push_playList(song: songDetailedType): boolean {
-			if (this.isExited_playList(song)) {
-				return false;
-			} else {
-				this.playList.push(song);
-				return true;
+		update_currentLyric(newLyric: currentLyricType | null, time?: number) {
+			if (this.lyric) {
+				if (time && newLyric == null) {
+					for (let i = 0; i < this.lyric.length; i++) {
+						if (time < this.lyric[i].time) {
+							if (this.currentLyric.content != this.lyric[i - 1].content) {
+								this.currentLyric = {
+									content: this.lyric[i - 1].content,
+									translation: this.lyric[i - 1].translation,
+									index: i - 1,
+								};
+							}
+							break;
+						}
+					}
+				} else {
+					this.currentLyric = newLyric!;
+				}
 			}
-		},
-		/**
-		 * @param function(likedSongsID) 传入一个操作函数，该函数会自动传入 Array<喜欢的音乐ID>
-		 * @description 更新喜欢的音乐ID列表
-		 * */
-		update_likedSongsID(fn: (likedSongsID: Array<number>) => void) {
-			fn(this.likedSongsID!);
-		},
-		/**
-		 * @description 刷新喜欢的音乐ID列表
-		 * */
-		async reload_likedSongsID() {
-			const id = storage.getItem("id");
-			if (id && this.song) {
-				this.likedSongsID = await getLikedSongsID(parseInt(id));
-				this.song.song.isLiked = this.check_song_isLiked(this.song.song.id);
-			}
-		},
-		/**
-		 * @description 通过传入的歌曲ID检查歌曲是否是我喜欢的音乐
-		 * */
-		check_song_isLiked(songId: number): boolean {
-			return this.likedSongsID!.indexOf(songId) > -1 ? true : false;
-		},
-		/**
-		 * @description 我创建的歌单信息（?具体啥用忘了，以后修改）
-		 * */
-		push_myCreatedListID(id: number) {
-			this.myCreatedListID.push(id);
-		},
-		/**
-		 * @description 我创建的歌单信息
-		 * */
-		push_myCreatedList(createdList: listBriefType) {
-			this.myCreatedList.push(createdList);
 		},
 	},
 });

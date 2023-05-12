@@ -56,7 +56,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { search as s } from "service/api/api";
-import { getItem } from "utils/storage";
+import storage from "utils/storage";
 import { searchType } from "@/interface/interface";
 import songTableCommon from "@/components/content/songs-table/song-table-common.vue";
 import albumGroup from "@/components/content/album-group/album-group.vue";
@@ -65,7 +65,7 @@ import listCardGroup from "@/components/content/list-card/list-card-group.vue";
 
 const router = useRouter();
 
-const activePages = ref<string>(getItem("firstSearch") || "单曲");
+const activePages = ref<string>(storage.getItem("firstSearch") || "单曲");
 // 切换搜索结果类型
 const tabsChange = async () => {
 	result.value = { count: 0, result: [] };
