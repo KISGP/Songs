@@ -1,5 +1,5 @@
 <template>
-	<div class="max">
+	<div ref="max" class="max">
 		<div class="header">
 			<el-icon title="退出全屏" size="25" class="icon" @click="minimize">
 				<ArrowDownBold />

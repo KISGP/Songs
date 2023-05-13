@@ -67,7 +67,7 @@
 </template>
 <script setup lang="ts">
 import { useUserStore } from "store/index";
-import { showSuccessMessage } from "utils/utils-content";
+import { toast } from "utils/notice";
 import storage from "utils/storage";
 const UserStore = useUserStore();
 const openPage = (url: string) => {
@@ -77,7 +77,9 @@ const openPage = (url: string) => {
 const exit = () => {
 	storage.removeAll();
 	UserStore.update_login(false);
-	showSuccessMessage("退出成功");
+	toast("退出成功", {
+		type: "success",
+	});
 };
 </script>
 <style scoped lang="less">

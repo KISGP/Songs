@@ -64,7 +64,7 @@ import { useUserStore } from "store/module/user";
 import { getMyList, deleteList, createList } from "service/api/api";
 import { listBriefType } from "@/interface/interface";
 import listCard from "@/components/content/list-card/list-card.vue";
-import { showNotification } from "utils/utils-content";
+import { message } from "utils/notice";
 import type { FormRules } from "element-plus";
 const store = useUserStore();
 
@@ -95,15 +95,24 @@ const changeDeleting = (): void => {
 const deleteOneList = async (index: number): Promise<void> => {
 	if (await deleteList(list.value[index].id)) {
 		list.value.splice(index, 1);
-		showNotification("success", "删除歌单成功");
+		message({
+			message: "删除歌单成功",
+			type: "success",
+		});
 		refresh();
 	} else {
-		showNotification("error", "删除歌单失败");
+		message({
+			message: "删除歌单失败",
+			type: "error",
+		});
 	}
 };
 // 删除所有歌单
 const deleteAllList = async (): Promise<void> => {
-	showNotification("success", "已删除全部歌单(未实现,不敢测试)");
+	message({
+		message: "已删除全部歌单（该功能未实现，新注册个账号再说）",
+		type: "success",
+	});
 };
 
 // 创建歌单
@@ -131,13 +140,22 @@ const create = async () => {
 	const r = await createList(name, type, isPrivate);
 	if (r.success) {
 		if (await refresh()) {
-			showNotification("success", r.message);
+			message({
+				message: r.message,
+				type: "success",
+			});
 			changeVisible();
 		} else {
-			showNotification("error", "刷新歌单失败");
+			message({
+				message: "刷新歌单失败",
+				type: "error",
+			});
 		}
 	} else {
-		showNotification("error", r.message);
+		message({
+			message: r.message,
+			type: "error",
+		});
 	}
 };
 </script>

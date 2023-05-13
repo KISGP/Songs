@@ -1,7 +1,5 @@
 import axios from "axios";
-import { useToast } from "vue-toastification";
 import { artistType } from "../interface/interface";
-import { ElMessage, MessageParams } from "element-plus";
 import "element-plus/es/components/message/style/css";
 
 // 歌手名称数组 => 字符串
@@ -40,46 +38,6 @@ export function getArtistsArray(artists: any): Array<artistType> {
 // 获取时间戳
 export function getTimeStamp(): number {
 	return new Date().getTime();
-}
-
-export function showNotification(
-	type: "success" | "warning" | "info" | "error" | "default",
-	message: string
-): void {
-	const toast = useToast();
-	switch (type) {
-		case "success":
-			toast.success(message);
-			break;
-		case "warning":
-			toast.warning(message);
-			break;
-		case "error":
-			toast.error(message);
-			break;
-		case "info":
-			toast.info(message);
-			break;
-		default:
-			toast(message);
-			break;
-	}
-}
-
-export function showMessage(option?: MessageParams) {
-	ElMessage(option);
-}
-export function showSuccessMessage(message: string) {
-	ElMessage({
-		message,
-		type: "success",
-	});
-}
-export function showErrorMessage(message: string) {
-	ElMessage({
-		message,
-		type: "error",
-	});
 }
 
 export function downloadFile(url: string, fileName: string) {

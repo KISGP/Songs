@@ -65,7 +65,7 @@ export const useSongStore = defineStore("SongStore", {
 						// 更新当前播放时间
 						this.currentTime = this.audio?.currentTime;
 						// 更新当前歌词
-						this.update_currentLyric(null, this.audio?.currentTime);
+						this.update_currentLyric();
 					}
 				}, 500)
 			);
@@ -74,7 +74,7 @@ export const useSongStore = defineStore("SongStore", {
 		 * @description audio的一些操作函数（播放、暂停、下一首、上一首）
 		 * */
 		operate_audio(operation: "play" | "pause" | "next" | "prev") {
-			if (this.audio) {
+			if (this.audio?.currentSrc) {
 				const DataStore = useDataStore();
 				switch (operation) {
 					case "play":
@@ -177,23 +177,19 @@ export const useSongStore = defineStore("SongStore", {
 		/**
 		 * @description 更新当前歌词
 		 * */
-		update_currentLyric(newLyric: currentLyricType | null, time?: number) {
-			if (this.lyric) {
-				if (time && newLyric == null) {
-					for (let i = 0; i < this.lyric.length; i++) {
-						if (time < this.lyric[i].time) {
-							if (this.currentLyric.content != this.lyric[i - 1].content) {
-								this.currentLyric = {
-									content: this.lyric[i - 1].content,
-									translation: this.lyric[i - 1].translation,
-									index: i - 1,
-								};
-							}
-							break;
+		update_currentLyric() {
+			if (this.lyric && this.audio) {
+				for (let i = 0; i < this.lyric.length; i++) {
+					if (this.audio.currentTime < this.lyric[i].time) {
+						if (this.currentLyric.content != this.lyric[i - 1].content) {
+							this.currentLyric = {
+								content: this.lyric[i - 1].content,
+								translation: this.lyric[i - 1].translation,
+								index: i - 1,
+							};
 						}
+						break;
 					}
-				} else {
-					this.currentLyric = newLyric!;
 				}
 			}
 		},

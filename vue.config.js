@@ -21,9 +21,9 @@ module.exports = defineConfig({
 			},
 		},
 		plugins: [
-			// AutoImport({
-			// 	resolvers: [ElementPlusResolver()],
-			// }),
+			AutoImport({
+				resolvers: [ElementPlusResolver()],
+			}),
 			Components({
 				resolvers: [ElementPlusResolver()],
 			}),

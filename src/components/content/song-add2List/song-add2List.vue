@@ -18,7 +18,7 @@
 import { PropType } from "vue";
 import { useSongStore, useDataStore } from "store/index";
 import { updateList } from "service/api/api";
-import { showSuccessMessage } from "utils/utils-content";
+import { toast } from "utils/notice";
 
 const SongStore = useSongStore();
 const DataStore = useDataStore();
@@ -31,11 +31,14 @@ const add = async (index: number) => {
 		SongStore.song?.song.id &&
 		(await updateList("add", DataStore.myCreatedList[index].id, [SongStore.song.song.id]))
 	) {
-		showSuccessMessage(`${SongStore.song.song.name}已添加到${DataStore.myCreatedList[index].name}`);
+		toast(`${SongStore.song.song.name}已添加到${DataStore.myCreatedList[index].name}`, {
+			type: "success",
+			timeout: 1500,
+		});
 		emits("add");
 	}
 	if (index === 0) {
-		DataStore.reload_likedSongsID();
+		DataStore.refresh_likedSongsID();
 	}
 };
 </script>

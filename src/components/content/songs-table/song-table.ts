@@ -1,18 +1,31 @@
 import { useDataStore, useSongStore } from "store/index";
 import { getListAllSong, updateList } from "service/api/api";
 import { songDetailedType, resources } from "@/interface/interface";
-import { showSuccessMessage } from "utils/utils-content";
+import { message } from "utils/notice";
 const DataStore = useDataStore();
 const SongStore = useSongStore();
 
-// 添加到播放列表
-export function add2List(songData: songDetailedType, feedback?: boolean) {
-	DataStore.push_playList(songData) &&
-		feedback &&
-		showSuccessMessage(`[ ${songData.song.name} ]已添加到播放列表`);
+/**
+ * @param {songDetailedType} song 要添加的歌曲
+ * @param {boolean} alert 是否显示反馈信息
+ * @description 添加到播放列表
+ * */
+export function add2List(song: songDetailedType, alert?: boolean) {
+	const r = DataStore.push_playList(song);
+	if (alert) {
+		message({
+			message: r
+				? `[ ${song.song.name} ]成功添加到播放列表`
+				: `播放列表中已存在[ ${song.song.name} ]`,
+			type: r ? "success" : "warning",
+		});
+	}
 }
 
-// 播放所有歌曲（添加到播放列表）
+// FIXME: 有时候歌单未全部加载出来时只能播放部分歌曲
+/**
+ * @description 播放所有歌曲（添加到播放列表）
+ * */
 export async function playAll(
 	songs: songDetailedType[],
 	id?: number,
@@ -25,6 +38,7 @@ export async function playAll(
 	}
 }
 
+// FIXME: 未查重
 // 播放选中歌曲（添加到播放列表）
 export function playSelect(songs: songDetailedType[]) {
 	DataStore.update_playList((playList) => {
@@ -33,7 +47,9 @@ export function playSelect(songs: songDetailedType[]) {
 		});
 	});
 	SongStore.update_song(songs[0]);
-	showSuccessMessage(`已添加到播放列表`);
+	message({
+		message: "已添加到播放列表",
+	});
 }
 
 // 播放歌曲
@@ -42,7 +58,7 @@ export function playSong(row: songDetailedType) {
 	add2List(row, false);
 }
 
-// 删除选中歌曲（添加到播放列表）
+// 删除选中歌曲（移除播放列表）
 export async function delSelect(
 	songs: songDetailedType[],
 	id?: number,
@@ -54,17 +70,23 @@ export async function delSelect(
 		songs.forEach((item: songDetailedType) => {
 			songsId.push(item.song.id);
 		});
-		(await updateList("del", id, songsId)) && showSuccessMessage(`成功删除,请刷新页面`);
+		(await updateList("del", id, songsId)) &&
+			message({
+				message: "成功删除,请刷新页面",
+			});
 	}
 }
 
-// 删除所有歌曲（添加到播放列表）
+// 删除所有歌曲
 export async function delAll(id?: number, type?: resources | undefined) {
 	if (id && type === "歌单") {
 		let songsId: Array<number> = [];
 		(await getListAllSong(id)).forEach((item: songDetailedType) => {
 			songsId.push(item.song.id);
 		});
-		(await updateList("del", id, songsId)) && showSuccessMessage(`成功删除,请刷新页面`);
+		(await updateList("del", id, songsId)) &&
+			message({
+				message: "成功删除,请刷新页面",
+			});
 	}
 }

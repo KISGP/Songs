@@ -6,7 +6,7 @@
 				<el-slider
 					size="small"
 					v-model="SongStore.currentTime"
-					:max="SongStore.audio!.duration"
+					:max="SongStore.audio?.duration"
 					:format-tooltip="(val:number) => s2min(val)"
 					:disabled="SongStore.song?.song.id == undefined"
 					@input="progressUpdate"
@@ -32,16 +32,6 @@ const DataStore = useDataStore();
 const audioRef = ref<HTMLAudioElement>();
 
 onMounted(() => {
-	// 按下ESC键最 大/小 化
-	window.addEventListener("keyup", (e) => {
-		if (e.key == "Escape") {
-			if (DataStore.audioDisplayStatus == "max" && SongStore.song?.song.id) {
-				DataStore.update_audioDisplayStatus("min");
-			} else if (DataStore.audioDisplayStatus == "min") {
-				DataStore.update_audioDisplayStatus("max");
-			}
-		}
-	});
 	// 初始化audio
 	SongStore.init_audio(audioRef.value!);
 });

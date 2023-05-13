@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { getSubscribedArtists, subscribeArtist } from "service/api/api";
-import { showErrorMessage, showSuccessMessage } from "utils/utils-content";
+import { message } from "utils/notice";
 import { artistBriefType } from "@/interface/interface";
 import artistCard from "@/components/content/artist-card/artist-card.vue";
 
@@ -46,10 +46,16 @@ const changeDialogVisible = (artist: artistBriefType) => {
 const delArtist = async () => {
 	if (await subscribeArtist(checkArtist.value?.id!, false)) {
 		subscribeArtists.value?.splice(subscribeArtists.value.indexOf(checkArtist.value!), 1);
-		showSuccessMessage("取消关注成功");
+		message({
+			message: "取消关注成功",
+			type: "success",
+		});
 		dialogVisible.value = !dialogVisible.value;
 	} else {
-		showErrorMessage("取消关注失败");
+		message({
+			message: "取消关注失败",
+			type: "error",
+		});
 	}
 };
 </script>

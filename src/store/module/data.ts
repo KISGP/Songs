@@ -4,11 +4,7 @@ import { setCssVar, wait, setCssVarS } from "utils/utils-common";
 import { ElScrollbar } from "element-plus";
 import { useSongStore } from "./songs";
 import { getLikedSongsID } from "@/service/api/api";
-import {
-	themeType,
-	songDetailedType,
-	listBriefType,
-} from "@/interface/interface";
+import { themeType, songDetailedType, listBriefType } from "@/interface/interface";
 
 type stateType = {
 	// 主题
@@ -61,7 +57,7 @@ export const useDataStore = defineStore("DataStore", {
 		init_eScrollBar(eScrollbar: InstanceType<typeof ElScrollbar>) {
 			this.eScrollbar = eScrollbar;
 		},
-		update_eScrollBar(){
+		update_eScrollBar() {
 			this.eScrollbar?.update();
 		},
 		/**
@@ -80,6 +76,7 @@ export const useDataStore = defineStore("DataStore", {
 		 * @description 更新播放器显示状态（全屏|隐藏|最小）
 		 * */
 		async update_audioDisplayStatus(value: "hidden" | "max" | "min") {
+			this.audioDisplayStatus = value;
 			switch (value) {
 				case "hidden":
 					setCssVarS({
@@ -96,7 +93,6 @@ export const useDataStore = defineStore("DataStore", {
 					setCssVar("--height-player", "100vh");
 					break;
 			}
-			this.audioDisplayStatus = value;
 		},
 		/**
 		 * @param {function} fn 传入一个操作函数，该函数会自动传入播放列表

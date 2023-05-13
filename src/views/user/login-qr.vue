@@ -11,7 +11,7 @@ import { ref, Ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "store/module/user";
 import { getQRKey, getQRImgBase64, checkQRStatus, getUserInfo } from "service/api/api";
-import { showNotification } from "utils/utils-content";
+import { toast } from "utils/notice";
 import storage from "utils/storage";
 const store = useUserStore();
 const router = useRouter();
@@ -40,7 +40,10 @@ const createQR = async (): Promise<boolean> => {
 		status.value = 801;
 		return true;
 	} catch (error: any) {
-		showNotification("error", `二维码创建失败${error}`);
+		toast(`二维码创建失败${error}`, {
+			type: "error",
+			timeout: 2000,
+		});
 		return false;
 	}
 };
@@ -52,11 +55,17 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 	status.value = state;
 	switch (status.value) {
 		case 800: // 二维码失效
-			showNotification("error", "二维码失效,正在重新获取");
+			toast("二维码失效,正在重新获取", {
+				type: "error",
+				timeout: 2000,
+			});
 			createQR();
 			break;
 		case 803: // 登录成功
-			showNotification("success", "登录成功");
+			toast("登录成功", {
+				type: "success",
+				timeout: 1500,
+			});
 			store.update_cookie(cookie);
 			const { id, name } = await getUserInfo();
 			store.update_login(true);
