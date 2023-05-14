@@ -2,7 +2,7 @@
 
 ## 基本介绍
 
-**体验地址**：[k423.space](k423.space)，由于服务器是香港的所以有时候可能需要VPN:weary:。
+**体验地址**：[k423.space](k423.space)。
 
 
 
@@ -11,20 +11,11 @@
 使用到的技术：
 
 - vue3
-
 - vue-router
-
 - pinia
-
 - axios
-
 - element-plus
-
 - TypeScript
-
-- animate.css
-
-
 
 ## 项目运行
 
@@ -47,8 +38,6 @@ npm run build
 ```
 
 4.查看项目文档
-
-本地浏览（需安装docsify）
 
 ```
 docsify serve docs
