@@ -55,11 +55,10 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 	status.value = state;
 	switch (status.value) {
 		case 800: // 二维码失效
-			toast("二维码失效,正在重新获取", {
+			toast("二维码失效,请刷新页面", {
 				type: "error",
 				timeout: 2000,
 			});
-			createQR();
 			break;
 		case 803: // 登录成功
 			toast("登录成功", {
