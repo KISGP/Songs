@@ -20,4 +20,4 @@ jobs:
         with:
           BRANCH: page
           FOLDER: dist
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}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
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
