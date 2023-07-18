@@ -1,0 +1,1 @@
+"use strict";(self["webpackChunksongs"]=self["webpackChunksongs"]||[]).push([[176],{5176:function(n,e,s){s.r(e),s.d(e,{default:function(){return a}});var u=s(440),t=(0,u.aZ)({__name:"home",setup(n){return(n,e)=>((0,u.wg)(),(0,u.iD)("div",null," ZHUYE "))}});const r=t;var a=r}}]);
