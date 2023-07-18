@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -15,12 +15,9 @@ jobs:
           npm install
           npm run build
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          BRANCH: pages
+          BRANCH: page
           FOLDER: dist
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
