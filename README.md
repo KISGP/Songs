@@ -1,10 +1,12 @@
 # songs
 
+**体验地址**：
+
+1. ~~[k423.space](k423.space)(域名已过期)~~。
+
+2. https://gp-root.github.io/Songs/ (资源加载有问题，正在解决...)
+
 ## 基本介绍
-
-**体验地址**：[k423.space](k423.space)。
-
-
 
 该项目是一个音乐播放网站，后端数据使用的是部署在我的服务器上的[网易云音乐API](https://github.com/Binaryify/NeteaseCloudMusicApi)。
 
@@ -16,6 +18,7 @@
 - axios
 - element-plus
 - TypeScript
+- ...
 
 ## 项目运行
 
