@@ -1,4 +1,4 @@
-import { NETEASE } from "../index";
+import { NETEASE } from "../instance";
 import * as TYPE from "@/interface/interface";
 import * as HANDLE from "./handle";
 import { useUserStore } from "store/index";
@@ -17,13 +17,14 @@ const searchResultType: { [key in TYPE.searchType]: number } = {
 	综合: 1018,
 	声音: 2000,
 };
+
 /**
  * @description 获取歌曲的播放url
  */
 export async function getSongUrl(id: string | number): Promise<string> {
 	return await NETEASE.get({
 		url: `/song/url`,
-		myParams: {
+		params: {
 			cookie: useUserStore().netease_login,
 			id,
 		},
@@ -40,7 +41,7 @@ export async function getSongUrl(id: string | number): Promise<string> {
 export async function getSongsDetail(ids: Array<number>): Promise<TYPE.songDetailedType[]> {
 	return await NETEASE.get({
 		url: "/song/detail",
-		myParams: {
+		params: {
 			ids: ids.join(","),
 		},
 		interceptors: {
@@ -57,7 +58,7 @@ export async function getSongsDetail(ids: Array<number>): Promise<TYPE.songDetai
 export async function getLyric(id: string | number): Promise<TYPE.lyricsType> {
 	return await NETEASE.get({
 		url: `/lyric/new`,
-		myParams: {
+		params: {
 			id,
 		},
 		interceptors: {
@@ -76,7 +77,7 @@ export async function getRecommendNewSong(
 ): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: "/personalized/newsong",
-		myParams: {
+		params: {
 			limit,
 		},
 		interceptors: {
@@ -93,7 +94,7 @@ export async function getRecommendNewSong(
 export async function getRecommendDailySongs(): Promise<Array<TYPE.songDetailedType> | null> {
 	return await NETEASE.get({
 		url: "/recommend/songs",
-		myParams: {
+		params: {
 			cookie: true,
 		},
 		interceptors: {
@@ -114,7 +115,7 @@ export async function getMyList(
 ): Promise<Array<TYPE.listBriefType>> {
 	return await NETEASE.get({
 		url: "/user/playlist",
-		myParams: {
+		params: {
 			uid: userId,
 			timeStamp: true,
 		},
@@ -137,7 +138,7 @@ export async function getMyList(
 export async function deleteList(id: string | number): Promise<boolean> {
 	const r: number = await NETEASE.get({
 		url: `/playlist/delete`,
-		myParams: {
+		params: {
 			id,
 			cookie: true,
 		},
@@ -175,7 +176,7 @@ export async function createList(
 	}
 	return await NETEASE.get({
 		url: `/playlist/create`,
-		myParams: {
+		params: {
 			cookie: true,
 			timeStamp: true,
 			name,
@@ -204,7 +205,7 @@ export async function createList(
 export async function getRecommendDailyList(): Promise<Array<TYPE.listBriefType>> {
 	return await NETEASE.get({
 		url: "/recommend/resource",
-		myParams: {
+		params: {
 			cookie: true,
 		},
 		interceptors: {
@@ -262,7 +263,7 @@ export async function getQRKey(): Promise<string> {
 export async function getQRImgBase64(key: string): Promise<string> {
 	return await NETEASE.get({
 		url: `/login/qr/create`,
-		myParams: {
+		params: {
 			key: key,
 			qrimg: true,
 			timeStamp: true,
@@ -284,7 +285,7 @@ export async function checkQRStatus(key: string): Promise<{
 }> {
 	return await NETEASE.get({
 		url: `/login/qr/check`,
-		myParams: {
+		params: {
 			key: key,
 			timeStamp: true,
 		},
@@ -308,7 +309,7 @@ export async function getUserInfo(): Promise<{
 }> {
 	return await NETEASE.get({
 		url: "/user/account",
-		myParams: {
+		params: {
 			cookie: true,
 		},
 		interceptors: {
@@ -328,7 +329,7 @@ export async function getUserInfo(): Promise<{
 export async function getSearchSuggestions(keywords: string): Promise<TYPE.suggestionsType> {
 	return await NETEASE.get({
 		url: "/search/suggest",
-		myParams: {
+		params: {
 			keywords,
 		},
 		interceptors: {
@@ -348,7 +349,7 @@ export async function getSubscribedAlbum(
 ): Promise<{ albumCount: number; albums: Array<TYPE.albumBriefType> }> {
 	return await NETEASE.get({
 		url: "/album/sublist",
-		myParams: {
+		params: {
 			cookie: true,
 			limit,
 			offset,
@@ -367,7 +368,7 @@ export async function getSubscribedAlbum(
 export async function getDetailedList(id: number | string): Promise<TYPE.listDetailedType> {
 	return await NETEASE.get({
 		url: `/playlist/detail`,
-		myParams: {
+		params: {
 			id,
 			cookie: true,
 			timeStamp: true,
@@ -390,7 +391,7 @@ export async function getListPartSong(
 ): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: `/playlist/track/all`,
-		myParams: {
+		params: {
 			id,
 			limit,
 			offset,
@@ -410,7 +411,7 @@ export async function getListPartSong(
 export async function getListAllSong(id: number): Promise<Array<TYPE.songDetailedType>> {
 	return await NETEASE.get({
 		url: `/playlist/track/all`,
-		myParams: {
+		params: {
 			id,
 			timeStamp: true,
 			cookie: true,
@@ -429,7 +430,7 @@ export async function getListAllSong(id: number): Promise<Array<TYPE.songDetaile
 export async function getDetailedAlbum(id: number | string): Promise<TYPE.albumDetailedType> {
 	const r1 = await NETEASE.get({
 		url: "/album",
-		myParams: {
+		params: {
 			id,
 			cookie: true,
 		},
@@ -441,7 +442,7 @@ export async function getDetailedAlbum(id: number | string): Promise<TYPE.albumD
 	});
 	const r2 = await NETEASE.get({
 		url: "/album/detail/dynamic",
-		myParams: {
+		params: {
 			id,
 			cookie: true,
 			timeStamp: true,
@@ -468,7 +469,7 @@ export async function getDetailedAlbum(id: number | string): Promise<TYPE.albumD
 export async function getListComment(id: string | number, limit: number = 30, offset: number = 0) {
 	return await NETEASE.get({
 		url: "/comment/playlist",
-		myParams: {
+		params: {
 			id,
 			limit,
 			offset,
@@ -489,7 +490,7 @@ export async function getComment(
 ): Promise<Array<TYPE.commentType>> {
 	return await NETEASE.get({
 		url: "/comment/new",
-		myParams: {
+		params: {
 			id,
 			type: RESOURCE.indexOf(type),
 			sortType: ["", "推荐", "热度", "时间"].indexOf(sortType),
@@ -518,7 +519,7 @@ export async function likeComment(
 ): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/comment/like",
-		myParams: {
+		params: {
 			id: resourcesId,
 			cid: commentId,
 			t: isLiked,
@@ -546,7 +547,7 @@ export async function getFloorComments(
 ): Promise<Array<TYPE.commentType>> {
 	return await NETEASE.get({
 		url: "/comment/floor",
-		myParams: {
+		params: {
 			parentCommentId,
 			id: resourcesId,
 			type: RESOURCE.indexOf(type),
@@ -568,7 +569,7 @@ export async function getFloorComments(
 export async function subscribeAlbum(id: number | string, isSubscribe: boolean): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/album/sub",
-		myParams: {
+		params: {
 			id,
 			t: isSubscribe ? 1 : 0,
 			cookie: true,
@@ -588,7 +589,7 @@ export async function subscribeAlbum(id: number | string, isSubscribe: boolean):
 export async function like(id: number | string, isLiked: boolean = true): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/like",
-		myParams: {
+		params: {
 			id,
 			like: isLiked,
 			cookie: true,
@@ -608,7 +609,7 @@ export async function like(id: number | string, isLiked: boolean = true): Promis
 export async function getLikedSongsID(uid: number): Promise<Array<number>> {
 	return await NETEASE.get({
 		url: "/likelist",
-		myParams: {
+		params: {
 			uid,
 			cookie: true,
 			timeStamp: true,
@@ -631,7 +632,7 @@ export async function updateList(
 ): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/playlist/tracks",
-		myParams: {
+		params: {
 			op: operate,
 			pid: listId,
 			tracks: songsId.join(","),
@@ -653,7 +654,7 @@ export async function getDetailedArtist(id: number): Promise<TYPE.artistDetailed
 	return {
 		info: await NETEASE.get({
 			url: "/artist/detail",
-			myParams: {
+			params: {
 				id,
 				cookie: true,
 			},
@@ -675,7 +676,7 @@ export async function getDetailedArtist(id: number): Promise<TYPE.artistDetailed
 export async function getArtistIntroduction(id: number): Promise<TYPE.artistIntroductionType> {
 	return await NETEASE.get({
 		url: "/artist/desc",
-		myParams: {
+		params: {
 			id,
 		},
 		interceptors: {
@@ -700,7 +701,7 @@ export async function getArtistIntroduction(id: number): Promise<TYPE.artistIntr
 export async function getArtistHotSongs(id: number): Promise<TYPE.songDetailedType[]> {
 	return await NETEASE.get({
 		url: "/artist/top/song",
-		myParams: {
+		params: {
 			id,
 		},
 		interceptors: {
@@ -717,7 +718,7 @@ export async function getArtistHotSongs(id: number): Promise<TYPE.songDetailedTy
 export async function getSimilarArtists(id: number): Promise<TYPE.artistBriefType[]> {
 	return await NETEASE.get({
 		url: "/simi/artist",
-		myParams: {
+		params: {
 			id,
 			cookie: true,
 		},
@@ -735,7 +736,7 @@ export async function getSimilarArtists(id: number): Promise<TYPE.artistBriefTyp
 export async function getSubscribedArtists(): Promise<TYPE.artistBriefType[]> {
 	return await NETEASE.get({
 		url: "/artist/sublist",
-		myParams: {
+		params: {
 			cookie: true,
 		},
 		interceptors: {
@@ -752,7 +753,7 @@ export async function getSubscribedArtists(): Promise<TYPE.artistBriefType[]> {
 export async function subscribeArtist(id: number, operate: boolean): Promise<boolean> {
 	return await NETEASE.get({
 		url: "/artist/sub",
-		myParams: {
+		params: {
 			id,
 			t: operate ? 1 : 0,
 			timeStamp: true,
@@ -777,7 +778,7 @@ export async function getSubscribedArtistsNewSongs(
 ): Promise<TYPE.SubscribedNewSongsType[]> {
 	return await NETEASE.get({
 		url: "/artist/new/song",
-		myParams: {
+		params: {
 			limit,
 			before: before ? before : "",
 			cookie: true,
@@ -798,7 +799,7 @@ export async function getTopArtists(
 ): Promise<TYPE.artistBriefType[]> {
 	return await NETEASE.get({
 		url: "/toplist/artist",
-		myParams: {
+		params: {
 			type: ["", "华语", "欧美", "韩国", "日本"].indexOf(type),
 		},
 		interceptors: {
@@ -815,7 +816,7 @@ export async function getTopArtists(
 export async function getArtistFansCount(id: number): Promise<number> {
 	return await NETEASE.get({
 		url: "/artist/follow/count",
-		myParams: {
+		params: {
 			id,
 		},
 		interceptors: {
@@ -835,7 +836,7 @@ export async function getHotArtist(
 ): Promise<{ more: boolean; artists: TYPE.artistBriefType[] }> {
 	return await NETEASE.get({
 		url: "/top/artists",
-		myParams: {
+		params: {
 			limit,
 			offset,
 		},
@@ -859,7 +860,7 @@ export async function getFilteredArtist(
 ): Promise<{ more: boolean; artists: TYPE.artistBriefType[] }> {
 	return await NETEASE.get({
 		url: "/artist/list",
-		myParams: {
+		params: {
 			type,
 			area,
 			initial,
@@ -885,7 +886,7 @@ export async function getArtistAllSongs(
 ): Promise<TYPE.songDetailedType[]> {
 	return await NETEASE.get({
 		url: "/artist/songs",
-		myParams: {
+		params: {
 			id,
 			order,
 			limit,
@@ -910,7 +911,7 @@ export async function search(
 ): Promise<TYPE.searchResultType> {
 	return await NETEASE.get({
 		url: "/cloudsearch",
-		myParams: {
+		params: {
 			keywords,
 			type: searchResultType[type],
 			offset,
@@ -934,7 +935,7 @@ export async function getArtistAlbums(
 ): Promise<TYPE.albumBriefType[]> {
 	return NETEASE.get({
 		url: "/artist/album",
-		myParams: {
+		params: {
 			id,
 			offset,
 			limit,
@@ -957,7 +958,7 @@ export async function getArtistMV(
 ): Promise<TYPE.videoType[]> {
 	return await NETEASE.get({
 		url: "/artist/mv",
-		myParams: {
+		params: {
 			id,
 			offset,
 			limit,
@@ -976,7 +977,7 @@ export async function getArtistMV(
 export async function getMVUrl(id: number, resolution: number = 1080): Promise<string> {
 	return await NETEASE.get({
 		url: "/mv/url",
-		myParams: {
+		params: {
 			id,
 			r: resolution,
 		},
