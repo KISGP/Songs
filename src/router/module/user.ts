@@ -13,17 +13,7 @@ module.exports = [
 					searchVisible: true,
 					menuVisible: false,
 				},
-			},
-			{
-				// 登录
-				path: "login",
-				component: loginUser,
-				meta: {
-					requireLogin: false,
-					searchVisible: false,
-					menuVisible: false,
-				},
-			},
+			}
 		],
 	},
 ];

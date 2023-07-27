@@ -3,8 +3,8 @@
 		<transition name="switch">
 			<div class="switch">
 				<el-icon size="2vw" id="icon">
-					<svg-icon v-if="DataStore.audioDisplayStatus == 'hidden'" name="show"></svg-icon>
-					<svg-icon v-if="DataStore.audioDisplayStatus == 'min'" name="hide"></svg-icon>
+					<svg-icon v-if="DataStore.audioDisplayStatus === 'hidden'" name="show"></svg-icon>
+					<svg-icon v-if="DataStore.audioDisplayStatus === 'min'" name="hide"></svg-icon>
 				</el-icon>
 			</div>
 		</transition>

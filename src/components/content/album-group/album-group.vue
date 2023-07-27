@@ -1,32 +1,28 @@
 <template>
-	<el-space wrap :size="size" alignment="flex-start">
-		<div class="card" v-for="item in data" :key="item.id">
+	<el-space wrap :size="props.size || 60" alignment="flex-start">
+		<div class="card" v-for="item in props.data" :key="item.id">
 			<albumCard @click="router.push(`/album/${item.id}`)">
-				<el-image class="img" :src="item.cover" fit="cover" loading="lazy" />
+				<el-image class="img" :src="item.cover?.url" fit="cover" loading="lazy" />
 			</albumCard>
-			<span class="name" :title="item.name">{{ item.name }}</span>
-			<span class="artist" :title="item.artists.artistsStr">{{ item.artists.artistsStr }}</span>
+			<span class="name _ellipsis" :title="item.name">
+				{{ item.name }}
+			</span>
+			<span class="artist _ellipsis" :title="item.singers?.singersNameStr">
+				{{ item.singers?.singersNameStr }}
+			</span>
 		</div>
 	</el-space>
 </template>
 <script setup lang="ts">
-import { PropType } from "vue";
 import { useRouter } from "vue-router";
-import { albumBriefType } from "@/interface/interface";
-import albumCard from "@/components/common/card-3D/card-3D.vue";
+import { album } from "type/type";
+import albumCard from "components/common/card-3D/card-3D.vue";
 const router = useRouter();
 
-const props = defineProps({
-	data: {
-		type: Array as PropType<albumBriefType[]>,
-		required: true,
-	},
-	size: {
-		type: Number as PropType<number>,
-		required: false,
-		default: 50,
-	},
-});
+const props = defineProps<{
+	data?: album[];
+	size?: number;
+}>();
 </script>
 <style scoped lang="less">
 .card {
@@ -47,9 +43,6 @@ const props = defineProps({
 	& > span {
 		display: block;
 		margin: 10px 5%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
 	}
 	.name {
 		font-size: 18px;

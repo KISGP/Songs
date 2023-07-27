@@ -1,27 +1,22 @@
 import { defineStore } from "pinia";
-import { getSongUrl, getLyric, like } from "@/service/api/api";
 import { useDataStore } from "./data";
 import { throttle } from "utils/utils-common";
-import {
-	songDetailedType,
-	lyricsType,
-	lyricBaseType,
-	currentLyricType,
-} from "@/interface/interface";
+import { SONG } from "service/api";
+import { song, lyrics, lyricItem, currentLyricItem } from "type/type";
 
 type SongsState = {
 	// audio对象
-	audio: HTMLAudioElement | null;
+	audio?: HTMLAudioElement;
 	// 歌曲播放时间（使用SongStore.audio.currentTime会使进度条拖拽卡顿）
 	currentTime: number;
 	// (不，单曲，播放列表)循环
 	loop: "no" | "song" | "playList";
 	// 当前歌曲
-	song: songDetailedType | null;
+	song?: song;
 	// 歌词
-	lyricObject: lyricsType;
+	lyricObject: lyrics;
 	// 当前歌词
-	currentLyric: currentLyricType;
+	currentLyric: currentLyricItem;
 	// 是否正在播放
 	isPlaying: boolean;
 };
@@ -29,18 +24,18 @@ type SongsState = {
 export const useSongStore = defineStore("SongStore", {
 	state: (): SongsState => {
 		return {
-			audio: null,
+			audio: undefined,
 			currentTime: 0,
 			loop: "playList",
-			song: null,
-			lyricObject: { lyricArray: null, translator: null },
+			song: undefined,
+			lyricObject: { lyrics: null, translator: null },
 			currentLyric: { content: "", translation: "", index: 0 },
 			isPlaying: false,
 		};
 	},
 	getters: {
-		lyric(state): lyricBaseType[] | null {
-			return state.lyricObject.lyricArray;
+		lyric(state): lyricItem[] | null {
+			return state.lyricObject.lyrics;
 		},
 		maxTime(state) {
 			return state.audio?.duration;
@@ -86,7 +81,7 @@ export const useSongStore = defineStore("SongStore", {
 						this.update_isPlaying(false);
 						break;
 					case "next":
-						this.update_song(
+						this.play(
 							DataStore.playList[
 								(DataStore.playList.indexOf(this.song!) + 1) % DataStore.playList.length
 							]
@@ -98,7 +93,7 @@ export const useSongStore = defineStore("SongStore", {
 						if (index < 1) {
 							index = length;
 						}
-						this.update_song(DataStore.playList[(index - 1) % length]);
+						this.play(DataStore.playList[(index - 1) % length]);
 						break;
 					default:
 						break;
@@ -133,15 +128,15 @@ export const useSongStore = defineStore("SongStore", {
 			this.loop = mode;
 		},
 		/**
-		 * @description 更新播放歌曲
+		 * @description 播放歌曲
 		 * */
-		async update_song(value: songDetailedType) {
+		async play(value: song) {
 			// 获取歌曲播放链接
-			if (!value.song.url) value.song.url = await getSongUrl(value.song.id);
+			if (!value.url) value.url = await SONG.getUrl(value.id);
 			// 判断是否我喜欢的歌曲
-			value.song.isLiked = useDataStore().check_song_isLiked(value.song.id);
+			value.isLiked = useDataStore().check_song_isLiked(value.id);
 			// 获取歌词
-			this.lyricObject = await getLyric(value.song.id);
+			this.lyricObject = await SONG.getLyrics(value.id);
 			// 修改播放状态
 			this.update_isPlaying(true);
 			// 显示播放器
@@ -153,14 +148,14 @@ export const useSongStore = defineStore("SongStore", {
 		 * @description 喜欢歌曲(默认当前播放歌曲)
 		 * */
 		async likeSong(isLiked: boolean, id?: number | null) {
-			if (this.song?.song.id) {
-				const res: boolean = await like(id || this.song?.song.id, isLiked);
+			if (this.song?.id) {
+				const res: boolean = await SONG.like(id || this.song?.id, isLiked);
 				if (res && !isLiked) {
 					// showSuccessMessage("成功移出我喜欢的音乐");
-					this.song.song.isLiked = isLiked;
+					this.song.isLiked = isLiked;
 				} else if (res && isLiked) {
 					// showSuccessMessage("成功添加到我喜欢的音乐");
-					this.song.song.isLiked = isLiked;
+					this.song.isLiked = isLiked;
 				} else {
 					// showErrorMessage("移出/添加 错误");
 				}

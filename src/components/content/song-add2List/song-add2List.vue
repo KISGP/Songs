@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { PropType } from "vue";
 import { useSongStore, useDataStore } from "store/index";
-import { updateList } from "service/api/api";
+import { LIST } from "service/api/index";
 import { toast } from "utils/notice";
 
 const SongStore = useSongStore();
@@ -28,10 +28,10 @@ const props = defineProps({
 });
 const add = async (index: number) => {
 	if (
-		SongStore.song?.song.id &&
-		(await updateList("add", DataStore.myCreatedList[index].id, [SongStore.song.song.id]))
+		SongStore.song?.id &&
+		(await LIST.update("add", DataStore.myCreatedList[index].id, [SongStore.song.id]))
 	) {
-		toast(`${SongStore.song.song.name}已添加到${DataStore.myCreatedList[index].name}`, {
+		toast(`${SongStore.song.name}已添加到${DataStore.myCreatedList[index].name}`, {
 			type: "success",
 			timeout: 1500,
 		});

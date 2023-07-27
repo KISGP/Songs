@@ -9,7 +9,7 @@ import type {
 export interface Interceptors<T = AxiosResponse, D = InternalAxiosRequestConfig> {
 	requestInterceptor?: (config: D) => D;
 	requestInterceptorCatch?: (error: any) => any;
-	responseInterceptor?: (res: T) => T;
+	responseInterceptor?: (res: any) => T;
 	responseInterceptorCatch?: (error: any) => any;
 }
 
@@ -21,11 +21,11 @@ export interface CreateAxiosConfig<T = AxiosResponse> extends CreateAxiosDefault
 
 // 请求配置
 export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
-  // url携带参数类型
+	// url携带参数类型
 	params?: {
 		cookie?: boolean | string;
 		timeStamp?: boolean;
-    uid?:number;
+		uid?: number;
 		[key: string]: any;
 	};
 	// 用于某个具体请求的拦截器

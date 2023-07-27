@@ -12,24 +12,28 @@ const context = require.context("./module", false, /\.ts$/);
 context.keys().map((key) => {
 	routeArray.push(...context(key));
 });
+
 // 设置根路径重定向
 routeArray.push({
 	path: "/",
 	redirect: "/song/recommend",
 });
 
+// 创建路由
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [...routeArray],
 });
 
+// TODO: 路由切换时取消当前请求
+// 路由守卫
 router.beforeEach((to, from, next) => {
 	const UserStore = useUserStore();
 	const DataStore = useDataStore();
 	const SongStore = useSongStore();
-	// 检查是否登录
+	// TODO：检查是否登录
 	if (to.meta.requireLogin && !UserStore.netease_login) {
-		next({ path: "/user/login", query: { redirect: to.fullPath } });
+		// next({ path: "/user/login", query: { redirect: to.fullPath } });
 		return;
 	}
 	// 搜索框显示隐藏

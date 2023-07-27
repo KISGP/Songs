@@ -26,7 +26,7 @@
 			<el-space wrap size="large" alignment="flex-start">
 				<div v-for="(item, index) in list" :class="{ card: deleting }" :key="item.id">
 					<div class="cover" @click="deleteOneList(index)">删除该歌单</div>
-					<list-card :list="item" />
+					<list-card :list="item" width="160px" />
 				</div>
 			</el-space>
 		</div>
@@ -59,41 +59,42 @@
 	</el-dialog>
 </template>
 <script setup lang="ts">
-import { ref, Ref, onMounted, reactive } from "vue";
-import { useUserStore } from "store/module/user";
-import { getMyList, deleteList, createList } from "service/api/api";
-import { listBriefType } from "@/interface/interface";
-import listCard from "@/components/content/list-card/list-card.vue";
+import { list } from "type/type";
 import { message } from "utils/notice";
+import { LIST } from "service/api";
 import type { FormRules } from "element-plus";
+import { useUserStore } from "store/module/user";
+import { ref, onMounted, reactive } from "vue";
+import listCard from "components/content/list-recommend/list-recommend-item.vue";
+
 const store = useUserStore();
 
 onMounted(async () => {
 	refresh();
 });
 
-const list: Ref<Array<listBriefType>> = ref([]);
+const list = ref<list[]>([]);
 // 刷新歌单数据
 const refresh = async (): Promise<boolean> => {
-	list.value = await getMyList(store.netease_id, store.netease_name);
+	list.value = await LIST.getMine(store.netease_id, store.netease_name);
 	return list.value ? true : false;
 };
 
 // 删除状态
-const buttonType: Ref<"" | "danger"> = ref("");
-const deleting: Ref<boolean> = ref(false);
-const changeDeleting = (): void => {
+const buttonType = ref<"" | "danger">("");
+const deleting = ref<boolean>(false);
+function changeDeleting() {
 	deleting.value = !deleting.value;
 	if (deleting.value) {
 		buttonType.value = "danger";
 	} else {
 		buttonType.value = "";
 	}
-};
+}
 
 // 删除指定歌单
-const deleteOneList = async (index: number): Promise<void> => {
-	if (await deleteList(list.value[index].id)) {
+async function deleteOneList(index: number) {
+	if (await LIST.delete(list.value[index].id)) {
 		list.value.splice(index, 1);
 		message({
 			message: "删除歌单成功",
@@ -106,14 +107,14 @@ const deleteOneList = async (index: number): Promise<void> => {
 			type: "error",
 		});
 	}
-};
+}
 // 删除所有歌单
-const deleteAllList = async (): Promise<void> => {
+async function deleteAllList() {
 	message({
 		message: "已删除全部歌单（该功能未实现，新注册个账号再说）",
 		type: "success",
 	});
-};
+}
 
 // 创建歌单
 const form: {
@@ -131,13 +132,13 @@ const rules = reactive<FormRules>({
 		{ min: 1, max: 40, message: "歌单名长度应小于40", trigger: "blur" },
 	],
 });
-const createBoxVisible: Ref<boolean> = ref(false);
-const changeVisible = (): void => {
+const createBoxVisible = ref<boolean>(false);
+function changeVisible() {
 	createBoxVisible.value = !createBoxVisible.value;
-};
-const create = async () => {
+}
+async function create() {
 	let { name, type, isPrivate } = form;
-	const r = await createList(name, type, isPrivate);
+	const r = await LIST.create(name, type, isPrivate);
 	if (r.success) {
 		if (await refresh()) {
 			message({
@@ -157,7 +158,7 @@ const create = async () => {
 			type: "error",
 		});
 	}
-};
+}
 </script>
 <style scoped lang="less">
 @import "style/common.less";

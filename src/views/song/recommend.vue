@@ -1,5 +1,5 @@
 <template>
-	<el-tabs v-model="activePage" class="tabs">
+	<el-tabs v-model="activePage" class="tabs" v-once>
 		<el-tab-pane name="new">
 			<template #label>
 				<span class="tabs-tittle">新音乐</span>
@@ -16,19 +16,18 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { songDetailedType } from "@/interface/interface";
-import { getRecommendNewSong, getRecommendDailySongs } from "service/api/api";
-import songsTable from "@/components/content/songs-table/song-table-common.vue";
+import type { song } from "type/type";
+import { SONG } from "service/api/index";
+import songsTable from "components/content/songs-table/songs-table.vue";
 
 const activePage = ref<string>("new");
 
-const newSongs = ref<Array<songDetailedType>>([]);
-const dailySongs = ref<Array<songDetailedType> | null>([]);
+const newSongs = ref<song[]>([]);
+const dailySongs = ref<song[] | null>([]);
+
 onMounted(async () => {
-	newSongs.value = await getRecommendNewSong();
-	getRecommendDailySongs().then((res) => {
-		dailySongs.value = res;
-	});
+	newSongs.value = await SONG.recommendNew();
+	dailySongs.value = await SONG.recommendDaily();
 });
 </script>
 <style scoped lang="less">

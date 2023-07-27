@@ -1,17 +1,17 @@
 <template>
 	<div class="back">
-		<list-card-group :list="topList" />
+		<list-recommend :lists="topList" />
 	</div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, Ref } from "vue";
-import { getTopList } from "service/api/api";
-import { listBriefType } from "@/interface/interface";
-import listCardGroup from "@/components/content/list-card/list-card-group.vue";
+import { onMounted, ref } from "vue";
+import { LIST } from "service/api/index";
+import { list } from "type/type";
+import ListRecommend from "components/content/list-recommend/list-recommend.vue";
 
-const topList: Ref<Array<listBriefType>> = ref([]);
+const topList = ref<list[]>([]);
 onMounted(async () => {
-	topList.value = await getTopList();
+	topList.value = await LIST.getTop();
 });
 </script>
 <style scoped lang="less">

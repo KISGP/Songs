@@ -9,7 +9,8 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const app = createApp(App);
 
 // 导入样式文件
-import "style/index.less";
+import "style/index.less"
+import "style/theme.less";
 import "animate.css";
 import "vue-toastification/dist/index.css";
 

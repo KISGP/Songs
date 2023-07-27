@@ -22,7 +22,8 @@
 			"service/*": ["src/service/*"],
 			"router/*": ["src/router/*"],
 			"assets/*": ["src/assets/*"],
-			"style/*": ["src/assets/style/*"]
+			"style/*": ["src/assets/style/*"],
+			"type/*": ["src/type/*"],
 		},
 		"lib": ["esnext", "dom", "dom.iterable", "scripthost"]
 	},

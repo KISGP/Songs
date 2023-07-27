@@ -38,14 +38,16 @@
 				/>
 			</div>
 		</div>
-		<artistCardGroup style="margin-top: 30px;" :data="data" :size="30"/>
+		<singer-card-group style="margin-top: 30px" :data="data" :size="30" />
 	</div>
 </template>
 <script setup lang="ts">
 import { ref, reactive, onMounted } from "vue";
-import { getFilteredArtist } from "service/api/api";
-import { artistBriefType } from "@/interface/interface";
-import artistCardGroup from "@/components/content/artist-card/artist-card-group.vue";
+import { SINGER } from "service/api";
+import { singer } from "type/type";
+
+import SingerCardGroup from "components/content/singer-card/singer-card-group.vue";
+
 const filter = reactive<{
 	type: number;
 	area: number;
@@ -61,7 +63,7 @@ const check = (value: string) => {
 	}
 };
 
-const data = ref<artistBriefType[]>([]);
+const data = ref<singer[]>([]);
 let isMore: boolean = true;
 let count: number = 0;
 onMounted(() => {
@@ -70,14 +72,14 @@ onMounted(() => {
 
 const change = async () => {
 	data.value = [];
-	const { artists, more } = await getFilteredArtist(filter.type, filter.area, filter.initial);
+	const { artists, more } = await SINGER.getFiltered(filter.type, filter.area, filter.initial);
 	data.value = artists;
 	isMore = more;
 	count = artists.length;
 };
 const load = async () => {
 	if (isMore) {
-		const { artists, more } = await getFilteredArtist(
+		const { artists, more } = await SINGER.getFiltered(
 			filter.type,
 			filter.area,
 			filter.initial,

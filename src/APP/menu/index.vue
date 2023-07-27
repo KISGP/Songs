@@ -3,7 +3,7 @@
 		<el-sub-menu index="1">
 			<template #title> 音乐 </template>
 			<el-menu-item index="/song/recommend">音乐推荐</el-menu-item>
-			<el-menu-item index="/song/subscribed">关注歌手新歌</el-menu-item>
+			<el-menu-item index="/song/subscribed">关注新歌</el-menu-item>
 		</el-sub-menu>
 		<el-sub-menu index="2">
 			<template #title> 歌单 </template>
@@ -28,30 +28,33 @@
 			</template>
 			<el-menu-item index="/set/basic">基本设置</el-menu-item>
 			<el-menu-item index="/set/theme">主题设置</el-menu-item>
-			<el-menu-item index="/set/data">数据来源</el-menu-item>
 		</el-sub-menu>
 		<el-sub-menu index="6">
 			<template #title>
 				<el-icon><User /></el-icon>
 			</template>
-			<el-menu-item
-				:index="UserStore.netease_login ? `/user/${UserStore.netease_id}` : '/user/login'"
-			>
-				<div>
-					<el-icon :size="60">
-						<svg-icon name="netease" />
-					</el-icon>
-					<span>{{ UserStore.netease_login ? UserStore.netease_name : "登录" }}</span>
-				</div>
-			</el-menu-item>
-			<el-menu-item index="" v-if="UserStore.netease_login">
-				<div @click.stop="exit">
-					<el-icon :size="60">
-						<svg-icon name="exit" />
-					</el-icon>
-					<span>退出账号</span>
-				</div>
-			</el-menu-item>
+			<template v-if="UserStore.netease_login">
+				<el-menu-item :index="`/user/${UserStore.netease_id}`">
+					<div>
+						<el-icon :size="60"><svg-icon name="netease" /></el-icon>
+						<span>{{ UserStore.netease_name }}</span>
+					</div>
+				</el-menu-item>
+				<el-menu-item index="">
+					<div @click.stop="exit">
+						<el-icon :size="60"><svg-icon name="exit" /></el-icon>
+						<span>退出账号</span>
+					</div>
+				</el-menu-item>
+			</template>
+			<template v-else>
+				<el-menu-item index="">
+					<div @click.stop="changeLoginVisible(true)" style="width: 100%">
+						<el-icon :size="60"><svg-icon name="netease" /></el-icon>
+						<span>登录</span>
+					</div>
+				</el-menu-item>
+			</template>
 		</el-sub-menu>
 		<el-sub-menu index="7">
 			<template #title>
@@ -64,23 +67,45 @@
 			</el-menu-item>
 		</el-sub-menu>
 	</el-menu>
+
+	<el-dialog
+		v-model="loginVisible"
+		width="350px"
+		align-center
+		:close-on-click-modal="false"
+		:close-on-press-escape="false"
+		:destroy-on-close="true"
+	>
+		<login @loginSuccess="changeLoginVisible(false)" />
+	</el-dialog>
 </template>
 <script setup lang="ts">
-import { useUserStore } from "store/index";
-import { toast } from "utils/notice";
+import { ref } from "vue";
 import storage from "utils/storage";
-const UserStore = useUserStore();
-const openPage = (url: string) => {
-	window.open(url, "_blank");
-};
+import { toast } from "utils/notice";
+import { useUserStore } from "store/index";
+import login from "components/content/login/login.vue";
 
-const exit = () => {
+const UserStore = useUserStore();
+
+// 打开新页面
+function openPage(url: string) {
+	window.open(url, "_blank");
+}
+
+// 账号退出
+function exit() {
 	storage.removeAll();
 	UserStore.update_login(false);
 	toast("退出成功", {
 		type: "success",
 	});
-};
+}
+
+const loginVisible = ref<boolean>(false);
+function changeLoginVisible(val: boolean) {
+	loginVisible.value = val;
+}
 </script>
 <style scoped lang="less">
 .el-menu {

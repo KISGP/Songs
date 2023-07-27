@@ -28,34 +28,29 @@
 	</el-scrollbar>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, PropType } from "vue";
-import { getComment } from "service/api/api";
-import { commentType, resources } from "@/interface/interface";
+import { ref, onMounted } from "vue";
+import { COMMENT } from "service/api/index";
+import { comment, resources } from "type/type";
 import commentItem from "./comment-item.vue";
 
-const props = defineProps({
-	id: {
-		type: String,
-		required: true,
-	},
-	type: {
-		type: String as PropType<resources>,
-		required: true,
-	},
-});
+const props = defineProps<{
+	id: string;
+	type: resources;
+}>();
 
-const recommendC = ref<Array<commentType>>([]);
+const recommendC = ref<comment[]>([]);
 const recommendPage = ref<number>(1);
 
-const hotC = ref<Array<commentType>>([]);
+const hotC = ref<comment[]>([]);
 const hotPage = ref<number>(1);
 
-const newC = ref<Array<commentType>>([]);
+const newC = ref<comment[]>([]);
 const newPage = ref<number>(1);
+
 onMounted(async () => {
-	hotC.value = await getComment(props.id, "热度", props.type, hotPage.value);
-	recommendC.value = await getComment(props.id, "推荐", props.type, recommendPage.value);
-	newC.value = await getComment(props.id, "时间", props.type, newPage.value);
+	hotC.value = await COMMENT.get(props.id, "热度", props.type, hotPage.value);
+	recommendC.value = await COMMENT.get(props.id, "推荐", props.type, recommendPage.value);
+	newC.value = await COMMENT.get(props.id, "时间", props.type, newPage.value);
 });
 
 const activePage = ref<string>("recommend");
@@ -71,7 +66,7 @@ const load = async () => {
 		// );
 	} else if (activePage.value === "new") {
 		newC.value = newC.value.concat(
-			await getComment(
+			await COMMENT.get(
 				props.id,
 				"时间",
 				props.type,

@@ -12,22 +12,21 @@
 	</div>
 </template>
 <script setup lang="ts">
-// TODO: 需要优化，当页面存在大量这个组件时会造成卡顿
+// TODO: 需要优化，当页面存在大量这个组件时可能会造成卡顿
 import { ref, onMounted } from "vue";
-const props = defineProps({
-	width: {
-		type: String,
-		default: "160px",
-	},
-	height: {
-		type: String,
-		default: "160px",
-	},
-	rate: {
-		type: Number,
-		default: 1,
-	},
-});
+
+const props = withDefaults(
+	defineProps<{
+		width?: string;
+		height?: string;
+		rate?: number;
+	}>(),
+	{
+		width: "160px",
+		height: "160px",
+		rate: 1,
+	}
+);
 
 const container = ref<HTMLElement>();
 const inner = ref<HTMLElement>();

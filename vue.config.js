@@ -5,20 +5,21 @@ const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
 const path = require("path");
 
 module.exports = defineConfig({
-	publicPath:"./",
+	// FIXME：githubPage需要设置publicPath:"./",但是会导致开发时刷新白屏
 	transpileDependencies: true,
-	productionSourceMap:false,
+	productionSourceMap: false,
 	configureWebpack: {
 		resolve: {
 			alias: {
-				'views': '@/views',
-				'components': '@/components',
-				'utils':"@/utils",
-				'store':"@/store",
-				'service':"@/service",
-				'router':"@/router",
-				'assets':"@/assets",
-				'style':"@/assets/style"
+				views: "@/views",
+				components: "@/components",
+				utils: "@/utils",
+				store: "@/store",
+				service: "@/service",
+				router: "@/router",
+				assets: "@/assets",
+				style: "@/assets/style",
+				type: "@/type",
 			},
 		},
 		plugins: [

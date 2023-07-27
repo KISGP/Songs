@@ -2,15 +2,16 @@
 	<div class="back">
 		<p>使用网易云APP扫码登录</p>
 		<div class="image">
-			<el-image style="width: 200px; height: 200px" :src="base64" fit="contain"></el-image>
+			<el-image style="width: 200px; height: 200px" :src="base64" fit="contain" />
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
+// TODO: 把登录页面改为登录dialog，不要页面跳转
 import { ref, Ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "store/module/user";
-import { getQRKey, getQRImgBase64, checkQRStatus, getUserInfo } from "service/api/api";
+import { LOGIN, USER } from "service/api";
 import { toast } from "utils/notice";
 import storage from "utils/storage";
 const store = useUserStore();
@@ -33,9 +34,9 @@ const status: Ref<800 | 801 | 802 | 803> = ref(800);
 const createQR = async (): Promise<boolean> => {
 	try {
 		// 请求二维码Key
-		key.value = await getQRKey();
+		key.value = await LOGIN.getKey();
 		// 生成二维码图片的 base64
-		base64.value = await getQRImgBase64(key.value);
+		base64.value = await LOGIN.getBase64(key.value);
 		// 修改状态为等待扫码
 		status.value = 801;
 		return true;
@@ -51,8 +52,8 @@ const createQR = async (): Promise<boolean> => {
 const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 	if (!base64.value) return;
 	// 获取二维码状态
-	const { state, cookie } = await checkQRStatus(key.value);
-	status.value = state;
+	const { statusCode, cookie } = await LOGIN.checkQRStatus(key.value);
+	status.value = statusCode;
 	switch (status.value) {
 		case 800: // 二维码失效
 			toast("二维码失效,请刷新页面", {
@@ -66,7 +67,7 @@ const timer: ReturnType<typeof setInterval> = setInterval(async () => {
 				timeout: 1500,
 			});
 			store.update_cookie(cookie);
-			const { id, name } = await getUserInfo();
+			const { id, name } = await USER.getIdAndName();
 			store.update_login(true);
 			store.update_id(id);
 			store.update_name(name);

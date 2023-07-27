@@ -1,11 +1,6 @@
 <template>
-	<el-table
-		:data="props.songs"
-		:style="{ width: props.tableWidth }"
-		:row-style="{ height: '50px' }"
-		@row-click="playSong"
-	>
-		<el-table-column type="index" :label="props.songsCount + '首'" width="80" />
+	<el-table :data="props.songs" :row-style="{ height: '50px' }" @row-click="playSong">
+		<el-table-column type="index" :label="`${props.songs?.length}首`" width="80" />
 		<el-table-column label="歌曲标题">
 			<template #default="scope">
 				<span>{{ scope.row.song.name }}</span>
@@ -29,37 +24,26 @@
 	</el-table>
 </template>
 <script setup lang="ts">
-import { PropType } from "vue";
-import { useSongStore } from "store/index";
-import { songDetailedType } from "@/interface/interface";
-const store = useSongStore();
+import { useSongStore, useDataStore } from "store/index";
+import { song } from "type/type";
+const SongStore = useSongStore();
+const DataStore = useDataStore();
 
-const props = defineProps({
-	songs: {
-		type: Array as PropType<Array<songDetailedType> | null>,
-		required: true,
-	},
-	songsCount: {
-		type: Number,
-		required: true,
-	},
-	tableWidth: {
-		type: String,
-		default: "100%",
-	},
-});
+const props = defineProps<{
+	songs: song[] | null;
+}>();
 
 const playSong = async (row: any): Promise<void> => {
-	store.update_song(row);
+	SongStore.play(row);
 };
 
-const deleteOneSong = (songData: songDetailedType) => {
-	store.update_playList((playList) => {
+const deleteOneSong = (songData: song) => {
+	DataStore.update_playList((playList) => {
 		playList = playList.splice(playList.indexOf(songData), 1);
 	});
 };
 const deleteList = () => {
-	store.update_playList((playList) => {
+	DataStore.update_playList((playList) => {
 		playList = playList.splice(0, playList.length);
 	});
 };

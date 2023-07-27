@@ -24,7 +24,7 @@
 		</span>
 		<div class="result" v-if=" result?.result.length! > 0">
 			<template v-if="activePages == '单曲'">
-				<songTableCommon
+				<song-table
 					:songs="result.result"
 					v-infinite-scroll="load"
 					:infinite-scroll-immediate="false"
@@ -40,10 +40,10 @@
 				/>
 			</template>
 			<template v-if="activePages == '歌手'">
-				<artistCardGroup :data="result.result" />
+				<singerCardGroup :data="result.result" />
 			</template>
 			<template v-if="activePages == '歌单'">
-				<list-card-group :list="result.result" />
+				<list-card-group :lists="result.result" />
 			</template>
 		</div>
 		<div v-else>
@@ -55,41 +55,44 @@
 // TODO: 搜索功能补全
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { search as s } from "service/api/api";
 import storage from "utils/storage";
-import { searchType } from "@/interface/interface";
-import songTableCommon from "@/components/content/songs-table/song-table-common.vue";
-import albumGroup from "@/components/content/album-group/album-group.vue";
-import artistCardGroup from "@/components/content/artist-card/artist-card-group.vue";
-import listCardGroup from "@/components/content/list-card/list-card-group.vue";
+import { SEARCH } from "service/api";
+import { searchCategory } from "type/type";
+
+import albumGroup from "components/content/album-group/album-group.vue";
+import listCardGroup from "components/content/list-recommend/list-recommend.vue";
+import SongTable from "components/content/songs-table/songs-table.vue";
+import SingerCardGroup from "components/content/singer-card/singer-card-group.vue";
 
 const router = useRouter();
 
-const activePages = ref<string>(storage.getItem("firstSearch") || "单曲");
+const activePages = ref<searchCategory>(
+	(storage.getItem("firstSearch") as searchCategory) || "单曲"
+);
 // 切换搜索结果类型
 const tabsChange = async () => {
 	result.value = { count: 0, result: [] };
-	search();
+	await search();
 };
 
 const inputVal = ref<string>((router.currentRoute.value.query.content as string) || "");
 const result = ref<any>();
 const tip = ref<string>("");
 // 搜索
-const search = async () => {
+async function search() {
 	if (inputVal.value) {
-		result.value = await s(inputVal.value, activePages.value as searchType);
+		result.value = await SEARCH.search(inputVal.value, activePages.value);
 		if (result.value.count > 0) {
 			tip.value = "";
 		} else {
 			tip.value = "无搜索结果";
 		}
 	}
-};
+}
 // 加载
 const load = async () => {
 	result.value.result = result.value?.result.concat(
-		(await s(inputVal.value, activePages.value as searchType, result.value.result.length)).result
+		(await SEARCH.search(inputVal.value, activePages.value, result.value.result.length)).result
 	);
 };
 </script>

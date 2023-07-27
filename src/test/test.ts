@@ -1,2 +1,7 @@
-console.log(0 || undefined);
-console.log(0 ?? undefined);
+try {
+  console.log(1);
+  throw("e")
+  console.log(2);
+} catch (error) {
+  
+}

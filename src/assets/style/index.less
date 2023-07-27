@@ -1,5 +1,4 @@
-@import "./theme/dark.less";
-@import "./theme/light.less";
+@import "./common.less";
 
 :root {
 	--header-height: 6vh;
@@ -25,7 +24,13 @@ html {
 		background-color: transparent;
 	}
 }
-
+// =====================
+._ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+// =====================
 .table-row {
 	color: var(--regular-text);
 }
@@ -40,6 +45,7 @@ html {
 	--el-table-border-color: var(--table-border-color) !important;
 	--el-table-row-hover-bg-color: var(--table-bg-color-hover) !important;
 }
+
 .el-table__inner-wrapper::before {
 	display: none !important;
 }
@@ -82,7 +88,7 @@ html {
 
 .el-drawer {
 	--el-drawer-bg-color: var(--light-fill) !important;
-	border-radius: 7px;
+	border-radius: 5px;
 }
 .el-slider {
 	--el-slider-main-bg-color: var(--theme-color) !important;
@@ -125,4 +131,17 @@ html {
 	box-shadow: var(--el-box-shadow-light);
 	border-radius: 7px;
 	overflow: hidden;
+}
+
+.el-divider--vertical {
+	border-color: var(--dark-border);
+}
+
+.el-switch__core:hover {
+	border-color: var(--darker-border) !important;
+}
+
+.el-button {
+	--el-fill-color-light: var(--dark-fill);
+	--el-fill-color: var(--darker-fill);
 }

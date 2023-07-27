@@ -1,6 +1,6 @@
 <template>
 	<div class="player">
-		<audio ref="audioRef" :src="SongStore.song?.song.url" preload="auto" autoplay />
+		<audio ref="audioRef" :src="SongStore.song?.url" preload="auto" autoplay />
 		<playerMin v-if="DataStore.audioDisplayStatus == 'min'">
 			<template v-slot:progress>
 				<el-slider
@@ -8,13 +8,13 @@
 					v-model="SongStore.currentTime"
 					:max="SongStore.audio?.duration"
 					:format-tooltip="(val:number) => s2min(val)"
-					:disabled="SongStore.song?.song.id == undefined"
+					:disabled="SongStore.song?.id == undefined"
 					@input="progressUpdate"
 				/>
 			</template>
 		</playerMin>
 		<playerMax
-			v-if="DataStore.audioDisplayStatus == 'max' && SongStore.song?.song.id"
+			v-if="DataStore.audioDisplayStatus == 'max' && SongStore.song?.id"
 			:translation-v="SongStore.lyricObject.translator != null"
 		/>
 	</div>
@@ -23,8 +23,8 @@
 import { onMounted, ref } from "vue";
 import { useSongStore, useDataStore } from "store/index";
 import { s2min } from "utils/utils-common";
-import playerMax from "@/components/content/player/player-max.vue";
-import playerMin from "@/components/content/player/player-min.vue";
+import playerMax from "components/content/player/max.vue";
+import playerMin from "components/content/player/min.vue";
 
 const SongStore = useSongStore();
 const DataStore = useDataStore();

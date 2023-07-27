@@ -1,14 +1,14 @@
-import storage from "utils/storage";
 import { defineStore } from "pinia";
-import { setCssVar, wait, setCssVarS } from "utils/utils-common";
-import { ElScrollbar } from "element-plus";
 import { useSongStore } from "./songs";
-import { getLikedSongsID } from "@/service/api/api";
-import { themeType, songDetailedType, listBriefType } from "@/interface/interface";
+import { ElScrollbar } from "element-plus";
+import storage from "utils/storage";
+import { SONG } from "service/api";
+import { song, list, theme } from "@/type/type";
+import { setCssVar, wait, setCssVarS } from "utils/utils-common";
 
 type stateType = {
 	// 主题
-	theme: themeType;
+	theme?: theme;
 	// 全局滚动条
 	eScrollbar: InstanceType<typeof ElScrollbar> | null;
 	// 搜索框是否可见
@@ -18,19 +18,20 @@ type stateType = {
 	// 播放器显示状态
 	audioDisplayStatus: "hidden" | "max" | "min";
 	// 当前播放列表
-	playList: Array<songDetailedType>;
-	// 历史播放（但似乎没有相关功能）
-	historyList: Array<songDetailedType>;
+	playList: song[];
+	// 历史播放（但似乎没有相关API）
+	historyList: song[];
 	// 我创建的歌单
-	myCreatedList: Array<listBriefType>;
-	myCreatedListID: Array<number>;
-	likedSongsID: Array<number>;
+	myCreatedList: list[];
+	myCreatedListID: number[];
+	// 我喜欢的音乐ID
+	likedSongsID: number[];
 };
 
 export const useDataStore = defineStore("DataStore", {
 	state: (): stateType => {
 		return {
-			theme: "light",
+			theme: undefined,
 			eScrollbar: null,
 			searchVisible: true,
 			menuVisible: true,
@@ -47,8 +48,8 @@ export const useDataStore = defineStore("DataStore", {
 		/**
 		 * @description 更新主题
 		 * */
-		update_theme(newTheme: themeType) {
-			document.body.dataset.theme! = newTheme;
+		update_theme(newTheme: theme) {
+			document.querySelector("html")!.className = newTheme;
 			storage.setItem("theme", newTheme);
 		},
 		/**
@@ -95,34 +96,29 @@ export const useDataStore = defineStore("DataStore", {
 			}
 		},
 		/**
-		 * @param {function} fn 传入一个操作函数，该函数会自动传入播放列表
+		 * @param fn 传入一个操作函数，该函数会自动传入播放列表
 		 * @description 更新播放列表
 		 */
-		update_playList(fn: (playList: Array<songDetailedType>) => void) {
+		update_playList(fn: (playList: song[]) => void) {
 			fn(this.playList);
 		},
 		/**
 		 * @description 判断歌曲是否在当前的播放列表里
 		 * */
-		isExited_playList(song: songDetailedType): boolean {
+		isExited_playList(song: song): boolean {
 			return this.playList.indexOf(song) > -1 ? true : false;
 		},
 		/**
 		 * @description push歌曲到播放列表
 		 * */
-		push_playList(song: songDetailedType): boolean {
-			if (this.isExited_playList(song)) {
-				return false;
-			} else {
-				this.playList.push(song);
-				return true;
-			}
+		push_playList(song: song) {
+			this.playList.push(song);
 		},
 		/**
-		 * @param {function} fn 传入一个函数，该函数会自动传入 Array<喜欢的音乐ID>
+		 * @param fn 传入一个函数，该函数会自动传入 Array<喜欢的音乐ID>
 		 * @description 更新喜欢的音乐ID列表
 		 * */
-		update_likedSongsID(fn: (likedSongsID: Array<number>) => void) {
+		update_likedSongsID(fn: (likedSongsID: number[]) => void) {
 			fn(this.likedSongsID!);
 		},
 		/**
@@ -132,8 +128,8 @@ export const useDataStore = defineStore("DataStore", {
 			const { song } = useSongStore();
 			const id = storage.getItem("id");
 			if (id && song) {
-				this.likedSongsID = await getLikedSongsID(Number(id));
-				song.song.isLiked = this.check_song_isLiked(song.song.id);
+				this.likedSongsID = await SONG.getLikedSongsID(Number(id));
+				song.isLiked = this.check_song_isLiked(song.id);
 			}
 		},
 		/**
@@ -151,7 +147,7 @@ export const useDataStore = defineStore("DataStore", {
 		/**
 		 * @description 我创建的歌单信息
 		 * */
-		push_myCreatedList(createdList: listBriefType) {
+		push_myCreatedList(createdList: list) {
 			this.myCreatedList.push(createdList);
 		},
 	},

@@ -3,10 +3,7 @@
 		<h2>关注歌手</h2>
 		<el-space wrap :size="50" alignment="flex-start">
 			<div class="artist" v-for="item in subscribeArtists">
-				<artist-card
-					style="border-right: 1px solid rgba(60, 60, 60, 0.6)"
-					:data="item"
-				></artist-card>
+				<singer-card style="border-right: 1px solid rgba(60, 60, 60, 0.6)" :data="item" />
 				<el-icon class="del" size="20" @click.stop="changeDialogVisible(item)">
 					<MoreFilled />
 				</el-icon>
@@ -27,24 +24,24 @@
 </template>
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { getSubscribedArtists, subscribeArtist } from "service/api/api";
+import { SINGER } from "service/api";
 import { message } from "utils/notice";
-import { artistBriefType } from "@/interface/interface";
-import artistCard from "@/components/content/artist-card/artist-card.vue";
+import { singer } from "type/type";
+import singerCard from "components/content/singer-card/singer-card.vue";
 
-const subscribeArtists = ref<artistBriefType[]>();
+const subscribeArtists = ref<singer[]>();
 onMounted(async () => {
-	subscribeArtists.value = await getSubscribedArtists();
+	subscribeArtists.value = await SINGER.getSubscribedSinger();
 });
 
-const checkArtist = ref<artistBriefType>();
+const checkArtist = ref<singer>();
 const dialogVisible = ref<boolean>(false);
-const changeDialogVisible = (artist: artistBriefType) => {
+const changeDialogVisible = (artist: singer) => {
 	dialogVisible.value = !dialogVisible.value;
 	checkArtist.value = artist;
 };
 const delArtist = async () => {
-	if (await subscribeArtist(checkArtist.value?.id!, false)) {
+	if (await SINGER.subscribe(checkArtist.value?.id!, false)) {
 		subscribeArtists.value?.splice(subscribeArtists.value.indexOf(checkArtist.value!), 1);
 		message({
 			message: "取消关注成功",

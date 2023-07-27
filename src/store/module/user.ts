@@ -1,9 +1,21 @@
 import { defineStore } from "pinia";
 
 type UserState = {
+	/**
+	* @description 用户是否登录
+	* */
 	netease_name: string;
+	/**
+	* @description 用户是否登录
+	* */
 	netease_id: number;
+	/**
+	* @description 用户是否登录
+	* */
 	netease_cookie: string;
+	/**
+	* @description 用户是否登录
+	* */
 	netease_login: boolean;
 };
 
@@ -34,7 +46,7 @@ export const useUserStore = defineStore("UserStore", {
 		 * @description 更新id
 		 * */
 		update_id(value: number | string) {
-			this.netease_id = typeof value === "string" ? Number(value) : value;
+			this.netease_id = (typeof value === "string") ? Number(value) : value;
 		},
 		/**
 		 * @description 更新用户登录状态

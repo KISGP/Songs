@@ -1,6 +1,7 @@
 <template>
 	<div class="back">
 		<h2>歌手榜单</h2>
+		<!-- TODO: el-tab-pane 切换大量数据时如何优化 -->
 		<el-tabs v-model="activePage" class="demo-tabs" @tab-change="tabChange">
 			<el-tab-pane name="China">
 				<template #label>
@@ -24,8 +25,8 @@
 			</el-tab-pane>
 		</el-tabs>
 		<el-space class="space" wrap :size="50" alignment="flex-start">
-			<artist-card
-				v-for="(item, index) in artists.cache"
+			<singer-card
+				v-for="(item, index) in singers.cache"
 				:key="item.id"
 				:data="item"
 				:top="index"
@@ -35,16 +36,16 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
-import { getTopArtists } from "service/api/api";
-import { artistBriefType } from "@/interface/interface";
-import artistCard from "@/components/content/artist-card/artist-card.vue";
+import { SINGER } from "service/api/index";
+import { singer } from "type/type";
+import singerCard from "components/content/singer-card/singer-card.vue";
 
-const artists = reactive<{
-	cache: artistBriefType[];
-	China: artistBriefType[];
-	America: artistBriefType[];
-	Korea: artistBriefType[];
-	Japan: artistBriefType[];
+const singers = reactive<{
+	cache: singer[];
+	China: singer[];
+	America: singer[];
+	Korea: singer[];
+	Japan: singer[];
 }>({
 	cache: [],
 	China: [],
@@ -53,29 +54,29 @@ const artists = reactive<{
 	Japan: [],
 });
 onMounted(async () => {
-	artists.cache = artists.China = await getTopArtists("华语");
-	artists.America = await getTopArtists("欧美");
-	artists.Korea = await getTopArtists("韩国");
-	artists.Japan = await getTopArtists("日本");
+	singers.cache = singers.China = await SINGER.getTop("华语");
+	singers.America = await SINGER.getTop("欧美");
+	singers.Korea = await SINGER.getTop("韩国");
+	singers.Japan = await SINGER.getTop("日本");
 });
 
 const activePage = ref<string>("China");
-const tabChange = (name: string) => {
+function tabChange(name: string) {
 	switch (name) {
 		case "China":
-			artists.cache = artists.China;
+			singers.cache = singers.China;
 			break;
 		case "America":
-			artists.cache = artists.America;
+			singers.cache = singers.America;
 			break;
 		case "Korea":
-			artists.cache = artists.Korea;
+			singers.cache = singers.Korea;
 			break;
 		case "Japan":
-			artists.cache = artists.Japan;
+			singers.cache = singers.Japan;
 			break;
 	}
-};
+}
 </script>
 <style scoped lang="less">
 .back {
