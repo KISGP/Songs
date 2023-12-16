@@ -1,10 +1,5 @@
 # songs
 
-**体验地址**：
-
-1. ~~[k423.space](k423.space)(域名已过期)~~。
-
-2. https://gp-root.github.io/Songs/ (资源加载有问题，正在解决...)
 
 ## 基本介绍
 
