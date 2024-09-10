@@ -6,8 +6,7 @@ import { useUserStore } from "store/index";
 
 // 网易云
 export const NETEASE = new GPRequest({
-	// baseURL: "https://k423.space/Netease",
-	baseURL: "http://localhost:3000",
+	baseURL: "https://api.kisssssssss.space/",
 	interceptors: {
 		requestInterceptor(config) {
 			if (config.params) {
