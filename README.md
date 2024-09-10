@@ -84,14 +84,18 @@ docsify serve docs
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/3.png?raw=true)
 
 
-
-歌单推荐页面
-
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/4.png?raw=true)
 
 
-
 ![](https://github.com/GP-root/Songs/blob/main/docs/img/5.png?raw=true)
+
+
+![PixPin_2024-09-10_20-21-13](https://github.com/user-attachments/assets/eb9c2f56-a39e-420a-bfa3-0b9c0bac9cf4)
+
+
+![PixPin_2024-09-10_20-21-26](https://github.com/user-attachments/assets/12269587-9119-4d4f-a1aa-235ec153e759)
+
+![PixPin_2024-09-10_20-20-50](https://github.com/user-attachments/assets/a96d41cb-5ebd-43f1-8aaa-f8c055f01414)
 
 
 
