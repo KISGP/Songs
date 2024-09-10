@@ -6,7 +6,7 @@ import { useUserStore } from "store/index";
 
 // 网易云
 export const NETEASE = new GPRequest({
-	baseURL: "https://api.kisssssssss.space/",
+	baseURL: "https://netease-cloud-music-api-hkr3.vercel.app/",
 	interceptors: {
 		requestInterceptor(config) {
 			if (config.params) {
